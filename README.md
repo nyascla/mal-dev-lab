@@ -19,4 +19,5 @@
 ### [dlls](./dlls/)                   – PoCs (DLL reflection, reflective loaders)
 ### [processes](./processes/)         – PoCs (process hollowing, process injection, masquerading)
 ### [C2](./C2/)                       – PoCs (infraestructura)
+HERE
 ### [anti-analysis](./anti-analysis/) – PoCs (borrado de evidencias, anti sandbox)
