@@ -4,8 +4,18 @@
 
 ## Estructura
 
-### [shellcodes](./shellcodes/)       – PoCs (runtime linking, import hashes, remote shell)
-### [syscalls](./syscalls/)           – PoCs (win32-api, native-api, direct-syscalls, indirect-syscalls)
+### [shellcodes](./shellcodes/)       
+    - x86 y x64 ABI
+    – PIC, runtime linking, import hashes
+    - remote shell
+
+### [syscalls](./syscalls/)           
+    - x86 vs x64 syscalls
+    – win32-api, native-api, direct-syscalls, indirect-syscalls
+
+### [binaries](./binaries/)           
+    – patching: jmp, entry point, IAT
+    - ASLR + loaders
 
 <br>
 <br>
@@ -14,10 +24,7 @@
 
 # 🚧 Under Construction 🚧
 
-
-### [binaries](./binaries/)           – PoCs (binary patching, obfuscation)
 ### [dlls](./dlls/)                   – PoCs (DLL reflection, reflective loaders)
 ### [processes](./processes/)         – PoCs (process hollowing, process injection, masquerading)
 ### [C2](./C2/)                       – PoCs (infraestructura)
-HERE
 ### [anti-analysis](./anti-analysis/) – PoCs (borrado de evidencias, anti sandbox)
