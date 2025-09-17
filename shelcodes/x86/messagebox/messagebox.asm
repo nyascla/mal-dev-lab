@@ -90,7 +90,7 @@ call eax
 ; Salto incondicional para seguir con la ejecucion
 ; void* get_module_base(uint32_t hash_name)
 mov edx, [esp + 0x0] ; pone el base del blob en edx
-mov eax, [edx + EXE_NAME]
+mov eax, [edx + EXE_NAME_A]
 push eax
 call get_module_base
 
