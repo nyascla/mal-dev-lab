@@ -8,6 +8,7 @@
     - x86 y x64 ABI
     – PIC, runtime linking, import hashes
     - remote shell
+    - mitigacion: EATF
 
 ### [syscalls](./syscalls/)           
     - x86 vs x64 syscalls
@@ -15,7 +16,11 @@
 
 ### [binaries](./binaries/)           
     – patching: jmp, entry point, IAT
-    - ASLR + loaders
+    - mitigacion: ASLR, DEP
+
+### [processes](./processes/)         
+    – process hollowing, process injection, masquerading
+    - mitigacion: CFG
 
 <br>
 <br>
@@ -25,6 +30,5 @@
 # 🚧 Under Construction 🚧
 
 ### [dlls](./dlls/)                   – PoCs (DLL reflection, reflective loaders)
-### [processes](./processes/)         – PoCs (process hollowing, process injection, masquerading)
 ### [C2](./C2/)                       – PoCs (infraestructura)
 ### [anti-analysis](./anti-analysis/) – PoCs (borrado de evidencias, anti sandbox)
