@@ -1,0 +1,3 @@
+Cobalt strike
+
+pgp

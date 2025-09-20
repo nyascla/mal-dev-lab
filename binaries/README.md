@@ -92,4 +92,13 @@ vamos a buscar entre 1740 y 2740 que serian los direccion de .text en disco
 
 vamos a poner el shellcode en disco en: 1cb0
 
+calculamos cuanto le tenemos que suamr al rva actual para llegar al nuevo shellcode
+
+1cb0 - 00001740 = 570
+
+00001740 + 570 = 00001CB0 nuevo rva
+
+anterior: 40170000
+nuevo: b01c0000
+
 ---

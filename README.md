@@ -22,6 +22,11 @@
     – process hollowing, process injection, masquerading
     - mitigacion: CFG
 
+### [dlls](./dlls/)                  
+    - injection, hijacking   
+    – DLL reflection, reflective loaders
+
+recopilacion de lolbins y tecnicas de persistencia y anti-analisis
 <br>
 <br>
 <br>
@@ -29,6 +34,6 @@
 
 # 🚧 Under Construction 🚧
 
-### [dlls](./dlls/)                   – PoCs (DLL reflection, reflective loaders)
 ### [C2](./C2/)                       – PoCs (infraestructura)
 ### [anti-analysis](./anti-analysis/) – PoCs (borrado de evidencias, anti sandbox)
+### [persistence](./persistence/)
