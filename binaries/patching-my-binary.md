@@ -39,7 +39,8 @@ ahora ya puedo ejecutar mi codigo, aunque peta a mitad ejecucion
 
 lo que esta pasando es que las etiquetas que utiliza como variables no estan funcionando bien
 
-Claro los permisos de .text son ER no puede escribir en esa direcciones
+Claro los permisos de .text son 
+ no puede escribir en esa direcciones
 
 puedo hacer el mismo codigo sin escrituras en memoria?
 

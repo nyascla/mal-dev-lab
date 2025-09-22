@@ -9,7 +9,7 @@ DWORD WINAPI threadFunc(LPVOID lpParam) {
 
 int main(int argc, char *argv[]) {
     // Load the DLL
-    PCSTR path_to_dll = argv[1];
+    char* path_to_dll = "evil_dll.c";
     HINSTANCE hDll = LoadLibraryA(argv[1]);
     if (hDll == NULL) {
         printf("Failed to load DLL.\n");
