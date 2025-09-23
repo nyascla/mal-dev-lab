@@ -5,7 +5,7 @@ import os
 def get_pe_sections(pe):
     for section in pe.sections:
         print(section.Name, hex(section.VirtualAddress), hex(section.Misc_VirtualSize), section.SizeOfRawData )
-    return sections
+
 
 def pe_headers(pe):
     print(hex(pe.OPTIONAL_HEADER.AddressOfEntryPoint))
@@ -30,10 +30,10 @@ def pe_exports(pe):
         print(hex(pe.OPTIONAL_HEADER.ImageBase + exp.address), exp.name, exp.ordinal)
 
 if __name__ == "__main__":
-    path = "./calc.exe"
+    path = "./kernel32.dll"
     if not os.path.isfile(path):
         raise FileNotFoundError(f"No existe el fichero: {path}")
 
-    pe = pefile.PE(path, fast_load=False)  # puede lanzar pefile.PEFormatError
+    pe = pefile.PE(path, fast_load=False)
 
-    pe_headers(pe)
+    pe_exports(pe)

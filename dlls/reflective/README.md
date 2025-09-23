@@ -1,3 +1,19 @@
-La idea es conseguir cargar una dll en memoria sin tener ninguna referencia en disco
+https://www.ired.team/offensive-security/code-injection-process-injection/reflective-dll-injection
 
-reflective loader
+---
+
+1. ReflectiveLoader will first calculate its own image's current location in memory so as to be able to parse its own headers for use later on
+2. The ReflectiveLoader will then parse the host processes kernel32.dll export table in order to calculate the addresses of three functions required by the loader, namely:
+    - LoadLibraryA, GetProcAddress and VirtualAlloc.
+3. The ReflectiveLoader will now allocate a continuous region of memory into which it will proceed to load its own image. The location is not important as the loader will correctly relocate the image later on.
+4. The library's headers and sections are loaded into their new locations in memory.
+---
+(DUDAS)
+5.  The ReflectiveLoader will then process the newly loaded copy of its image's import table, loading any additional library's and resolving their respective imported function addresses.
+6. The ReflectiveLoader will then process the newly loaded copy of its image's relocation table.
+7. The ReflectiveLoader will then call its newly loaded image's entry point function, DllMain with DLL_PROCESS_ATTACH. The library has now been successfully loaded into memory.
+8. Finally the ReflectiveLoader will return execution to the initial bootstrap shellcode which called it, or if it was called via CreateRemoteThread, the thread will terminate.
+
+---
+
+Como pimera aproximacion podria hacer programa en C que haga lo que tendria que hacer ReflectiveLoader

@@ -1,21 +1,13 @@
-conseguimos cargar la dll en un proceso y conseguirmos ejecutar las funciones maliciosas de la dll
-
-- loadlibrary
-- loadlibraryex
-- ldrloaddll
-- manual mapping
-
-dll callbacks
-
-- dll_process_attach
-- dll_process_detach
-- dll_thread_attach
-- dll_thread_detach
-
-para cargar una dll en otro proceso buscares la direccion de memoria de load library en el proceso objetivo
-
-kernel32 se carga en todos los procesos en la misma direccion de memoria
-
-por ejemplo con createremotethread podemos crear un hilo en el proceso objetivo que ejecute loadlibrary y cargue la dll maliciosa
-
 https://www.youtube.com/watch?v=RasdnQmM3IY
+
+# LoadLibrary Method
+
+1. Obtener acceso al proceso objetivo
+
+    - Conseguir un handler con permisos necesarios
+
+2. Ejecutar LoadLibrary en el proceso objetivo
+
+    - Reservar memoria en el proceso para la ruta de la DLL
+    - Escribir la ruta de la DLL en la memoria reservada
+    - Crear un hilo remoto que ejecute LoadLibrary apuntando a la DLL

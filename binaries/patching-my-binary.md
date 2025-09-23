@@ -27,8 +27,6 @@ Disco, calcular el offset al densde el inicio de la seccion al entry point
 
 (00001131 - 00001000) + 00000400 = 531
 
-![alt text](image.png)
-
 la primera aproximacion me da un error 0xC0000005 el ejecutar con doble click y un ERROR_SEM_NOT_FOUND des x32dbg
 
 Mi primera teoria es que al alargar la seccion .text al copiarla en memoria pisa algo de otra seccion 
