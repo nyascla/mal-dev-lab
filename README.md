@@ -4,25 +4,25 @@
 
 ## Estructura
 
-### [shellcodes](./shellcodes/)       
+### [Shellcodes](./shellcodes/)       
     - x86 y x64 ABI
     – PIC, runtime linking, import hashes
     - remote shell
     - mitigacion: EATF
 
-### [syscalls](./syscalls/)           
+### [Syscalls](./syscalls/)           
     - x86 vs x64 syscalls
     – win32-api, native-api, direct-syscalls, indirect-syscalls
 
-### [binaries](./binaries/)           
+### [Binaries](./binaries/)           
     – patching: jmp, entry point, IAT
     - mitigacion: ASLR, DEP
 
-### [processes](./processes/)         
+### [Processes](./processes/)         
     – process hollowing, process injection, masquerading
     - mitigacion: CFG
 
-### [dlls](./dlls/)                  
+### [Dlls](./dlls/)                  
     - injection, hijacking   
     – DLL reflection, reflective loaders
 
