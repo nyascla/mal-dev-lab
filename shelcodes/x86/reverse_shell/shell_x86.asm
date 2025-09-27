@@ -35,7 +35,7 @@ processinfo equ 0x218   ; size 0x10
 ; -----------------------------------
 ; INIT Stack frame
 ; -----------------------------------
-push    ebp        ; guardo ebp del stack frame anterior
+push    ebp         ; guardo ebp del stack frame anterior
 mov     ebp, esp    ; inicializo el nuevo
 sub     esp, 0x300  ; mejor que sobre
 

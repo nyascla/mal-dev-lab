@@ -101,7 +101,6 @@ int main(void) {
     }
 
     printf("Module handle: %p\n", (void *)module_handle);
-    getchar();
 
     // Ejecutar listado de exports
     print_exports((uint8_t *)module_handle);

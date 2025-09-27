@@ -1,15 +1,43 @@
-;-----------------------------------
+; ============================================================
 ; RUNTIME_LINKING
-;-----------------------------------
+; ------------------------------------------------------------
 ; uint32_t runtime_linking(uint32_t hash_module, ptr* hashes, ptr* destino)
-;-----------------------------------
-;       ptr_dest:       [esp + c]
-;       ptr_source:     [esp + 8]
-;       base_module:    [esp + 4]
-;-----------------------------------
+; ------------------------------------------------------------
+;   Descripción:
+;       Carga funciones en tiempo de ejecución a partir del módulo indicado.
+; 
+;   Parámetros:
+;       base_module  - [esp + 4] : Dirección base del módulo (hash del nombre del módulo).
+;       ptr_source    - [esp + 8] : Puntero a lista de hashes de funciones a cargar.
+;       ptr_dest      - [esp + c] : Puntero a lista donde se almacenarán las direcciones cargadas.
+; 
+;   Retorno:
+;       uint32_t      - Número de funciones cargadas correctamente.
+; ============================================================
 
 
-runtime_linking:
+
+
+
+
+global _get_proc_address
+global _get_module_handle
+global _rol_xor
+global _runtime_linking
+
+; prueba
+global _asm_add       ; nota el underscore
+_asm_add:
+    ; cdecl: args on stack: [esp+4]=a, [esp+8]=b
+    mov eax, [esp+4]
+    add eax, [esp+8]
+    ret
+
+
+section .text
+
+
+_runtime_linking:
     mov eax, [esp + 0]
     mov eax, [esp + 4]
     mov eax, [esp + 8]
@@ -29,7 +57,7 @@ runtime_linking:
 
     push    eax         ; push hash_api  (2º arg)
     push    ecx         ; push module_base (1er arg)
-    call    get_function_from_module
+    call    _get_proc_address
 
     pop esi
 
@@ -46,7 +74,6 @@ runtime_linking:
     mov eax, 0x10101010
     ret 0xC
 
-; -----------------------------------
-%include ".\runtime_linking\get_module\get_module_base.asm"
-%include ".\runtime_linking\hashes\rol_xor.asm" 
-%include ".\runtime_linking\get_export\get_function_from_module.asm"
+%include "./rol_xor.asm"
+%include "./get_proc_address.asm"
+%include "./get_module_handle.asm" 
