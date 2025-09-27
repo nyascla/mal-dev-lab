@@ -6,6 +6,11 @@
 
 # 🚧 Under Construction 🚧
 
+### [Windows Internals](./101_Windows/)     
+    - PE, PEB, TEB
+    - loading process and dlls
+    - IAT, EAT
+
 ### [Shellcodes](./shellcodes/)       
     - x86 y x64 ABI
     – PIC, runtime linking, import hashes
