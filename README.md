@@ -4,6 +4,8 @@
 
 ## Estructura
 
+# 🚧 Under Construction 🚧
+
 ### [Shellcodes](./shellcodes/)       
     - x86 y x64 ABI
     – PIC, runtime linking, import hashes
@@ -26,14 +28,11 @@
     - injection, hijacking   
     – DLL reflection, reflective loaders
 
-recopilacion de lolbins y tecnicas de persistencia y anti-analisis
-<br>
-<br>
-<br>
-<br>
+### [EDR Bypass](./EDR-bypass/)
+    - call stack spoofing, LOLbins, Windows Defender
 
-# 🚧 Under Construction 🚧
+### [C2](./C2/)                       
+    – infraestructura
 
-### [C2](./C2/)                       – PoCs (infraestructura)
-### [anti-analysis](./anti-analysis/) – PoCs (borrado de evidencias, anti sandbox)
-### [persistence](./persistence/)
+### [Red Team Wiki](./wiki_red_team/)
+    - Anti-analysis, persistence

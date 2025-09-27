@@ -16,28 +16,7 @@
 ; ============================================================
 
 
-
-
-
-
-global _get_proc_address
-global _get_module_handle
-global _rol_xor
-global _runtime_linking
-
-; prueba
-global _asm_add       ; nota el underscore
-_asm_add:
-    ; cdecl: args on stack: [esp+4]=a, [esp+8]=b
-    mov eax, [esp+4]
-    add eax, [esp+8]
-    ret
-
-
-section .text
-
-
-_runtime_linking:
+_multi_import:
     mov eax, [esp + 0]
     mov eax, [esp + 4]
     mov eax, [esp + 8]
@@ -73,7 +52,3 @@ _runtime_linking:
 
     mov eax, 0x10101010
     ret 0xC
-
-%include "./rol_xor.asm"
-%include "./get_proc_address.asm"
-%include "./get_module_handle.asm" 

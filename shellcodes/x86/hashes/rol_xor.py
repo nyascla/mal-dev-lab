@@ -20,7 +20,6 @@ def rol(val: int, r_bits: int, max_bits: int) -> int:
 def create_hash(export_name: str) -> int:
     """Creates a hash from a WinAPI function name"""
     result = 0
-    print(f"== Creando hash para '{export_name}' ==")
     
     for i, ch in enumerate(export_name.lower()):
         before = result
@@ -28,12 +27,11 @@ def create_hash(export_name: str) -> int:
         after_rol = result
         result ^= ord(ch)
         
-        print(f"[{i}] char='{ch}' ascii={ord(ch)} "
-              f"before=0x{before:08X} "
-              f"after_rol=0x{after_rol:08X} "
-              f"result=0x{result:08X}")
+    #     print(f"[{i}] char='{ch}' ascii={ord(ch)} "
+    #           f"before=0x{before:08X} "
+    #           f"after_rol=0x{after_rol:08X} "
+    #           f"result=0x{result:08X}")
     
-    print(f"== Hash final: 0x{result:08X} ==")
     return result
 
 
@@ -47,17 +45,10 @@ def main(module_name: str, api_name: str) -> None:
 
 
 if __name__ == "__main__":
-    import argparse
+    names = ["kernel32.dll", "ws2_32.dll"]
 
-    parser = argparse.ArgumentParser(
-        description="Generate custom hashes for DLL and WinAPI names."
-    )
-    parser.add_argument("module", help="Name of the DLL module (e.g., kernel32.dll)")
-    parser.add_argument("api", help="Name of the WinAPI function (e.g., LoadLibraryA)")
-
-    args = parser.parse_args()
-
-    main(args.module, args.api)
+    for n in names:
+        print(f"{n}: {hex(create_hash(n))}")
 
 # [+] Module: kernel32.dll -> 0x4b1ffe8e
 # [+] API: LoadLibraryA -> 0xc8ac8026

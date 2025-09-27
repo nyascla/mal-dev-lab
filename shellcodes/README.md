@@ -1,1 +1,2 @@
-# Shellcode - x86 & x64
+# Shellcode x86 y x64
+
