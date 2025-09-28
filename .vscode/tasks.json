@@ -12,11 +12,21 @@
       "problemMatcher": []
     },
     {
-      "label": "Setup x64 reverse_shell",
+      "label": "Setup x86 reverse_shell",
       "type": "shell",
       "command": "nmake",
       "options": {
         "cwd": "${workspaceFolder}\\shellcodes\\x86\\reverse_shell"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+        {
+      "label": "Setup x86 messagebox",
+      "type": "shell",
+      "command": "nmake",
+      "options": {
+        "cwd": "${workspaceFolder}\\shellcodes\\x86\\messagebox"
       },
       "group": "build",
       "problemMatcher": []

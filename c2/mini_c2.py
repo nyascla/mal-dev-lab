@@ -2,8 +2,8 @@ import socket
 import sys
 
 def simple_reverse_shell_server():
-    host = '0.0.0.0'
-    port = 5000
+    host = '127.0.0.1'
+    port = 4444
     
     try:
         # Crear socket
