@@ -77,15 +77,14 @@ push    edx
 
 lea     ebx, [edx + WS2_32_STR]
 push    ebx ; (1º arg) module_name
-mov     eax, [ebp - LoadLibraryA]
-call    eax ; LoadLibraryA
+mov     eax, [ebp + LoadLibraryA]
+call    eax ; LoadLibraryA __stdcall (limpia la pila)
 mov     [ebp + BaseWs2_32], eax
-add     esp, 0x4
 
 pop     edx
 
 ; -----------------------------------
-; Resolver functions from Kernell32
+; Resolver functions from ws2_32.dll
 ; -----------------------------------
 push    edx
 
