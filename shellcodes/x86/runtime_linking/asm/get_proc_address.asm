@@ -39,21 +39,21 @@
 
 ; .\dlls\walking_export_table\README.md
 
-; Offsets parametros
+; Parametros
 ModuleBase       equ 0x8
 HashApi          equ 0xC
 
-; Offsets variabels
+; Variables locales
 AddressOfNames          equ -0x4
 AddressOfNameOrdinals   equ -0x8
 AddressOfFunctions      equ -0xC
 
 ; Offsets PE
-offset_e_lfanew                equ 0x3c
-offset_IMAGE_DATA_DIRECTORY   equ 0x78
-offset_AddressOfFunctions      equ 0x1c 
-offset_AddressOfNames          equ 0x20         
-offset_AddressOfNameOrdinals   equ 0x24
+offset_e_lfanew                 equ 0x3c
+offset_IMAGE_DATA_DIRECTORY     equ 0x78
+offset_AddressOfFunctions       equ 0x1c 
+offset_AddressOfNames           equ 0x20         
+offset_AddressOfNameOrdinals    equ 0x24
 
 _get_proc_address:
     ; -----------------------------------

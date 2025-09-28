@@ -3,9 +3,13 @@
 - ``Argumentos``: Por pila (right-to-left)
 - ``Registro retorno``: EAX
 - ``Limpieza de pila``: Depende de la convencion
-    - *__stdcall*: callee limpia la pila.
-    - *__cdecl*: caller limpia la pila. [ la convención por defecto en MSVC para funciones en C ]
+    - *__stdcall*:  callee limpia la pila.
+    - *__cdecl*:    caller limpia la pila. [ la convención por defecto en MSVC para funciones en C ]
 
+En x86 existen calling conventions que definen quién debe preservar qué registros:
+    - cdecl / stdcall (Windows, Linux):
+        - Los callers deben guardar EAX, ECX, EDX si los necesitan.
+        - Los callees deben preservar EBX, ESI, EDI, EBP.
 
 ## Ejemplos Limpieza de pila
 

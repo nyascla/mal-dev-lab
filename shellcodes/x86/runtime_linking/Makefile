@@ -1,8 +1,8 @@
 CC      = cl
-OBJS = build\main.obj build\export.obj
+OBJS = build\main.obj build\exports.obj
 
 	
-all: dirs
+all: tests binss
 
 
 dirs:
@@ -14,12 +14,18 @@ proc:
 	sclauncher.exe -f="build/get_proc_address.bin" -pe -o="bin/get_proc_address.exe"
 
 objetos:
-	nasm -f win32 "asm/export.asm" -o "build/export.obj"
+	nasm -f win32 "asm/exports.asm" -o "build/exports.obj"
 
 tests: objetos
+	!echo Compilando...
+
 	cl /Zi /Fo"build\main.obj" /c main.c
 	link /OUT:"bin\main.exe" $(OBJS) /PDB:bin\main.pdb /DEBUG /ILK:build\main.ilk
-	bin\main.exe
+
+binss:
+	!echo Build...
+
+	nasm -f bin "asm/exports.asm" -o "bin/exports.bin"
 
 
 clean:

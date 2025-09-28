@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Setup x86 TEST runtime_linking",
+      "type": "shell",
+      "command": "\"${workspaceFolder}\\shellcodes\\x86\\runtime_linking\\setup.bat\"",
+      "options": {
+        "cwd": "${workspaceFolder}\\shellcodes\\x86\\runtime_linking"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Setup x64 reverse_shell",
+      "type": "shell",
+      "command": "nmake",
+      "options": {
+        "cwd": "${workspaceFolder}\\shellcodes\\x86\\reverse_shell"
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}
