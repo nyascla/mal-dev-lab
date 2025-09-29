@@ -41,8 +41,7 @@ cl runtime.c user32.lib
 4. Tablas de import/export
     - Export Table
         - (funciones y variables) que la DLL pone a disposición de otros módulos.
-        - El loader construye la IAT
-    - Import Table
+    - El loader construye la IAT
         - Cada EXE o DLL tiene una tabla de importación (IAT – Import Address Table).
             1. El loader busca la DLL importada.
             2. Resuelve cada función de la import table.
