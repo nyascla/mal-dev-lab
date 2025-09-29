@@ -10,4 +10,4 @@ https://www.youtube.com/watch?v=RasdnQmM3IY
 
     - Reservar memoria en el proceso para la ruta de la DLL
     - Escribir la ruta de la DLL en la memoria reservada
-    - Crear un hilo remoto que ejecute LoadLibrary apuntando a la DLL
+    - Crear un hilo remoto que ejecute LoadLibrary apuntando a la String que hemos copiado
