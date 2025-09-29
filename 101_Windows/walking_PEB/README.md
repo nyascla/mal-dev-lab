@@ -19,13 +19,14 @@ dx @$peb->Ldr
 dt _PEB_LDR_DATA <direccion>
 # Ver _LDR_DATA_TABLE_ENTRY
 dt _LDR_DATA_TABLE_ENTRY @esi
+
 dx @$peb->Ldr->InLoadOrderModuleList.Flink
 dt _LDR_DATA_TABLE_ENTRY <direccion>
 # Ver nombre del modulo
 dt _UNICODE_STRING @esi+0x2c
 ```
 
-## x86 Ver Modulos Cargados en el proceso 
+## x64 Modulos Cargados en el proceso 
 
 ### _PEB
 ![alt text](./img/image.png)
@@ -36,6 +37,4 @@ dt _UNICODE_STRING @esi+0x2c
 ### _LDR_DATA_TABLE_ENTRY
 ![alt text](./img/image-3.png)
 ## _UNICODE_STRING
-![alt text](image.png)
-
-## x64 Ver Modulos Cargados en el proceso 
+![alt text](./img/image-4.png)
