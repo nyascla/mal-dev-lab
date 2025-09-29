@@ -9,3 +9,5 @@ shell: dirs
 	sclauncher.exe -f="build/shell_x86.bin" -pe -o="bin/shell_x86.exe"
 
 clean:
+	if exist build rmdir /s /q build
+	if exist bin rmdir /s /q bin

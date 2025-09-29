@@ -45,7 +45,7 @@ def main(module_name: str, api_name: str) -> None:
 
 
 if __name__ == "__main__":
-    names = ["kernel32.dll", "ws2_32.dll"]
+    names = ["kernel32.dll", "ws2_32.dll", "simple_x86.exe"]
 
     for n in names:
         print(f"{n}: {hex(create_hash(n))}")
