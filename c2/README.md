@@ -1,6 +1,8 @@
-Cobalt strike
+# C2
 
-pgp
+## Ideas:
 
-whatsapp bussines:
+- Cobalt strike
+- pgp
+- whatsapp bussines:
     - WhatsApp Cloud API
