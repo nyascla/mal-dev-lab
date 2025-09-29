@@ -26,7 +26,7 @@ Export Address Table (EAT): lista de RVAs de funciones exportadas
 Export Name Table (ENT): lista de RVAs de strings con los nombres de las funciones exportadas
 Export Ordinal Table (EOT): mapea nombres a ordinals y entradas del EAT
 
-> En la entrada para DLL se encuentra mas informacion
+> Para una guia pasa a paso sobre recorrer la export table [walking_export_table](./101_Windows/walking_export_table/README.md)
 
 ---
 

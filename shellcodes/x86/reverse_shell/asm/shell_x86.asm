@@ -208,7 +208,7 @@ push    eax        ; bInheritHandles
 dec     eax
 push    eax        ; lpThreadAttributes
 push    eax        ; lpProcessAttributes
-push    ecx        ; lpCommandLine
+push    ecx        ; lpCommandLine = "cmd.exe"
 push    eax        ; lpApplicationName
 call    [ebp + CreateProcessA] ; https://learn.microsoft.com/es-es/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa
 

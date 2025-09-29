@@ -2,6 +2,8 @@
 
 Estructura interna de Windows no definida, Windows no proporciona una struct oficial y esta puede cambiar entre builds. 
 
+Solo en modo usuario y está asociado a cada proceso individual.
+
 Informacion importarte que podemos encontrar en el PEB:
 - ImageBaseAddress
 - BeingDebugged
@@ -23,7 +25,7 @@ dt _LDR_DATA_TABLE_ENTRY <direccion>
 dt _UNICODE_STRING @esi+0x2c
 ```
 
-## Ver Modulos Cargados en el proceso
+## x86 Ver Modulos Cargados en el proceso 
 
 ### _PEB
 ![alt text](./img/image.png)
@@ -35,3 +37,5 @@ dt _UNICODE_STRING @esi+0x2c
 ![alt text](./img/image-3.png)
 ## _UNICODE_STRING
 ![alt text](image.png)
+
+## x64 Ver Modulos Cargados en el proceso 

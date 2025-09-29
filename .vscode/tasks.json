@@ -40,6 +40,16 @@
       },
       "group": "build",
       "problemMatcher": []
+    }, 
+    {
+      "label": "(BUILD) x64 Hollowing",
+      "type": "shell",
+      "command": "\"${workspaceFolder}\\processes\\hollowing\\setup.bat",
+      "options": {
+        "cwd": "${workspaceFolder}\\processes\\hollowing"
+      },
+      "group": "build",
+      "problemMatcher": []
     }
   ]
 }
