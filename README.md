@@ -2,13 +2,11 @@
 
 > *PoCs didácticas creadas por mí para explicar TTPs de malware*
 
-## Estructura
-
 # 🚧 Under Construction 🚧
 
 ### [Windows Internals](./101_Windows/)     
     - PE, PEB, TEB
-    - loading process and dlls
+    - loading process, dlls
     - IAT, EAT
 
 ### [Shellcodes](./shellcodes/)       
@@ -34,10 +32,14 @@
     – DLL reflection, reflective loaders
 
 ### [EDR Bypass](./EDR-bypass/)
-    - call stack spoofing, LOLbins, Windows Defender
+    - call stack spoofing
+    - LOLbins
+    - Windows Defender
 
 ### [C2](./C2/)                       
-    – infraestructura
+    – Infraestructura
 
 ### [Red Team Wiki](./wiki_red_team/)
-    - Anti-analysis, persistence
+    - Delivery
+    - Anti-analysis
+    - persistence

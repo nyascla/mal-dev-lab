@@ -8,10 +8,10 @@ Ejemplos prácticos y didácticos sobre **shellcode** y técnicas relacionadas: 
 
 | Carpeta | Descripción |
 |---|---|
-| [**hashes**](./shellcodes/x86/hashes) | Utilidades y ejemplos para **calcular y verificar hashes** usados comúnmente en loaders y técnicas de ofuscación. |
-| [**messagebox**](./shellcodes/x86/messagebox) | Shellcodes mínimos de demostración que muestran una `MessageBox`. |
-| [**reverse_shell**](./shellcodes/x86/reverse_shell) | Ejemplos educativos de **reverse shells** (con código C y shellcode equivalente). |
-| [**runtime_linking**](./shellcodes/x86/runtime_linking) | Técnicas de **runtime linking** y resolución dinámica de APIs desde shellcode o loaders. |
+| [**hashes**](./x86/hashes) | Utilidades y ejemplos para **calcular y verificar hashes** usados comúnmente en loaders y técnicas de ofuscación. |
+| [**messagebox**](./x86/messagebox) | Shellcodes mínimos de demostración que muestran una `MessageBox`. |
+| [**reverse_shell**](./x86/reverse_shell) | Ejemplos educativos de **reverse shells** (con código C y shellcode equivalente). |
+| [**runtime_linking**](./x86/runtime_linking) | Técnicas de **runtime linking** y resolución dinámica de APIs desde shellcode o loaders. |
 
 ---
 
