@@ -1,6 +1,6 @@
-- (DEP) Data Execution Prevention 
-- (ASLR) Address Space Layout Randomization
-- CFG
+- DEP (Data Execution Prevention)
+- ASLR (Address Space Layout Randomization)
+- CFG (Control Flow Guard)
 
 ---
 

@@ -11,10 +11,11 @@ En Windows modernos (Windows 10/11), ASLR no siempre genera una reubicación dis
 
 En Windows hay algo llamado "high-entropy ASLR" (64 bits), que ofrece mucha más entropía, pero también depende de que el binario tenga /HIGHENTROPYVA y esté compilado para x64.
 
+## _IMAGE_OPTIONAL_HEADER.DllCharacteristics
+
 ![alt text](image.png)
 
-
-## Flujo de cálculo de ASLR y relocaciones
+## Calculo de ASLR y relocaciones
 
 Cuando Windows carga un ejecutable (.exe) o una librería (.dll), el Loader del kernel (ntoskrnl.exe) junto con el User-mode loader (ntdll.dll) deciden dónde colocar el módulo en el espacio de direcciones virtuales del proceso.
 

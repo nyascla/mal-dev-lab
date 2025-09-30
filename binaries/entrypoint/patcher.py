@@ -52,12 +52,12 @@ def read_bin_file(path):
     print(f"[+] Leyendo binario: {path}")
     with open(path, "rb") as f:
         return f.read()
+    
 
-
-if __name__ == "__main__":
-    path = r"C:\\Users\\test\\Desktop\\mal-dev-lab\\binaries\\bin\\simple_x86.exe"
-    path_tmp = r"C:\\Users\\test\\Desktop\\mal-dev-lab\\binaries\\bin_v2\\tmp.exe"
-    path_out = r"C:\\Users\\test\\Desktop\\mal-dev-lab\\binaries\\bin_v2\\simple_x86.exe"
+def build(file):
+    path = fr"C:\\Users\\test\\Desktop\\mal-dev-lab\\binaries\\entrypoint\\bin\\{file}.exe"
+    path_out = fr"C:\\Users\\test\\Desktop\\mal-dev-lab\\binaries\\entrypoint\\bin_v2\\{file}.exe"
+    path_tmp = fr"C:\\Users\\test\\Desktop\\mal-dev-lab\\binaries\\entrypoint\\bin_v2\\tmp_{file}.exe"
     path_shellcode = r"C:\\Users\\test\\Desktop\\mal-dev-lab\\shellcodes\\x86\\messagebox\\build\\messagebox_patch.bin"
 
     print("[*] Cargando PE original...")
@@ -95,3 +95,8 @@ if __name__ == "__main__":
     pe_tmp.write(filename=path_out)
 
     print(f"[+] PE modificado guardado en: {path_out}")
+
+
+if __name__ == "__main__":
+    build("simple_x86_cfg")
+    build("simple_x86")
