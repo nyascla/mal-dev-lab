@@ -1,0 +1,6 @@
+call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars32"
+
+
+cd "C:\Users\test\Desktop\mal-dev-lab\101_Windows\mitigations\ASLR\setup.bat"
+
+nmake
