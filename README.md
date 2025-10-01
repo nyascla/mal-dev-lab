@@ -1,45 +1,42 @@
 # Malware Development Lab
 
-> *PoCs didácticas creadas por mí para explicar TTPs de malware*
+> *Colección de notas y PoC sobre red teaming e ingeniería inversa*
 
 # 🚧 Under Construction 🚧
 
-### [Windows Internals](./101_Windows/)     
+### [Windows Internals](./windows-101/)     
     - PE, PEB, TEB
-    - loading process, dlls
+    - Procesos y dlls
     - IAT, EAT
+    - mitigacion
 
 ### [Shellcodes](./shellcodes/)       
     - x86 y x64 ABI
     – PIC, runtime linking, import hashes
     - remote shell
-    - mitigacion: EATF
 
 ### [Syscalls](./syscalls/)           
-    - x86 vs x64 syscalls
     – win32-api, native-api, direct-syscalls, indirect-syscalls
 
-### [Binaries](./binaries/)           
-    – patching: jmp, entry point, IAT
-    - mitigacion: ASLR, DEP
+### [Binary patching](./binary-patching/)           
+    – Patching: jmp, entry point, IAT
 
-### [Processes](./processes/)         
-    – process hollowing, process injection, masquerading
-    - mitigacion: CFG
-
-### [Dlls](./dlls/)                  
-    - injection, hijacking   
-    – DLL reflection, reflective loaders
+### [Process injection](./process-injection/)         
+    – Process hollowing, injection, masquerading
+    – DLL injection, reflective, hijacking
 
 ### [EDR Bypass](./EDR-bypass/)
     - call stack spoofing
     - LOLbins
     - Windows Defender
 
-### [C2](./C2/)                       
+### [C2](./c2/)                       
     – Infraestructura
 
-### [Red Team Wiki](./wiki_red_team/)
+### [Active directory](./active-directory/)
+
+
+### [Red Team Wiki](./red-team-utils/)
     - Delivery
     - Anti-analysis
     - persistence

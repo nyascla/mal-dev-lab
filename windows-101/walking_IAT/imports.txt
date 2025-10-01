@@ -1,0 +1,114 @@
+Microsoft (R) COFF/PE Dumper Version 14.44.35214.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file bin\main.exe
+
+File Type: EXECUTABLE IMAGE
+
+  Section contains the following imports:
+
+    KERNEL32.dll
+                407000 Import Address Table
+                4072AC Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                  47D QueryPerformanceCounter
+                  23B GetCurrentProcessId
+                  23F GetCurrentThreadId
+                  312 GetSystemTimeAsFileTime
+                  390 InitializeSListHead
+                  3AC IsDebuggerPresent
+                  5E9 UnhandledExceptionFilter
+                  5A7 SetUnhandledExceptionFilter
+                  2F9 GetStartupInfoW
+                  3B4 IsProcessorFeaturePresent
+                  29E GetModuleHandleW
+                  23A GetCurrentProcess
+                  5C7 TerminateProcess
+
+    VCRUNTIME140.dll
+                407068 Import Address Table
+                407314 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                   1C __current_exception
+                   1D __current_exception_context
+                   48 memset
+                   35 _except_handler4_common
+                   25 __std_type_info_destroy_list
+
+    api-ms-win-crt-stdio-l1-1-0.dll
+                4071D0 Import Address Table
+                40747C Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                    0 __acrt_iob_func
+                   54 _set_fmode
+                    3 __stdio_common_vfprintf
+                    1 __p__commode
+
+    api-ms-win-crt-runtime-l1-1-0.dll
+                40713C Import Address Table
+                4073E8 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                   44 _set_app_type
+                   19 _configure_narrow_argv
+                   39 _initterm_e
+                   58 exit
+                   25 _exit
+                   38 _initterm
+                   35 _initialize_narrow_environment
+                    5 __p___argc
+                    6 __p___argv
+                   17 _cexit
+                   16 _c_exit
+                   3F _register_thread_local_exe_atexit_callback
+                   42 _seh_filter_exe
+                   6A terminate
+                   1D _controlfp_s
+                   41 _seh_filter_dll
+                   36 _initialize_onexit_table
+                   3E _register_onexit_function
+                   24 _execute_onexit_table
+                   1F _crt_atexit
+                   1E _crt_at_quick_exit
+                   2A _get_initial_narrow_environment
+
+    api-ms-win-crt-math-l1-1-0.dll
+                40710C Import Address Table
+                4073B8 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                   2E __setusermatherr
+
+    api-ms-win-crt-locale-l1-1-0.dll
+                4070DC Import Address Table
+                407388 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                    8 _configthreadlocale
+
+    api-ms-win-crt-heap-l1-1-0.dll
+                4070AC Import Address Table
+                407358 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                   16 _set_new_mode
+
+  Summary
+
+        1000 .00cfg
+        1000 .data
+        1000 .idata
+        2000 .rdata
+        1000 .reloc
+        3000 .text

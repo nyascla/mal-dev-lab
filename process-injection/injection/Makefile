@@ -9,7 +9,7 @@ dll: dirs
 	link /DLL /OUT:bin\evil_dll.dll build\evil_dll.obj user32.lib
 
 main: dll
-	cl /nologo /W3 /MD /I include /c c\loader.c /Fo:build\loader.obj 
+	cl /nologo /W3 /MD /I include /c loader.c /Fo:build\loader.obj 
 	link /OUT:bin\loader.exe build\loader.obj bin\evil_dll.lib user32.lib
 
 
