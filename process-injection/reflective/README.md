@@ -1,3 +1,4 @@
+
 https://github.com/stephenfewer/ReflectiveDLLInjection
 
 | reflective_dll.dll | inject.exe | victim |
@@ -12,17 +13,19 @@ https://github.com/stephenfewer/ReflectiveDLLInjection
 
 ## Partes
 
-### Paso 1
-- Tener metodo ReflectiveLoader() que revuelva:
-    - Su base addres
-    - Obtenga informacion de sus headers (no se cual :/)
-    - que obtenga las funciones
-### Paso 2
+### Paso-1
 - Codigo que abra un handle al proceso objetivo:
     - Reserve un chunk de memoria
     - Copie el PE de una dll
     - cree un hilo en el proceso victipa CreateRemoteThread() y ejecute una funcion de la dll copiada
-### Paso 3
+
+### Paso-2
+- Tener metodo ReflectiveLoader() que revuelva:
+    - Su base addres
+    - Obtenga informacion de sus headers (no se cual :/)
+    - que obtenga las funciones
+
+### Paso-3
 - Desde una dll copiar el PE de una dll y arreglar las relocaciones y arrancar la dll 
 
 
