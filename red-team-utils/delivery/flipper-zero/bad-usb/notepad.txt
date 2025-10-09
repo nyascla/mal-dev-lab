@@ -1,0 +1,14 @@
+REM This is BadUSB demo script for windows
+
+REM Open windows notepad
+DELAY 1000
+GUI r
+DELAY 500
+STRING notepad
+DELAY 500
+ENTER
+DELAY 750
+
+STRING HERE
+ENTER
+DEFAULT_DELAY 50
