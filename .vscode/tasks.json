@@ -34,9 +34,9 @@
     {
       "label": "(BUILD) x64 Dll Reflevtive",
       "type": "shell",
-      "command": "\"${workspaceFolder}\\dlls\\reflective\\setup.bat",
+      "command": "\"${workspaceFolder}\\process-injection\\reflective\\setup.bat",
       "options": {
-        "cwd": "${workspaceFolder}\\dlls\\reflective"
+        "cwd": "${workspaceFolder}\\process-injection\\reflective"
       },
       "group": "build",
       "problemMatcher": []

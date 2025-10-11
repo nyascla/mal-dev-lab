@@ -20,4 +20,8 @@ Ejemplos prácticos y didácticos sobre **shellcode** y técnicas relacionadas: 
 Este proyecto incluye tareas de VS Code (tasks.json) configuradas para compilar los payloads automáticamente.
 Si abres la raíz del repositorio en Visual Studio Code, puedes: Pulsar Ctrl + Shift + B para ejecutar las distintas build.
 
+## Futures
+
+SHAREM
+
 

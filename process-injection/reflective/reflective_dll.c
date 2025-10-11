@@ -2,6 +2,10 @@
 #include <stdio.h>
 
 __declspec(dllexport) void ReflectiveLoader() {
+    __debugbreak();
+    __debugbreak();
+    __debugbreak();
+    __debugbreak();
     printf("(DLL) ReflectiveLoader");
 }
 

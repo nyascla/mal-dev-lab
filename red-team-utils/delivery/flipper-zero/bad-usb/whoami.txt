@@ -11,3 +11,5 @@ DELAY 1000
 STRING whoami
 ENTER
 DEFAULT_DELAY 50
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass

@@ -12,6 +12,10 @@ patch: dirs
 	nasm -f bin "asm/messagebox_patch.asm" -o "build/messagebox_patch.bin"
 	sclauncher.exe -f="build/messagebox_patch.bin" -pe -o="bin/messagebox_patch.exe"
 
+ccc:
+	cl /nologo /W3 /MD /I include /c c\messagebox.c /Fo:build\messagebox.obj 
+	link /OUT:bin\messagebox.exe build\messagebox.obj
+
 clean:
 	if exist build rmdir /s /q build
 	if exist bin rmdir /s /q bin

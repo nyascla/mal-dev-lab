@@ -1,0 +1,1 @@
+- [Golang OT malware {unit42}](https://unit42.paloaltonetworks.com/frostygoop-malware-analysis/)
