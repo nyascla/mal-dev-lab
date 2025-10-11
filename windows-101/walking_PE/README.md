@@ -1,6 +1,8 @@
 # Portable Executable (PE)
 
-Un "image" = representación completa de un ejecutable (PE) cargado en memoria. Se llama así porque el loader de Windows mapea el archivo en disco en la memoria virtual del proceso como una imagen coherente del binario (cabeceras + secciones + datos).
+Un "image" = representación completa de un ejecutable (PE) cargado en memoria. 
+Se llama así porque el loader de Windows mapea el archivo en disco en la 
+memoria virtual del proceso como una imagen coherente del binario (cabeceras + secciones + datos).
 
 1. IMAGE_DOS_HEADER
     - (e_lfanew) offset a NT Headers.
