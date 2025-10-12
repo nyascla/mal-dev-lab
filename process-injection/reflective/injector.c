@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 
-
 PROCESS_INFORMATION setup_victim(void) {
     STARTUPINFOA si;
     PROCESS_INFORMATION pi;

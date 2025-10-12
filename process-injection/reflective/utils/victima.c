@@ -1,9 +1,7 @@
 #include <stdio.h>
 
 int main(void) {
-    printf("Wola\n");
-    
+    printf("Victima\n");
     getchar();
-
     return 0;
 }
