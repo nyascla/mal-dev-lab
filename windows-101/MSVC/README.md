@@ -1,7 +1,5 @@
 # MSVC
 
-
-
 ## Compilador [cl]
 
 - ``/nologo``: no muestren el “banner” inicial con la versión del compilador/enlazador

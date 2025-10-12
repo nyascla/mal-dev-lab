@@ -6,10 +6,10 @@ Cuando cargas un ejecutable, el loader rellena la IAT con direcciones reales de 
 
 ```
 dumpbin /headers bin\main.exe > headers.txt
-dumpbin /imports bin\main.exe >imports.txt
+dumpbin /imports bin\main.exe > imports.txt
 ```
 
-![alt text](image.png)
+![alt text](./img/image.png)
 
 - ``Thunk``: Durante la carga del programa, el Windows loader reemplaza este valor con la dirección real en memoria de la función importada.
 
