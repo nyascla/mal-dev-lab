@@ -1,0 +1,5 @@
+suricata
+
+yara
+
+ghidra mcp
