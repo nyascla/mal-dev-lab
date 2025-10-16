@@ -13,7 +13,8 @@
             - https://center-for-threat-informed-defense.github.io/attack-flow/ui/
 
 ## Mittre-Caldera
-otra herramienta: Atomic Red Team
+otra herramienta: 
+Atomic Red Team, probar junto con sysmon para entender como se ven las tecnicas en el sistema
 
 https://github.com/mitre/caldera?tab=readme-ov-file
 
