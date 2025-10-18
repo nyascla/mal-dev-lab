@@ -1,0 +1,2 @@
+#HITB2022SIN EDR Evasion Primer For Red Teamers - Jorge Gimenez & Karsten Nohl: https://www.youtube.com/watch?v=CKfjLnEMfvI
+Five Ways I got Caught before Lunch - Mystikcon 2021: https://www.youtube.com/watch?v=qIbrozlf2wM

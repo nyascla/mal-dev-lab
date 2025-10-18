@@ -1,9 +1,8 @@
+# Sliver C2
+
 https://github.com/BishopFox/sliver
 
-Sliver is generally designed as a stage 2 payload
-Sliver implants in v1.5 and later support two modes of operation: "beacon mode" and "session mode."
-
-# Sliver C2
+Sliver is generally designed as a stage 2 payload: https://sliver.sh/docs?name=Stagers
 
 ## Features
 
@@ -47,6 +46,10 @@ comunicacion con el implante
 - Randomized JARM/X.509
 
 ## Protocolos de red
+
+Quieres evitar al maximo posible todo lo que se pueda detectar con, patrones o regex
+entra cada mensaje debe haber el minimo numero de cosas repetidas posible
+
 -  HTTP(s) C2
 
 ![alt text](./img/image-1.png)
@@ -59,6 +62,16 @@ comunicacion con el implante
 - protobuf (recomendado): code generation is non ideomatic
 - json: self-describing
 - msgpack: lack of library support
+
+## Beacon mode && Session mode
+
+Beacon: tipico cobalt strike
+    Periodicamente, 5 min, 1h, 1 semana, pregunta al server si hay comandos para ejecutar
+
+Session: tipico meterpreter
+    Comunicacion a tiempo real con el implante
+
+Flow: generar por defecto un beacon y en el caso de que requieres algo en tiempo real crear un session
 
 ## Sliver for blue teams
 
