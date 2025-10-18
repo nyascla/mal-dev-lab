@@ -27,6 +27,7 @@ gRPC Over Mutual TLS
 ![alt text](./img/image.png)
 
 ## Antifingueprinting
+(min:37) https://www.youtube.com/watch?v=tkjMZuZ_8nw
 importante: los equipos de thread inteligence monitorean potencialemnte todos los ip publicas
 si se detecta por ejemplo un server de cobal strike se reporta y muchas empresas bloquearian esa ip
 automaticamente, aloemjor en 1h tu servir c2 ya estaria bloqueado aun sin haber establecido 
@@ -39,6 +40,11 @@ comunicacion con el implante
 - OPAQUE
 - Pre-shared RSA
 - RSA EKE
+---
+- TOTP "hello" with NaCI Box
+- ChaCha20-Poly1305
+- Replay detection
+- Randomized JARM/X.509
 
 ## Protocolos de red
 -  HTTP(s) C2

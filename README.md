@@ -1,42 +1,65 @@
-# Malware Development Lab
+# All things offensive security
 
-> *Colección de notas y PoC sobre red teaming e ingeniería inversa*
+> *Colección de notas y PoC sobre Malware, Red Teaming, Adversary Simulation, Reverse Engineering y Exploit Development*
 
 # 🚧 Under Construction 🚧
 
-### [Windows Internals](./windows-101/)     
-    - PE, PEB, TEB
-    - Procesos y dlls
-    - IAT, EAT
-    - mitigacion
+## Table of Contents (TOC)
 
-### [Shellcodes](./shellcodes/)       
-    - x86 y x64 ABI
-    – PIC, runtime linking, import hashes
-    - remote shell
-
-### [Syscalls](./syscalls/)           
-    – win32-api, native-api, direct-syscalls, indirect-syscalls
-
-### [Binary patching](./binary-patching/)           
-    – Patching: jmp, entry point, IAT
-
-### [Process injection](./process-injection/)         
-    – Process hollowing, injection, masquerading
-    – DLL injection, reflective, hijacking
-
-### [EDR Bypass](./EDR-bypass/)
-    - call stack spoofing
-    - LOLbins
-    - Windows Defender
-
-### [C2](./c2/)                       
-    – Infraestructura
-
-### [Active directory](./active-directory/)
-
-
-### [Red Team Wiki](./red-team-utils/)
-    - Delivery
-    - Anti-analysis
-    - persistence
+- [Adversary Emulation](./adversary-emulation/)
+  - [Agentes IA](./adversary-emulation/agentes-ia.md)
+  - [Atomic Red Team](./adversary-emulation/atomic-red-team/)
+  - [Caldera](./adversary-emulation/caldera/)
+  - [MITRE](./adversary-emulation/MITRE/)
+  - [Sliver](./adversary-emulation/sliver/)
+  - [Threat Intelligence Report](./adversary-emulation/threat-intelligence-report/)
+- [Binary Patching](./binary-patching/)
+  - [Entrypoint](./binary-patching/entrypoint/)
+  - [IAT Hooking](./binary-patching/IAT_hooking/)
+- [C2 Framework](./c2-framework/)
+  - [Mocks](./c2-framework/mocks/)
+  - [Sliver](./c2-framework/sliver.md)
+  - [Stagers](./c2-framework/stagers/)
+  - [Trusting Trust](./c2-framework/trusting-trust.md)
+- [EDR Bypass](./EDR-bypass/)
+  - [AMSI Bypass](./EDR-bypass/AMSI-bypass/)
+  - [Call Stack Spoofing](./EDR-bypass/call-stack-spoofing/)
+  - [Marshalling](./EDR-bypass/marshalling/)
+- [Mac Malware](./mac-malware/)
+- [Process Injection](./process-injection/)
+  - [Atom Bombing](./process-injection/atom-bombing/)
+  - [Hijacking](./process-injection/hijacking/)
+  - [Hollowing](./process-injection/hollowing/)
+  - [Injection](./process-injection/injection/)
+  - [Reflective](./process-injection/reflective/)
+- [Ransomware](./ransomware/)
+- [Red Team Ops](./red-team-ops/)
+  - [Active Directory](./red-team-ops/active-directory/)
+  - [Anti-Analysis](./red-team-ops/anti-analysis/)
+  - [Delivery](./red-team-ops/delivery/)
+  - [Flipper Zero](./red-team-ops/flipper-zero/)
+  - [Identity](./red-team-ops/identity/)
+- [Reverse Engineering](./reverse-engineering/)
+  - [Exploit Development](./reverse-engineering/exploit-development/)
+  - [Ghidra MCP](./reverse-engineering/ghidra-mcp.md)
+- [Shellcodes](./shellcodes/)
+  - [Assembly 101](./shellcodes/assembly-101/)
+  - [Golang](./shellcodes/Golang/)
+  - [x64](./shellcodes/x64/)
+  - [x86](./shellcodes/x86/)
+- [Syscalls](./syscalls/)
+  - [Direct Syscalls](./syscalls/direct-syscalls/)
+  - [Indirect Syscalls](./syscalls/indirect-syscalls/)
+  - [Native API](./syscalls/native-api/)
+  - [Win32 API](./syscalls/win32-api/)
+- [Windows 101](./windows-101/)
+  - [Mitigations](./windows-101/mitigations/)
+  - [MSVC](./windows-101/MSVC/)
+  - [Sysinternals](./windows-101/Sysinternals/)
+  - [Walking Export Table](./windows-101/walking_export_table/)
+  - [Walking Import Table](./windows-101/walking_import_table/)
+  - [Walking Load DLL](./windows-101/walking_load_dll/)
+  - [Walking Load Process](./windows-101/walking_load_process/)
+  - [Walking PE](./windows-101/walking_PE/)
+  - [Walking PEB](./windows-101/walking_PEB/)
+  - [Walking TEB](./windows-101/walking_TEB/)
