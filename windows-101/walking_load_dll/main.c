@@ -3,9 +3,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "headers.h"
+
 
 void* setup_dll(long *dll_size){
-    FILE *f = fopen(".\\bin\\my_dll.dll", "rb"); // Lectura binaria
+    FILE *f = fopen("./dllmock.dll", "rb"); // Lectura binaria
     if (!f) {
         perror("fopen");
         return NULL;
@@ -40,12 +42,15 @@ int main(void) {
     printf("; ============================================================\n");
     printf(";       MY DLL LOADER (x64)\n");
     printf("; ============================================================\n");
+    int resultado = sumar(5, 3);
     
+    printf("El resultado es: %d\n", resultado);
+    getchar();
+
     // Cargamos en memoria la dll
     long dll_size = 0;
     void* buffer = setup_dll(&dll_size);
 
-    // Reservar+comprometer memoria en el proceso actual
     LPVOID allocated_mem = VirtualAlloc(
         NULL,                          // dirección preferida (NULL = sistema elige)
         dll_size,                      // tamaño en bytes

@@ -16,6 +16,10 @@ cl /LD my_dll.c user32.lib
 cl runtime.c user32.lib
 ```
 
+## Link estatico
+Al compilar main.exe el linker copia fisicamente el codigo de la dll dentro de main.exe
+
+
 ## Notes
 
 - ``.dll`` Implementación real de la librería (código ejecutable)
