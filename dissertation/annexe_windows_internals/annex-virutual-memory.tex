@@ -1,0 +1,50 @@
+\section{Memoria Virtual}
+
+\subsection{Problemas Memoria Fisica}
+\begin{itemize}
+    \item Escasez de memoria
+    \item Fragmentación
+    \item Acceso a memoria (Seguridad)
+\end{itemize}
+
+\subsection{Acceso indirecto a memoria}
+
+Cada proceso tiene su propio espacio de direcciones virtual, 
+Para el proceso es como tener un espacio de momoria fisica contiguo reservado,
+Pero por detras el SO esta mapeando esas direcciones virtuales a distintas regiones de memoria fisica.
+
+\subsection{Paginación}
+
+Mapear cada byte de la memoria virtual a un byte de la moria fisica seria muy ineficiente,
+Se crean paginas de moria que son bloques de bytes para simplificar este proceso (normalmente de 4KB | 4096 bytes),
+
+page - memoria virtual
+frame - memoria fisica
+
+Cuando un proceso se carga sus paginas son cargadas en frames disponibles en moria fisica
+
+\subsection{Tabla de paginas}
+
+Cada proceso tiene una tabla de paginas que mapea las direcciones virtuales a las fisicas,
+La tabla de paginas es gestionada por la MMU (Memory Management Unit),
+Para cada pagina se mantiene, su numero de frame, permisos, etc. 
+
+\subsection{MMU}
+
+La CPU tiene que accedr a la RAM primero para consultar la tabla de paginasy Despues para acceder a la memoria fisica, 
+para cada lectura tenemos que hacer 2 accesos a memoria,
+Para optimizar esto, la MMU, hardaware especifico de la CPU, se encarga de traducir las direcciones virtuales a fisicas,
+la MMU tiene un caché de la tabla de paginas llamado TLB (Translation Lookaside Buffer),
+La MMU tambien es la encargada de gestion que un proceso no acceda a memoria que no le pertenece,
+
+\subsection{Acceso a memoria}
+
+Cuando un proceso quiere acceder a una dirección de memoria, la CPU consulta la MMU,
+En la MMU la direccon se divide en dos partes, el numero de pagina y el offset dentro de la pagina,
+
+Pege number - los bits mas significativos de la direccion virtual
+Page offset - los bits menos significativos de la direccion virtual
+
+Ejemplo:
+En una pagina de 4KB (4096 bytes), el offset ocupa los 12 bits menos significativos,
+El resto de bits son los mas significativos y representan el numero de pagina,

@@ -1,8 +1,12 @@
-# All things offensive security
+# Explaining to Myself: All Things Offensive Security
 
 > *Colección de notas y PoC sobre Malware, Red Teaming, Adversary Simulation, Reverse Engineering y Exploit Development*
 
 # 🚧 Under Construction 🚧
+
+## Memoria
+
+- [Dissertation](./dissertation/)
 
 ## Table of Contents (TOC)
 

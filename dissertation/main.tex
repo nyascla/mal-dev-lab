@@ -1,0 +1,37 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{epigraph}
+
+
+\title{Adversary emulation: anatomia de un ciberataque}
+\author{Tu Nombre}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\epigraph{\textit{Jugez un homme par ses questions plutôt que par ses réponses.}}{--- Voltaire}
+
+\input{chapters/chap-.tex}
+
+% annexes
+\input{annexe/annex.tex}
+\input{annexe_windows_internals/annex.tex}
+
+% Resultados y bibliografía
+\input{extras/results.tex}
+\input{extras/references.bib}
+
+\end{document}
+

@@ -3,9 +3,14 @@ FILE_NAME_2 = run_time
 DLL_NAME = my_dll
 MYLOADER = myLoader
 
+all: linux
+
+
 # =======================================
 # WINDOWS
 # =======================================
+win:
+
 dirs:
 	if not exist build mkdir build
 	if not exist bin mkdir bin
@@ -16,7 +21,7 @@ myLoader-win: dirs dll
 
 	bin\$(MYLOADER).exe
 
-dll: dirs
+dll:
 	cl /nologo /W3 /MD /c dll\$(DLL_NAME).c /Fo:build\$(DLL_NAME).obj 
 	link /DLL /OUT:bin\$(DLL_NAME).dll build\$(DLL_NAME).obj user32.lib
 
@@ -37,7 +42,7 @@ clean:
 # =======================================
 # El objetivo por defecto es 'all'.
 # 'all' depende de nuestro ejecutable final.
-all: bin/main.exe
+linux: bin/main.exe
 
 # Regla para crear el ejecutable: bin/main.exe
 # Depende de los dos archivos .o y de la .dll

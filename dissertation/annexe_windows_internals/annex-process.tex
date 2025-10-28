@@ -1,0 +1,65 @@
+\section{Process}
+
+\subsection{EPROCESS}
+Estructura que mantiene toda la información de un proceso en el kernel.
+
+\subsection{Threads}
+Representan las hebras de ejecución asociadas al proceso.
+
+\subsection{Handles}
+Son equivalentes a los \textit{file descriptors} en Linux.
+
+\subsection{Memory}
+Gestión del espacio de direcciones y memoria asignada al proceso.
+
+\subsection{Modules}
+Lista de módulos y librerías cargadas en el proceso.
+
+\section{Process Creation (Kernel)}
+
+La creación de un proceso en Windows sigue una serie de pasos específicos a nivel
+del kernel.
+
+\subsection*{(1) Inicialización del espacio de direcciones}
+
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textbf{Modelo en Linux vs. Windows:} En Linux, los nuevos procesos se crean
+    mediante la llamada \texttt{fork}, mientras que en Windows los procesos se inicializan
+    completamente desde cero.
+    \item \textbf{Mapeo de \texttt{KUSER\_SHARED\_DATA}:} Al crear un nuevo proceso, el
+    kernel debe mapear memoria. Una de las primeras acciones es mapear la página de 4KB
+    denominada \texttt{KUSER\_SHARED\_DATA}, la cual permite intercambiar información entre
+    \textit{user mode} y \textit{kernel mode} sin necesidad de \textit{syscalls}. En esta
+    página se encuentran datos como el reloj del sistema y las rutas a directorios del
+    sistema.
+    \item \textbf{Mapeo del ejecutable:} Posteriormente, el kernel carga el ejecutable
+    dentro del proceso. Concretamente, carga el código PE en la sección \texttt{.text}.
+    \item \textbf{Mapeo de \texttt{ntdll.dll}:} El kernel carga el módulo \texttt{ntdll.dll},
+    el cual actúa como intermediario entre el \textit{user-mode} y el kernel. Este módulo
+    contiene las funciones necesarias para la comunicación con el kernel y cumple un rol
+    similar al \texttt{ld.so} en Linux.
+    \item \textbf{Asignación del PEB (Process Environment Block):} El \texttt{PEB} es una
+    estructura de datos en \textit{user mode} (aproximadamente 1--2 páginas de memoria) que
+    contiene:
+    \begin{itemize}
+        \item Variables de entorno.
+        \item Línea de comandos completa con la que se inició el proceso.
+        \item Directorio de trabajo.
+        \item Lista de módulos cargados (\texttt{Ldr}).
+        \item Punteros al \texttt{stack} y \texttt{heap}.
+        \item Dirección base de la imagen.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{(2) Creación del hilo inicial}
+
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textbf{Mapeo del stack:} Se asigna el espacio de pila necesario para el hilo
+    principal.
+    \item \textbf{Mapeo del TEB (Thread Environment Block):} El \texttt{TEB} es una
+    estructura pequeña (2 páginas aprox.) que almacena información específica de cada hilo.
+    Su función es equivalente al \texttt{PEB}, pero a nivel de hilo.
+    \item \textbf{Inicialización del puntero de ejecución:} Finalmente, el puntero de
+    ejecución se coloca en la función \texttt{ntdll.LdrInitializeThunk}, encargada de
+    completar la carga dinámica del proceso.
+\end{itemize}

@@ -1,0 +1,41 @@
+\section{Portable Executable (PE)}
+
+El formato \textit{Portable Executable} (PE) es el equivalente en Windows al formato ELF en Linux. 
+Se utiliza para representar ejecutables, bibliotecas dinámicas (DLL) y otros ficheros ejecutables en dicho sistema operativo.
+
+\subsection{Sections}
+Son el equivalente a los segmentos en un ELF.  
+Las secciones indican cómo debe ubicarse la memoria dentro del proceso, 
+definiendo distintas regiones con protecciones específicas (lectura, escritura, ejecución).
+
+\subsection{Imports}
+Contiene la lista de \texttt{DLLs} que son dependencias del ejecutable.
+
+\subsection{Exports}
+Si el archivo PE corresponde a una biblioteca compartida y exporta alguna funcionalidad, 
+esta información se registra en la sección de exportaciones.  
+A diferencia de Linux, donde las funciones suelen exportarse por defecto, 
+en Windows deben exportarse explícitamente.
+
+\subsection{Relocations}
+Al habilitar \texttt{ASLR} (Address Space Layout Randomization), 
+el ejecutable puede necesitar ser reubicado en memoria.  
+Las direcciones a modificar en dicho proceso quedan registradas en esta sección.
+
+\subsection{AddressOfEntryPoint}
+Campo que indica la dirección de inicio de la ejecución del programa.
+
+\subsection{Subsystem}
+Especifica en qué entorno debe ejecutarse el binario:  
+si será una aplicación de consola, una GUI, etc.
+
+\subsection{Virtual Address}
+Dirección relativa que tendrá la sección al cargarse en memoria.  
+Siempre se calcula como:
+
+\begin{equation}
+\text{Dirección en memoria} = \text{ImageBase} + \text{Virtual Address}
+\end{equation}
+
+\subsection{Raw Data}
+Indica la dirección dentro del archivo PE donde se encuentra físicamente la sección en disco.

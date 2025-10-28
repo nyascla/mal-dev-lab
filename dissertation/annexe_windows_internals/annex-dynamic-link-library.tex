@@ -1,0 +1,76 @@
+\section{DLL (Dynamic-Link Library)}
+En Windows, un proceso puede depender de múltiples librerías dinámicas 
+(\texttt{DLLs}) para ejecutar ciertas funcionalidades. Estas DLLs se cargan en 
+el espacio de direcciones del proceso y su interacción se realiza a través de 
+estructuras específicas que Windows mantiene en memoria.
+
+\subsection{Carga de DLLs en un proceso}
+Cuando un proceso arranca, indica qué DLLs necesita y qué funciones de cada DLL 
+va a utilizar. Windows realiza los siguientes pasos:
+
+\begin{enumerate}
+    \item Verifica si la DLL ya está cargada en memoria; si no lo está, la carga 
+    en el espacio de direcciones del proceso.
+    \item Si ya existe en memoria, se reutiliza la misma copia en memoria física, 
+    pero cada proceso mantiene su propio mapeo en su espacio de direcciones virtuales.
+    \item Localiza dentro de la DLL la función solicitada por el proceso.
+    \item Proporciona al proceso la dirección en memoria de la función, de 
+    manera que cada llamada a esa función realmente salta a la dirección 
+    correspondiente dentro de la DLL cargada.
+\end{enumerate}
+
+Cada DLL se carga como un módulo completo, incluyendo sus secciones 
+\texttt{.text}, \texttt{.rdata}, \texttt{.data}, etc., mapeadas en memoria 
+contigua a partir de la \emph{base address} del módulo.
+
+\subsection{PEB y la lista de módulos}
+El \textbf{Process Environment Block (PEB)} es una estructura interna de Windows 
+que contiene información sobre el proceso, incluyendo los módulos (DLLs) 
+cargados. 
+
+Dentro del PEB, el campo:
+\begin{verbatim}
+PEB->Ldr->InMemoryOrderModuleList
+\end{verbatim}
+es una lista enlazada que mantiene todos los módulos cargados en memoria, 
+incluyendo la DLL principal del proceso y todas las DLLs dependientes. Cada 
+entrada de esta lista contiene:
+
+\begin{itemize}
+    \item La \texttt{base address} del módulo en memoria.
+    \item El nombre del archivo de la DLL.
+    \item Información sobre sus secciones.
+\end{itemize}
+
+Recorrer esta lista permite obtener todas las DLLs cargadas y sus direcciones en 
+memoria.
+
+\subsection{Import Address Table (IAT)}
+Para que un proceso llame a funciones de una DLL, Windows utiliza la 
+\textbf{Import Address Table (IAT)}. La IAT contiene punteros a las funciones 
+importadas por el proceso. Durante la carga:
+
+\begin{enumerate}
+    \item Windows localiza cada función solicitada dentro de la DLL 
+    correspondiente.
+    \item Escribe en la IAT la dirección en memoria de la función.
+\end{enumerate}
+
+Cuando el proceso ejecuta una llamada a una función importada, en realidad está 
+saltando a la dirección contenida en la IAT, que apunta a la DLL cargada en 
+memoria.
+
+\subsection{Resumen}
+En conjunto, el PEB y la IAT permiten a un proceso interactuar de manera 
+eficiente con sus DLLs:
+
+\begin{itemize}
+    \item El PEB mantiene un registro de todos los módulos cargados y sus 
+    direcciones.
+    \item La IAT traduce las llamadas a funciones de la DLL a direcciones 
+    concretas en memoria.
+\end{itemize}
+
+Esto garantiza que el proceso pueda utilizar código externo (DLLs) sin necesidad 
+de incorporarlo estáticamente en su binario, manteniendo modularidad y eficiencia 
+en el uso de memoria.

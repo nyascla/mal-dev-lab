@@ -1,3 +1,7 @@
+# 
+*.pdf
+dissertation/build
+
 # IDA
 *exe.id0
 *exe.id1
