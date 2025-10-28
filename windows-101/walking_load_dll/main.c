@@ -73,9 +73,6 @@ int main(void)
     // Reservar memoria en el proceso para la DLL (OptionalHeader.SizeOfImage)
     DWORD SizeOfImage = (DWORD)optional_header->SizeOfImage;
 
-    printf("SizeOfImage 0x%08X (%u)\n",  (DWORD)optional_header->SizeOfImage, (DWORD)optional_header->SizeOfImage);
-
-
     LPVOID ImageBase = VirtualAlloc(
         NULL,                       // dirección preferida (NULL = sistema elige)
         SizeOfImage,                // tamaño en bytes
@@ -112,22 +109,28 @@ int main(void)
         printf("  [%2u] %-8s  VA=0x%08X  VSize=0x%08X  RawOff=0x%08X  RawSize=0x%08X  Char=0x%08X\n",
                (unsigned)i,
                name,
-               sections[i].VirtualAddress,
-               sections[i].Misc.VirtualSize,
-               sections[i].PointerToRawData,
-               sections[i].SizeOfRawData,
+               sections[i].VirtualAddress,      // RVA en memoria
+               sections[i].Misc.VirtualSize,    // Tamaño real en memoria
+               sections[i].PointerToRawData,    // RVA en disco
+               sections[i].SizeOfRawData,       // Tamaño en disco
                sections[i].Characteristics);
         
-        memcpy(ImageBase, RawData, SizeOfHeaders); // memcpy(destino, origen, tamaño)
-
+        if (sections[i].PointerToRawData == 0)
+        {
+            // .bss o sección sin datos en el archivo
+            memset(ImageBase + sections[i].VirtualAddress, 0, sections[i].Misc.VirtualSize);
+            continue;
+        }
+        
+        memcpy(ImageBase + sections[i].VirtualAddress, RawData + sections[i].PointerToRawData, sections[i].Misc.VirtualSize); // memcpy(destino, origen, tamaño)
     }
-
 
     // ------------------------------------------------------------
     // Relocaciones
     //      - Calcular Delta: delta = NuevaImageBase - ImageBaseOriginal
     //      - Buscar Tabla .reloc: Encuentra la sección .reloc que acabas de mapear.
     //      - Iterar: Recorre esta tabla (que es una serie de bloques) y "parchea" cada dirección absoluta en tu código (.text, .data) sumándole el delta.
+    
 
     // ------------------------------------------------------------
     // Importaciones
