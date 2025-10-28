@@ -48,7 +48,7 @@ linux: bin/main.exe
 # Depende de los dos archivos .o y de la .dll
 bin/main.exe: build/main.o build/headers.o bin/dllmock.dll
 	@echo "Enlazando ejecutable..."
-	x86_64-w64-mingw32-gcc build/main.o build/headers.o bin/dllmock.dll -o bin/main.exe -luser32
+	x86_64-w64-mingw32-gcc -s build/main.o build/headers.o bin/dllmock.dll -o bin/main.exe
 
 # Regla para compilar main.o
 build/main.o: main.c
@@ -66,7 +66,7 @@ build/headers.o: headers.c
 bin/dllmock.dll: dll/dllmock.c
 	@echo "Compilando DLL..."
 	@mkdir -p bin
-	x86_64-w64-mingw32-gcc dll/dllmock.c -o bin/dllmock.dll -shared
+	x86_64-w64-mingw32-gcc -Wall -s dll/dllmock.c -o bin/dllmock.dll -shared
 
 # Regla para limpiar los directorios
 clean:

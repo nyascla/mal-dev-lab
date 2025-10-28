@@ -35,9 +35,9 @@ Al compilar main.exe el linker copia fisicamente el codigo de la dll dentro de m
         3. Directorios del PATH
         4. Directorios de sistema (System32, SysWOW64).
         - Si la DLL no se encuentra - LoadLibrary falla con NULL.
-2. (NtMapViewOfSectio) Mapear el archivo PE en el espacio de direcciones virtual del proceso.\
+2. (NtMapViewOfSectio) Mapear el archivo PE en el espacio de direcciones virtual del proceso.
     - Se crean páginas de memoria virtual para cada sección de la DLL (code, data, rdata, etc.) según el header PE
-    > Aqui puede que la dll aun no este en memoria fisica "demand paging" solo se cargara en memoria si es necesario
+> Aqui puede que la dll aun no este en memoria fisica "demand paging" solo se cargara en memoria si es necesario
 3. Relocation
     - Cada DLL PE tiene un preferred base address
     - Si la DLL no puede cargarse en esa dirección (conflicto con otra DLL o EXE), Windows debe reubicarla (.reloc)
