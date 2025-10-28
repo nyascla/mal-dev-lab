@@ -45,35 +45,57 @@ int main(void)
     printf("; ============================================================\n");
     printf(";       MY DLL LOADER (x64)\n");
     printf("; ============================================================\n");
-    
-    // Cargamos en memoria la dll
-    long dll_size = 0;
-    void *buffer = setup_dll(&dll_size);
-
-    show_dll_info(buffer, dll_size);
 
     // ------------------------------------------------------------
-    // Reservar memoria en el proceso para la DLL (SizeOfImage)
+    // Cargamos en memoria la dll
+    long dll_size = 0;
+    void *RawData = setup_dll(&dll_size);
+
+    // show_dll_info(RawData, dll_size);
+
+    // ------------------------------------------------------------
+    // Parsear headers PE
+    const IMAGE_DOS_HEADER *dos = (const IMAGE_DOS_HEADER *)RawData;
+    const size_t nt_offset = (size_t)dos->e_lfanew;
+    const IMAGE_NT_HEADERS *nt = (const IMAGE_NT_HEADERS *)(RawData + nt_offset);
+    const IMAGE_FILE_HEADER *filehdr = &nt->FileHeader;
+
+    const unsigned char *optional_ptr = (const unsigned char *)&nt->OptionalHeader;
+    const WORD optMagic = *(const WORD *)optional_ptr;
+    const int is64 = (optMagic == IMAGE_NT_OPTIONAL_HDR64_MAGIC);
+
+    if (!is64){exit (1);}
+
+    const IMAGE_OPTIONAL_HEADER64 *optional_header = (const IMAGE_OPTIONAL_HEADER64 *)optional_ptr;
+    const IMAGE_SECTION_HEADER *sections = (const IMAGE_SECTION_HEADER *)(optional_ptr + filehdr->SizeOfOptionalHeader);
+
+    // ------------------------------------------------------------
+    // Reservar memoria en el proceso para la DLL (OptionalHeader.SizeOfImage)
+    DWORD SizeOfImage = (DWORD)optional_header->SizeOfImage;
+
+    printf("SizeOfImage 0x%08X (%u)\n",  (DWORD)optional_header->SizeOfImage, (DWORD)optional_header->SizeOfImage);
 
 
-    LPVOID allocated_mem = VirtualAlloc(
-        NULL,                     // dirección preferida (NULL = sistema elige)
-        dll_size,                 // tamaño en bytes
-        MEM_COMMIT | MEM_RESERVE, // reservar y comprometer
-        PAGE_EXECUTE_READWRITE    // permisos (ejecutable + lectura + escritura)
+    LPVOID ImageBase = VirtualAlloc(
+        NULL,                       // dirección preferida (NULL = sistema elige)
+        SizeOfImage,                // tamaño en bytes
+        MEM_COMMIT | MEM_RESERVE,   // reservar y comprometer
+        PAGE_EXECUTE_READWRITE      // permisos (ejecutable + lectura + escritura)
     );
 
-    if (allocated_mem == NULL)
+    if (ImageBase == NULL)
     {
         printf("VirtualAlloc failed: %u\n", GetLastError());
         return 1;
     }
 
-    printf("Memory allocated at: %p\n", allocated_mem);
+    printf("Memory allocated at: %p\n", ImageBase);
+
 
     // ------------------------------------------------------------
     // Copiar cabeceras PE (SizeOfHeaders)
-
+    DWORD SizeOfHeaders = (DWORD)optional_header->SizeOfHeaders;
+    memcpy(ImageBase, RawData, SizeOfHeaders); // memcpy(destino, origen, tamaño)
 
     // ------------------------------------------------------------
     // Mapear las Secciones
@@ -81,6 +103,25 @@ int main(void)
     //      - Origen: origen = BufferDelArchivo + section[i].PointerToRawData
     //      - Tamaño: tamaño = section[i].SizeOfRawData
     // .bss (o si PointerToRawData es 0), no copiar. En su lugar, usa memset(destino, 0, section[i].VirtualSize) para llenar esa sección de ceros.
+    WORD NumberOfSections = (WORD)filehdr->NumberOfSections;
+    printf("=== SECTION HEADERS (count=%u) ===\n", NumberOfSections);
+    for (DWORD i = 0; i < NumberOfSections; ++i)
+    {
+        char name[9] = {0};
+        memcpy(name, sections[i].Name, 8);
+        printf("  [%2u] %-8s  VA=0x%08X  VSize=0x%08X  RawOff=0x%08X  RawSize=0x%08X  Char=0x%08X\n",
+               (unsigned)i,
+               name,
+               sections[i].VirtualAddress,
+               sections[i].Misc.VirtualSize,
+               sections[i].PointerToRawData,
+               sections[i].SizeOfRawData,
+               sections[i].Characteristics);
+        
+        memcpy(ImageBase, RawData, SizeOfHeaders); // memcpy(destino, origen, tamaño)
+
+    }
+
 
     // ------------------------------------------------------------
     // Relocaciones
@@ -105,6 +146,6 @@ int main(void)
     // Cerrar handles sólo cuando existen
     printf("Pulsa ENTER para terminar\n");
     getchar();
-    free(buffer);
+    free(RawData);
     return 0;
 }
