@@ -139,3 +139,12 @@ Proceso iterativo para mejorar el sigilo del agente:
 -   **Inyección de Procesos:** Mover la ejecución de tareas a procesos legítimos (`process-injection`).
 -   **Manipulación de Memoria:** Cargar y ejecutar herramientas en memoria (BOFs, Reflective DLLs).
 -   **Comunicación Encubierta:** Usar protocolos de C2 no estándar o domain fronting.
+
+---
+
+C2 donde enviar logs
+Almacenamiento de logs en local (cifrado a poder ser)
+Enumeración del equipo > Enumeración de red
+Movimiento lateral / Persistencia
+Ransomware
+Exfiltración (no datos reales)
