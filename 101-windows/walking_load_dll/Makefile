@@ -40,11 +40,8 @@ clean:
 # =======================================
 # LINUX
 # =======================================
-# El objetivo por defecto es 'all'.
-# 'all' depende de nuestro ejecutable final.
 linux: bin/main.exe
 
-# Regla para crear el ejecutable: bin/main.exe
 # Depende de los dos archivos .o y de la .dll
 bin/main.exe: build/main.o build/headers.o bin/dllmock.dll
 	@echo "Enlazando ejecutable..."

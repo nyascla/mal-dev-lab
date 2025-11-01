@@ -35,7 +35,7 @@ void *setup_dll(long *dll_size)
 
     fclose(f);
 
-    printf("DLL cargada en memoria, tamanyo: %ld bytes, direccion: %p\n", size, (void *)buffer);
+    printf("PE de la DLL cargada en memoria, tamanyo: %ld bytes, direccion: %p\n", size, (void *)buffer);
     *dll_size = size;
     return buffer;
 }
@@ -126,11 +126,18 @@ int main(void)
     }
 
     // ------------------------------------------------------------
+    // IMPORTANTE: A partir de aquí, la DLL ya está "mapeada" en memoria, pero NO está lista para ejecutarse.
+    // Hay que procesar las RELOCACIONES y las IMPORTACIONES.
+    // ------------------------------------------------------------
+    // Ahora que la DLL está mapeada en ImageBase, obtenemos los punteros a las cabeceras desde ahí.
+    const IMAGE_DOS_HEADER* dos_header_mapped = (const IMAGE_DOS_HEADER*)ImageBase;
+    const IMAGE_NT_HEADERS* nt_headers_mapped = (const IMAGE_NT_HEADERS*)((LPBYTE)ImageBase + dos_header_mapped->e_lfanew);
+    const IMAGE_OPTIONAL_HEADER64* opt_header_mapped = &nt_headers_mapped->OptionalHeader;
+
     // Relocaciones
     //      - Calcular Delta: delta = NuevaImageBase - ImageBaseOriginal
     //      - Buscar Tabla .reloc: Encuentra la sección .reloc que acabas de mapear.
     //      - Iterar: Recorre esta tabla (que es una serie de bloques) y "parchea" cada dirección absoluta en tu código (.text, .data) sumándole el delta.
-    
 
     // ------------------------------------------------------------
     // Importaciones
