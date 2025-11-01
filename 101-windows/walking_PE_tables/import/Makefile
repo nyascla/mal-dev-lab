@@ -1,17 +1,16 @@
-FILE_NAME = main
+all:
 
-all: main
+# =======================================
+# LINUX
+# =======================================
+linux: bin/main.exe
 
-dirs:
-	if not exist build mkdir build
-	if not exist bin mkdir bin
+bin/main.exe: main.c
+	@echo "Compilando y enlazando main.c..."
+	@mkdir -p bin
+	x86_64-w64-mingw32-gcc -Wall -s main.c -o bin/main.exe
 
-main: dirs
-	cl /nologo /W3 /MD /c $(FILE_NAME).c /Fo:build\$(FILE_NAME).obj
-	link /DEBUG /OUT:bin\$(FILE_NAME).exe build\$(FILE_NAME).obj
-
-	bin\$(FILE_NAME).exe
-
+# Regla para limpiar
 clean:
-	if exist build rmdir /s /q build
-	if exist bin rmdir /s /q bin
+	@echo "Limpiando..."
+	@rm -rf bin

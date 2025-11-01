@@ -23,7 +23,7 @@ static uint32_t read_dword(const uint8_t *base, uintptr_t offset)
 
 // ------------------------------------------------------------
 //
-static size_t get_reloc_addr(unsigned char *base_address)
+static size_t get_reloc_addr(uintptr_t base_address)
 {
     const IMAGE_DOS_HEADER *dos = (const IMAGE_DOS_HEADER *)base_address;
     if (dos->e_magic != IMAGE_DOS_SIGNATURE) {
@@ -91,7 +91,7 @@ int main(void)
     const char *ws2_32 = "ws2_32.dll";
     const char *kernel32 = "kernel32.dll";
 
-    HMODULE module_handle = LoadLibraryA(kernel32);
+    uintptr_t module_handle = LoadLibraryA(kernel32);
 
     if (!module_handle)
     {
@@ -101,9 +101,9 @@ int main(void)
 
     printf("Module handle: %p\n", (void *)module_handle);
 
-    unsigned char *buffer = (unsigned char*)module_handle;
+    // unsigned char *buffer = (unsigned char*)module_handle;
 
-    size_t x = get_reloc_addr(buffer);
+    size_t x = get_reloc_addr(module_handle);
 
     printf("Module handle suma: %p\n", (void *)x);
 
