@@ -5,7 +5,9 @@
 
 void *setup_dll(long *dll_size)
 {
-    FILE *f = fopen("./dllmock.dll", "rb"); // Lectura binaria
+    const char *path = ".\\bin\\dllmock.dll";
+
+    FILE *f = fopen(path, "rb");
     if (!f)
     {
         perror("fopen");
@@ -38,6 +40,11 @@ void *setup_dll(long *dll_size)
     return buffer;
 }
 
+static void print_hex32(const char *label, DWORD v)
+{
+    printf("  %-24s 0x%08X (%u)\n", label, (unsigned)v, (unsigned)v);
+}
+
 int main(void)
 {
     printf("; ============================================================\n");
@@ -68,13 +75,14 @@ int main(void)
 
     // ------------------------------------------------------------
     // Reservar memoria en el proceso para la DLL (OptionalHeader.SizeOfImage)
+    // Como esto es una version NO ASLR, reservamos en la misma direccion que el ImageBase original
     DWORD SizeOfImage = (DWORD)optional_header->SizeOfImage;
 
-    LPVOID ImageBase = VirtualAlloc(
-        NULL,                       // dirección preferida (NULL = sistema elige)
-        SizeOfImage,                // tamaño en bytes
-        MEM_COMMIT | MEM_RESERVE,   // reservar y comprometer
-        PAGE_EXECUTE_READWRITE      // permisos (ejecutable + lectura + escritura)
+    uintptr_t ImageBase = VirtualAlloc(
+        optional_header->ImageBase,     // dirección preferida (NULL = sistema elige)
+        SizeOfImage,                    // tamaño en bytes
+        MEM_COMMIT | MEM_RESERVE,       // reservar y comprometer
+        PAGE_EXECUTE_READWRITE          // permisos (ejecutable + lectura + escritura)
     );
 
     if (ImageBase == NULL)
@@ -103,14 +111,14 @@ int main(void)
     {
         char name[9] = {0};
         memcpy(name, sections[i].Name, 8);
-        printf("  [%2u] %-8s  VA=0x%08X  VSize=0x%08X  RawOff=0x%08X  RawSize=0x%08X  Char=0x%08X\n",
-               (unsigned)i,
-               name,
-               sections[i].VirtualAddress,      // RVA en memoria
-               sections[i].Misc.VirtualSize,    // Tamaño real en memoria
-               sections[i].PointerToRawData,    // RVA en disco
-               sections[i].SizeOfRawData,       // Tamaño en disco
-               sections[i].Characteristics);
+        printf("  [%2u] %-8s  VirtualSize=0x%08X  VirtualAddress=0x%08X  SizeOfRawData=0x%08X  PointerToRawData=0x%08X  Characteristics=0x%08X\n",
+                (unsigned)i,
+                name,
+                sections[i].Misc.VirtualSize,
+                sections[i].VirtualAddress,
+                sections[i].SizeOfRawData,
+                sections[i].PointerToRawData,
+                sections[i].Characteristics);
         
         if (sections[i].PointerToRawData == 0)
         {
@@ -127,14 +135,22 @@ int main(void)
     // Hay que procesar las RELOCACIONES y las IMPORTACIONES.
     // ------------------------------------------------------------
     // Ahora que la DLL está mapeada en ImageBase, obtenemos los punteros a las cabeceras desde ahí.
-    const IMAGE_DOS_HEADER* dos_header_mapped = (const IMAGE_DOS_HEADER*)ImageBase;
-    const IMAGE_NT_HEADERS* nt_headers_mapped = (const IMAGE_NT_HEADERS*)((LPBYTE)ImageBase + dos_header_mapped->e_lfanew);
+    const IMAGE_DOS_HEADER *dos_header_mapped = (const IMAGE_DOS_HEADER *)ImageBase;
+    if (dos->e_magic != IMAGE_DOS_SIGNATURE)
+    {
+        fprintf(stderr, "[!] Error: Invalid DOS signature (MZ).\n");
+        return 0;
+    }
+
+    const IMAGE_NT_HEADERS64 *nt_headers_mapped = (const IMAGE_NT_HEADERS64 *)((LPBYTE)ImageBase + dos_header_mapped->e_lfanew);
+    if (nt->Signature != IMAGE_NT_SIGNATURE)
+    {
+        fprintf(stderr, "[!] Error: Invalid PE signature.\n");
+        return 0;
+    }
+
     const IMAGE_OPTIONAL_HEADER64* opt_header_mapped = &nt_headers_mapped->OptionalHeader;
 
-    // Relocaciones
-    //      - Calcular Delta: delta = NuevaImageBase - ImageBaseOriginal
-    //      - Buscar Tabla .reloc: Encuentra la sección .reloc que acabas de mapear.
-    //      - Iterar: Recorre esta tabla (que es una serie de bloques) y "parchea" cada dirección absoluta en tu código (.text, .data) sumándole el delta.
 
     // ------------------------------------------------------------
     // Importaciones
@@ -144,11 +160,98 @@ int main(void)
     //      - Iterar (Funciones): Dentro de cada DLL, recorre la lista de funciones que necesita (ej. "MessageBoxA").
     //      - Llamar a GetProcAddress: Llama a GetProcAddress (ej. GetProcAddress(hUser32, "MessageBoxA")).
     //      - Parchear la IAT: Escribe la dirección de la función devuelta en la Tabla de Direcciones de Importación (IAT) de tu DLL (que también está en la sección .idata).
+    printf("=== IMAGE_IMPORT_DESCRIPTOR ===\n");
+    
+    const DWORD rva_to_idata = opt_header_mapped->DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress;
+    uintptr_t idata_addr = (uintptr_t)ImageBase + rva_to_idata;
+    
+
+    IMAGE_IMPORT_DESCRIPTOR* import_descriptor = (IMAGE_IMPORT_DESCRIPTOR *)idata_addr;
+
+    while (import_descriptor->Name != 0)
+    {
+        print_hex32("Name RVA", import_descriptor->Name);
+        print_hex32("OriginalFirstThunk RVA", import_descriptor->OriginalFirstThunk);
+        print_hex32("FirstThunk (IAT) RVA", import_descriptor->FirstThunk);
+
+        char *dll_name = (char *)(ImageBase + import_descriptor->Name);
+        printf("\nDLL: %s\n", dll_name);
+
+        // Puntero al array de Nombres (OriginalFirstThunk)
+        PIMAGE_THUNK_DATA oft_thunk = (PIMAGE_THUNK_DATA)(ImageBase + import_descriptor->OriginalFirstThunk);
+        
+        // Puntero al array de Direcciones (FirstThunk / IAT)
+        PIMAGE_THUNK_DATA iat_thunk = (PIMAGE_THUNK_DATA)(ImageBase + import_descriptor->FirstThunk);
+
+        uintptr_t import_handle = LoadLibraryA(dll_name);
+        if (import_handle == NULL) {
+            printf("  -> ERROR: No se pudo cargar %s\n", dll_name);
+            import_descriptor++;
+            continue; // Salta a la siguiente DLL
+        }
+
+
+        while (oft_thunk->u1.AddressOfData != 0) {
+            // 1. Obtiene el nombre de la función desde el OFT
+            PIMAGE_IMPORT_BY_NAME import_by_name = (PIMAGE_IMPORT_BY_NAME)(ImageBase + oft_thunk->u1.AddressOfData);
+
+            // 2. Obtiene la dirección de memoria real desde la IAT
+            //    (iat_thunk->u1.Function ES la dirección)
+            uintptr_t function_address = (uintptr_t)iat_thunk->u1.Function;
+
+            uintptr_t real_address = GetProcAddress((HMODULE)import_handle, (LPCSTR)import_by_name->Name);
+
+            iat_thunk->u1.Function = real_address;
+
+            printf("  -> Funcion: %-30s (Parcheada en: %p)\n", (char *)import_by_name->Name, (void*)real_address);     
+                  
+            oft_thunk++;
+            iat_thunk++;
+        }
+        
+        // Avanza al siguiente descriptor (siguiente DLL)
+        import_descriptor++;
+    }
+
+    printf("\n");
+    
+    // Relocaciones
+    //      - Calcular Delta: delta = NuevaImageBase - ImageBaseOriginal
+    //      - Buscar Tabla .reloc: Encuentra la sección .reloc que acabas de mapear.
+    //      - Iterar: Recorre esta tabla (que es una serie de bloques) y "parchea" cada dirección absoluta en tu código (.text, .data) sumándole el delta.
+
 
     // ------------------------------------------------------------
     // call new entry point, DllMain with DLL_PROCESS_ATTACH
     //      - ImageBase + AddressOfEntryPoint
+    DWORD entryPointRVA = optional_header->AddressOfEntryPoint;
 
+    // Si el EntryPoint es 0, la DLL no tiene DllMain (ej. DLL de solo recursos)
+    if (entryPointRVA == 0) {
+        printf("La DLL no tiene punto de entrada (EntryPoint).\n");
+        return 1;
+    }
+
+    // Definir el prototipo (firma) de la función DllMain
+    typedef BOOL (WINAPI *PFN_DLLMAIN)(
+        HINSTANCE hinstDLL,
+        DWORD     fdwReason,
+        LPVOID    lpvReserved
+    );
+
+    // Calcular la dirección de memoria ABSOLUTA del punto de entrada
+    uintptr_t entryPointAbsolute = (uintptr_t)ImageBase + entryPointRVA;
+
+    // Hacer un "cast" de esa dirección numérica a nuestro tipo de puntero de función
+    PFN_DLLMAIN DllMain = (PFN_DLLMAIN)entryPointAbsolute;
+
+    printf("Llamando a DllMain en la dirección: %p\n", (void*)DllMain);
+
+    // Llamar a la función
+    //    - El HMODULE/HINSTANCE es la propia ImageBase.
+    //    - La "razón" es DLL_PROCESS_ATTACH.
+    //    - lpvReserved es NULL para esta llamada.
+    DllMain((HINSTANCE)ImageBase, DLL_PROCESS_ATTACH, NULL);
 
     // Cerrar handles sólo cuando existen
     printf("Pulsa ENTER para terminar\n");

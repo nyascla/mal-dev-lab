@@ -162,11 +162,10 @@ int main(void)
     printf(";       WALKING PE FILE (x64)\n");
     printf("; ============================================================ \n");
 
-    // unsigned char *buffer = load_dll_buffer();
+    unsigned char *buffer = load_dll_buffer();
 
-    const char *kernel32 = "kernel32.dll";
-    HMODULE module_handle = LoadLibraryA(kernel32);
-    unsigned char *buffer = (unsigned char*)module_handle;
+    // const char *kernel32 = "kernel32.dll";
+    // uintptr_t buffer = LoadLibraryA(kernel32);
 
 
     if (!buffer) {return 1;}

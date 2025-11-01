@@ -39,12 +39,17 @@ clean:
 # =======================================
 # LINUX
 # =======================================
-linux: bin/main.exe
+linux: bin/main-loader.exe bin/main-loader-NOASLR.exe bin/dllmock.dll
 
-bin/main.exe: main.c bin/dllmock.dll
-	@echo "Compilando y enlazando main.c..."
+bin/main-loader.exe: main-loader.c
+	@echo "Compilando y enlazando main-loader.c..."
 	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -Wall -s main.c -o bin/main.exe
+	x86_64-w64-mingw32-gcc -Wall -s main-loader.c -o bin/main-loader.exe
+
+bin/main-loader-NOASLR.exe: main-loader-NOASLR.c 
+	@echo "Compilando y enlazando main-loader-NOASLR.c..."
+	@mkdir -p bin
+	x86_64-w64-mingw32-gcc -Wall -s main-loader-NOASLR.c -o bin/main-loader-NOASLR.exe
 
 bin/dllmock.dll: dllmock.c
 	@echo "Compilando DLL..."
