@@ -45,10 +45,10 @@ bin/main.exe: main.c bin/dllmock.dll
 	@mkdir -p bin
 	x86_64-w64-mingw32-gcc -Wall -s main.c -o bin/main.exe
 
-bin/dllmock.dll: dll/dllmock.c
+bin/dllmock.dll: dllmock.c
 	@echo "Compilando DLL..."
 	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -Wall -s dll/dllmock.c -o bin/dllmock.dll -shared
+	x86_64-w64-mingw32-gcc -Wall -s dllmock.c -o bin/dllmock.dll -shared
 
 # Regla para limpiar
 clean:

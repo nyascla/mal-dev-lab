@@ -1,46 +1,50 @@
-# RELOCS
+# Flujo de Creación de un Proceso en Windows
 
-The .reloc Section (Image Only)
-https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#the-reloc-section-image-only
+## 1. Espacio de Usuario (El Shell del Usuario)
 
-## Base Relocation Block
+1. Doble Clic (Acción del Usuario)
+    - El usuario hace doble clic en `main.exe`.
+2. `Explorer.exe` (El Shell)
+    - Recibe el evento y determina qué archivo ejecutar.
+3. `ShellExecuteExW` (en `shell32.dll`)
+    - Función de alto nivel que gestiona la ejecución (incluyendo `UAC` y asociaciones de archivos).
+4. `CreateProcessW` (en `kernel32.dll`)
+    - La función API que prepara el entorno para el nuevo proceso.
+5. `NtCreateUserProcess` (en `ntdll.dll`)
+    - La syscall de bajo nivel que prepara la transición al modo kernel.
+---
 
-el sistema agrupa los parches por páginas de memoria.la relocacioens se hacen a nivel de pagina 4KB (4096 bytes).
+## 2. Espacio de Kernel (El Núcleo del SO)
 
-Para apuntar a cualquier byte dentro de esa página, solo necesitas un número entre 0 y 4095.
+1. `NtCreateUserProcess` (Lado Kernel)
+    - El kernel recibe la llamada y comienza la creación del proceso.
+2. `PspAllocateProcess`
+    - Crea el objeto `EPROCESS` (la estructura principal del kernel para un proceso).
+3. `MmCreateAddressSpace`
+    - Crea el Espacio de Direcciones Virtual (`VAS`) privado para el nuevo proceso.
+4. `NtCreateSection`
+    - Crea un "Section Object" (un "plano") a partir del archivo `main.exe` en disco.
+5. `NtMapViewOfSection`
+    - Mapea el "plano" del `main.exe` en el `VAS`.
+6. `NtMapViewOfSection` (de nuevo)
+    - Mapea `ntdll.dll` (el cargador) en el `VAS`.
+7. `PspCreateThread`
+    - Crea el hilo principal del proceso (el objeto `ETHREAD`).
+8. `KiInitializeContextThread`
+    - Configura el contexto del hilo para que su primera instrucción (`RIP`) apunte al cargador.
+---
 
-2^12 = 4096. Por lo tanto, 12 bits son la cantidad exacta de información necesaria para almacenar cualquier número entre 0 y 4095.
+## 3. Espacio de Usuario (El Nuevo Proceso)
 
-Each base relocation block starts with the following structure:
-
-``` c
-typedef struct _IMAGE_BASE_RELOCATION {
-    DWORD   VirtualAddress;
-    DWORD   SizeOfBlock;
-} IMAGE_BASE_RELOCATION;
-typedef IMAGE_BASE_RELOCATION UNALIGNED * PIMAGE_BASE_RELOCATION;
-```
-
-The Block Size field is then followed by any number of Type or Offset field entries. 
-
-Each entry is a WORD (2 bytes) and has the following structure:
-
-4 bits: Type
-12 bits: Offset
-
-``` c
-// (PWORD) es un puntero a unsigned short (16 bits)
-PWORD pEntry = (PWORD)(pBlock + 1);
-
-// pEntry[i] es tu WORD (el valor de 16 bits)
-
-// Desplaza los 12 bits de la derecha para quedarte solo con los 4 de la izquierda
-DWORD type = (pEntry[i] >> 12);
-
-// Aplica una máscara AND con 0x0FFF (que es 0000 1111 1111 1111)
-// para quedarte solo con los 12 bits de la derecha
-DWORD offset = (pEntry[i] & 0x0FFF);
-
-```
-
-Base Relocation Types
+1. `LdrInitializeThunk` (en `ntdll.dll`)
+    - La primera instrucción que se ejecuta en el nuevo proceso. Llama al cargador.
+2. `LdrpInitialize`
+    - El cargador principal. Lee las cabeceras PE del `main.exe`.
+3. `LdrpLoadDll` *VER NOTAS EN: [walking_load_dll](../walking_load_dll/)*
+    - Lee la Tabla de Importación (`.idata`) y mapea recursivamente todas las DLLs dependientes (como `kernel32.dll`, `user32.dll`, etc.).
+4. `LdrpHandleRelocations` (ejecutado en bucle)
+    - Si `ASLR` movió una DLL, esta función "parchea" el código de la DLL (usando la sección `.reloc`) para arreglar las direcciones de memoria.
+5. `LdrpRunInitializeRoutines` (ejecutado en bucle)
+    - Llama a la función `DllMain` de cada DLL que acaba de cargar (con `DLL_PROCESS_ATTACH`).
+6. (Salto al Punto de Entrada)
+    - El cargador finaliza y salta a la `AddressOfEntryPoint` del `main.exe`, que finalmente llama a tu función `main()`.

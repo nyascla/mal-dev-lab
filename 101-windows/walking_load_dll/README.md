@@ -1,55 +1,51 @@
-> ??? *PORQUE SALEN MUCHOS (DLL) Thread Created!*
+# Flujo de Carga de DLLs en Windows
 
-## Link en tiempo de compilación
-La DLL se carga una sola vez al inicio y se descarga al cerrar el EXE.
-```
-cl /LD my_dll.c user32.lib
-cl compilation.c my_dll.lib user32.lib
-```
+## 1. Carga de la DLL (La llamada a `LoadLibrary`)
 
-## Link en tiempo de ejecucion
-Windows incrementa el reference count de esa DLL. 
-> Cuando el contador llega a 0, Windows descarga la DLL de memoria fisica.
-Para no dejar memoria ocupada ni mantener DLLs cargadas innecesariamente, debes liberar la DLL explícitamente
-```
-cl /LD my_dll.c user32.lib
-cl runtime.c user32.lib
-```
+Esta secuencia describe lo que ocurre cuando tu código llama a `LoadLibrary("milib.dll")`.
 
-## Link estatico
-Al compilar main.exe el linker copia fisicamente el codigo de la dll dentro de main.exe
+1.  **`LoadLibraryA` / `LoadLibraryW` (en `kernel32.dll`)**
+    *   Es la función API que recibe la llamada. Realiza comprobaciones iniciales.
 
+2.  **`LdrLoadDll` (en `ntdll.dll`)**
+    *   Esta es la función principal del cargador. Comprueba (en el `PEB`) si la DLL ya está cargada. Si no lo está, continúa.
 
-## Notes
+3.  **`LdrpSearchPath` (en `ntdll.dll`)**
+    *   Busca el archivo `.dll` en el disco siguiendo el orden de búsqueda (Directorio del EXE, System32, PATH, etc.).
 
-- ``.dll`` Implementación real de la librería (código ejecutable)
-- ``.lib`` Import library: información de enlace (qué funciones están en la DLL y dónde encontrarlas)
+4.  **`NtCreateSection` (Syscall al Kernel)**
+    *   Crea un "Section Object" (un "plano" del archivo) en el kernel.
 
-## Como Windows carga una DLL
+5.  **`NtMapViewOfSection` (Syscall al Kernel)**
+    *   Mapea el plano de la DLL en el Espacio de Direcciones Virtual (`VAS`) del proceso.
 
-1. (LdrLoadDll en ntdll.dll) El Loader de Windows busca la DLL
-    - Search Order:
-    - importante para hijacking
-        1. El directorio del ejecutable
-        2. El directorio actual
-        3. Directorios del PATH
-        4. Directorios de sistema (System32, SysWOW64).
-        - Si la DLL no se encuentra - LoadLibrary falla con NULL.
-2. (NtMapViewOfSectio) Mapear el archivo PE en el espacio de direcciones virtual del proceso.
-    - Se crean páginas de memoria virtual para cada sección de la DLL (code, data, rdata, etc.) según el header PE
-> Aqui puede que la dll aun no este en memoria fisica "demand paging" solo se cargara en memoria si es necesario
-3. Relocation
-    - Cada DLL PE tiene un preferred base address
-    - Si la DLL no puede cargarse en esa dirección (conflicto con otra DLL o EXE), Windows debe reubicarla (.reloc)
-    - ASLR ??
-4. Tablas de import/export
-    - Export Table
-        - (funciones y variables) que la DLL pone a disposición de otros módulos.
-    - El loader construye la IAT
-        - Cada EXE o DLL tiene una tabla de importación (IAT – Import Address Table).
-            1. El loader busca la DLL importada.
-            2. Resuelve cada función de la import table.
-            3. Reemplaza los punteros de la IAT con la dirección virtual de la función en memoria.
-5. Windows implementa Copy-On-Write (COW) para páginas de DLL
-    - (.text, .rdata) compartidas entre procesos, solo se cargan una vez en memoria física.
-    - (.data) cada proceso recibe una copia privada, porque las variables globales son independientes.
+6.  **`LdrpHandleRelocations` (en `ntdll.dll`)**
+    *   Si `ASLR` movió la DLL a una dirección aleatoria, esta función "parchea" el código de la DLL (usando la sección `.reloc`) para arreglar las direcciones absolutas.
+
+7.  **`LdrpLoadDll` (Recursivo)**
+    *   El cargador inspecciona la tabla `.idata` de `milib.dll` y se llama a sí mismo para cargar las dependencias (ej. `user32.dll`).
+
+8.  **`LdrpRunInitializeRoutines` (en `ntdll.dll`)**
+    *   Llama a la función `DllMain` de `milib.dll` (y de sus dependencias) con el motivo `DLL_PROCESS_ATTACH`.
+
+9.  **(Retorno)**
+    *   El cargador devuelve el handle (la `ImageBase` real donde se cargó la DLL) a la función `LoadLibraryA`, que te la devuelve a ti.
+
+---
+
+## 2. Búsqueda de la Función (La llamada a `GetProcAddress`)
+
+Esta secuencia ocurre después de `LoadLibrary`, cuando llamas a `GetProcAddress(hDll, "MiFuncion")`.
+
+1.  **`GetProcAddress` (en `kernel32.dll`)**
+    *   La función API que recibe la llamada.
+
+2.  **`LdrGetProcedureAddress` (en `ntdll.dll`)**
+    *   La función real del cargador que realiza la búsqueda.
+
+3.  **(Parseo de la EAT)**
+    *   `LdrGetProcedureAddress` localiza la Tabla de Exportación (`EAT`) (sección `.edata`) de la DLL.
+    *   Busca el string `"MiFuncion"` en la lista de nombres de la `EAT` para encontrar su dirección (`RVA`).
+
+4.  **(Retorno)**
+    *   La función calcula la dirección absoluta (`ImageBase` + `RVA`) y devuelve ese puntero de función a tu código.

@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "headers.h"
-
 void *setup_dll(long *dll_size)
 {
     FILE *f = fopen("./dllmock.dll", "rb"); // Lectura binaria
@@ -51,7 +49,6 @@ int main(void)
     long dll_size = 0;
     void *RawData = setup_dll(&dll_size);
 
-    // show_dll_info(RawData, dll_size);
 
     // ------------------------------------------------------------
     // Parsear headers PE
