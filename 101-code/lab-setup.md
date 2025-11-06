@@ -1,5 +1,8 @@
 # Lab Setup
 
+1. VS Code
+    1. 
+
 ## Install SHH on Windows
 
 ``` bash
@@ -11,7 +14,5 @@ Set-Service -Name sshd -StartupType 'Automatic'
 ## Sync
 
 ``` bash
-function syncwin() {
-    scp -r $PWD test@172.16.41.128:"C:\Users\test\Desktop\test"
-    }
+function syncwin() { scp -r $PWD test@172.16.41.128:"C:\Users\test\Desktop\test" }
 ```
