@@ -1,1 +1,0 @@
-una forma comoda de ver las struct y sus offsets es desde IDA en la seccion de variables locales

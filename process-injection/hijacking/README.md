@@ -1,6 +1,10 @@
 # DLL Hijacking
 
-https://pentestlab.blog/2017/03/27/dll-hijacking/
+- `DLL Side-Loading`: La dll malicosa va en el mismo directoroio que el PE del proceso
+- `Missing DLL Hijacking`:
+- `DLL Search Order Hijacking`
+
+- `DLL Proxy Attacks`: .def
 
 las dll se cargan en el orden de: `echo %PATH%`
 
@@ -15,6 +19,29 @@ las dll se cargan en el orden de: `echo %PATH%`
 sal dll de esta clave de registro estaran cargadas en system32 no hay mucho que hacer
 
 `Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs`
+
+## Discovering
+
+Buscamos carpetas donde el Usuaio tenga RW
+
+Process Monitor:
+    - Load Image event
+    - Not in Windows or Program Files
+
+## Weaponizing
+
+Una vez encontrada la dll, mepear sus exports en un .def
+
+## Process Deadlocking
+
+No realizar muchas operaciones en DLLMain
+
+![alt text](image-1.png)
+
+## Hijacking Using COM
+
+algo con claves de registro
+
 ## Step 1 – Processes with Missing DLL’s
 
 The first step is to list all the processes on the system and discover these processes which are running as SYSTEM and are missing DLL’s. This can be done just by using the process monitor tool from Sysinternals and by applying the filters below:
@@ -37,3 +64,9 @@ By default if a software is installed on the C:\ directory instead of the C:\Pro
 ## Proxy loading
 
 podemos hacer que nuestra dll maliciosa haga de proxy y llama a la real para no romper la funcionalidad
+
+## Recursos
+
+- [DLL Hijacking - A New Spin on Proxying your Shellcode w/ Matthew Eidelberg](https://www.youtube.com/watch?v=1OzeSv9mUOk)
+https://pentestlab.blog/2017/03/27/dll-hijacking/
+
