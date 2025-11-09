@@ -1,5 +1,7 @@
 # DLL Hijacking
 
+https://hijacklibs.net/
+
 - `DLL Side-Loading`: La dll malicosa va en el mismo directoroio que el PE del proceso
 - `Missing DLL Hijacking`:
 - `DLL Search Order Hijacking`
@@ -16,7 +18,7 @@ las dll se cargan en el orden de: `echo %PATH%`
 1. Directories in the system PATH environment variable
 1. Directories in the user PATH environment variable
 
-sal dll de esta clave de registro estaran cargadas en system32 no hay mucho que hacer
+las dll de esta clave de registro estaran cargadas en system32 no hay mucho que hacer
 
 `Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs`
 
@@ -25,8 +27,17 @@ sal dll de esta clave de registro estaran cargadas en system32 no hay mucho que 
 Buscamos carpetas donde el Usuaio tenga RW
 
 Process Monitor:
+Column | Relation | Value
+- Process Name is X
     - Load Image event
     - Not in Windows or Program Files
+    - path ends with .dll
+
+| Column    | Relation  | Value         | Action    |
+|---        |---        |---            |---        |
+| Operation | is        | CreateFile    | Include   |
+| Result    | is        | NAME NOTFOUND | Include   |
+| Path      | ends with | .dll          | Include   |
 
 ## Weaponizing
 

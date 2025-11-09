@@ -1,5 +1,11 @@
 https://github.com/stephenfewer/ReflectiveDLLInjection
 
+[Shellcode reflective DLL injection (sRDI)](https://github.com/monoxgas/sRDI)
+
+Le pasas una dll compilada y anaya un quenyo stub("ReflectiveLoader") al inicio que hara de loader,
+de esta forma el propio blob sabe como cargarse en memoria
+
+
 # Paso-1 INJECT (cargar la dll en el proceso objetivo)
     - Abrir un handle al proceso objetivo
     - Reserve un chunk de memoria

@@ -8,7 +8,6 @@
 
 ---
 
-[Shellcode reflective DLL injection (sRDI)](https://github.com/monoxgas/sRDI)
 ## Compilar
 
 ```

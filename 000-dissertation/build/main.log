@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.25)  6 NOV 2025 12:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.25)  9 NOV 2025 15:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -318,7 +318,7 @@ LaTeX Info: Redefining \% on input line 1.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.29 ...ine {7.4.1}Sections}{14}{subsection.7.4.1}
+l.29 ....6}Acceso a memoria}{11}{subsection.7.1.6}
                                                   % [1
 
 ])
@@ -370,7 +370,7 @@ Overfull \hbox (14.41765pt too wide) in paragraph at lines 15--16
 []\T1/cmr/m/n/12 ntoskrnl.exe: Io-Call-Dri-ver, Nt-De-vi-ce-Io-Con-trol-Fi-le, NtW-ri-te-Fi-le (ope-
  []
 
-<figures/fig-syscall-path.png, id=373, 701.62125pt x 564.1075pt>
+<figures/fig-syscall-path.png, id=419, 701.62125pt x 564.1075pt>
 File: figures/fig-syscall-path.png Graphic file (type png)
 <use figures/fig-syscall-path.png>
 Package pdftex.def Info: figures/fig-syscall-path.png  used on input line 23.
@@ -381,7 +381,7 @@ Overfull \hbox (29.89613pt too wide) in paragraph at lines 5--20
  []
 
 ) [20] (./annexe_windows_internals/annex-win-security.tex) [21] (./annexe_windows_internals/annex-win-process-genealogy.tex
-<figures/fig-annex-win-process-genealogy.png, id=390, 645.16031pt x 437.38406pt>
+<figures/fig-annex-win-process-genealogy.png, id=436, 645.16031pt x 437.38406pt>
 File: figures/fig-annex-win-process-genealogy.png Graphic file (type png)
 <use figures/fig-annex-win-process-genealogy.png>
 Package pdftex.def Info: figures/fig-annex-win-process-genealogy.png  used on input line 14.
@@ -395,21 +395,21 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 048341F8BFB0B316F1A10176E0E6FFBC;8004.
+(rerunfilecheck)             Checksum: CD7498AA2E65721376B0896876D70437;9136.
  ) 
 Here is how much of TeX's memory you used:
- 11446 strings out of 476120
- 180593 string characters out of 5793656
- 1933975 words of memory out of 5000000
- 33159 multiletter control sequences out of 15000+600000
+ 11464 strings out of 476120
+ 180819 string characters out of 5793656
+ 1937975 words of memory out of 5000000
+ 33168 multiletter control sequences out of 15000+600000
  575251 words of font info for 73 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  75i,10n,79p,388b,777s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1095.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/llorens/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm2074.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on build/main.pdf (26 pages, 285576 bytes).
+Output written on build/main.pdf (26 pages, 286918 bytes).
 PDF statistics:
- 928 PDF objects out of 1000 (max. 8388607)
- 446 compressed objects within 5 object streams
- 99 named destinations out of 1000 (max. 500000)
- 435 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 974 PDF objects out of 1000 (max. 8388607)
+ 492 compressed objects within 5 object streams
+ 108 named destinations out of 1000 (max. 500000)
+ 507 words of extra memory for PDF output out of 10000 (max. 10000000)
 
