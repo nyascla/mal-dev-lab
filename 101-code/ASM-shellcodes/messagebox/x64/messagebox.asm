@@ -38,17 +38,17 @@ x64_messagebox:
     ; Multi import
     ; -----------------------------------
     mov     RCX, 0x4B1FFE8E                 ; KERNEL32
-    call    get_module_base
+    call    _x64_get_module_handle
     mov     [RBP + BASE_KERNEL32], RAX      ; BASE_KERNEL32
 
     mov     RCX, [RBP + BASE_KERNEL32]
     mov     RDX, 0xC8E88006                 ; LOADLIBRARYA
-    call    get_function_from_module
+    call    _x64_get_proc_address
     mov     [RBP + DEF_LOADLIBRARYA], RAX   ; DEF_LOADLIBRARYA
 
     mov     RCX, [RBP + BASE_KERNEL32]
     mov     RDX, 0x1FC062EF                 ; GETPROCADDRESS
-    call    get_function_from_module
+    call    _x64_get_proc_address
     mov     [RBP + DEF_GETPROCADDRESS], RAX     ; DEF_GETPROCADDRESS
 
 
@@ -94,9 +94,13 @@ x64_messagebox:
     ret
 
 ; ---------------------------------------
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM\runtime_linking\x64\x64_exports.asm"
+%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\runtime_linking\x64\x64_exports.asm"
 ; ---------------------------------------
 
+KERNEL32_HASHES:
+    dd 0xC8E88006 ; LOADLIBRARYA
+    dd 0x1FC062EF ; GETPROCADDRESS
+    dd 0xFFFFFFFF
 
 KERNEL32_HASHES:
     KERNEL32:

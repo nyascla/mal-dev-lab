@@ -1,14 +1,14 @@
 ;-----------------------------------
 ; GET_FUNCTION_FROM_MODULE
 ;-----------------------------------
-; void* get_function_from_module(uint64_t module_base, uint32_t hash_api)
+; void* _x64_get_proc_address(uint64_t module_base, uint32_t hash_api)
 ;-----------------------------------
 ;   hash_api: RDX
 ;   module_base: RCX
 ;-----------------------------------
 ; return: RAX
 
-get_function_from_module:
+_x64_get_proc_address:
     
     mov ESI, dword [RCX + 0x03C]      ; esi = Offset to NtHeader
     lea RSI, [RCX + RSI]        ; esi = NtHeader

@@ -234,7 +234,7 @@ pop ebp         ; restaura el viejo frame pointer
 ret             ; vuelve a la dirección de retorno
 
 ; -----------------------------------
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM\runtime_linking\x86\exports.asm"
+%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\runtime_linking\x86\exports.asm"
 ; -----------------------------------
 
 KERNEL32:       dd 0x4b1ffe8e

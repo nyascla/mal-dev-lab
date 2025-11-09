@@ -9,7 +9,7 @@
 ; return: EAX                           = Hash de 32 bits
 ; ---------------------------------------
 
-rol_xor:
+_rol_xor:
     mov edx, [ESP + 4]
     xor eax, eax        ; result = 0
 

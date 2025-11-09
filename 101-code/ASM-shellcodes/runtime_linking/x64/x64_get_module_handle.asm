@@ -11,7 +11,7 @@
 ;       RAX     -> HMODULE              ; base address del módulo o NULL si no se encuentra
 ; ============================================================
 
-get_module_base:
+_x64_get_module_handle:
     mov RDI, gs:[0x60]          ; RDI = _PEB
     mov RDI, [RDI + 0x018]      ; RDI = _PEB_LDR_DATA
     mov RDI, [RDI + 0x010]      ; RDI = InLoadOrderModuleList

@@ -5,7 +5,14 @@ global _multi_import
 
 section .text
 
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM\runtime_linking\x86\rol_xor.asm"
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM\runtime_linking\x86\get_proc_address.asm"
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM\runtime_linking\x86\get_module_handle.asm" 
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM\runtime_linking\x86\imports.asm" 
+; -----------------------------------
+; Hashing
+; -----------------------------------
+%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\hashing\x86\rol_xor.asm"
+
+; -----------------------------------
+; Runtime Linking
+; -----------------------------------
+%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\runtime_linking\x86\get_proc_address.asm"
+%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\runtime_linking\x86\get_module_handle.asm" 
+%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\runtime_linking\x86\runtime_linking.asm" 

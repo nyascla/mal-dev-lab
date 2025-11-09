@@ -2,6 +2,36 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "(BUILD) x64 Reverse Shell",
+      "type": "shell",
+      "command": "C:/Users/test/AppData/Local/Programs/Python/Python313/python.exe",
+      "args": [
+        "${workspaceFolder}/101-code/ASM-shellcodes/build.py",  // Arg 0: El script
+        "reverse_shell",                                        // Arg 1: El project_name
+        "-a", "x64"                                             // Arg 2: La arquitectura
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/101-code/ASM-shellcodes/"      
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "(BUILD) x86 Reverse Shell",
+      "type": "shell",
+      "command": "C:/Users/test/AppData/Local/Programs/Python/Python313/python.exe",
+      "args": [
+        "${workspaceFolder}/101-code/ASM-shellcodes/build.py",  // Arg 0: El script
+        "reverse_shell",                                        // Arg 1: El project_name
+        "-a", "x86"                                             // Arg 2: La arquitectura
+      ],      
+      "options": {
+        "cwd": "${workspaceFolder}/101-code/ASM-shellcodes/"      
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
       "label": "(TEST) x86 Runtime Linking",
       "type": "shell",
       "command": "\"${workspaceFolder}\\shellcodes\\x86\\runtime_linking\\setup.bat\"",
@@ -11,16 +41,7 @@
       "group": "build",
       "problemMatcher": []
     },
-    {
-      "label": "(BUILD) x86 Reverse Shell",
-      "type": "shell",
-      "command": "nmake",
-      "options": {
-        "cwd": "${workspaceFolder}\\shellcodes\\x86\\reverse_shell"
-      },
-      "group": "build",
-      "problemMatcher": []
-    },
+
     {
       "label": "(BUILD) x86 Messagebox",
       "type": "shell",

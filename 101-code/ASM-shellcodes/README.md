@@ -2,18 +2,19 @@
 
 1. [Visual Studio Code](https://code.visualstudio.com/Download)
     1. (ext) x86 and x86_64 Assembly
-1. [Build Tools for Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
+1. [Python 3.13](https://www.python.org/downloads/)
 1. [nasm](https://www.nasm.us/pub/nasm/releasebuilds/)
 1. [sclauncher](https://github.com/jstrosch/sclauncher)
 
 ---
+1. [Build Tools for Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
+---
 
 ## Compilar
 
-```
-.\setup-x86.bat x86-shell
-```
+En VS Code, el atajo `Ctrl + Shift + B` despliega las tareas de compilación (build). Una vez ejecutada la tarea, los ficheros generados se guardarán en las carpetas de salida correspondientes del proyecto.
 
+![alt text](image.png)
 
 ## Cabecera
 ```

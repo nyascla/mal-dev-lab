@@ -10,41 +10,34 @@
 ; );
 ; ============================================================
 
+base_module     equ -0x08
+ptr_source      equ -0x10
+ptr_dest        equ -0x18
+
 _multi_import:
     ; -----------------------------------
     ; Prólogo y guardado de registros
     ; -----------------------------------
     push    rbp
     mov     rbp, rsp
-    
-    push    r12             ; r12 = ptr_source (uint32_t*)
-    push    r13             ; r13 = ptr_dest (uint64_t*)
-    push    r14             ; r14 = base_module (uint64_t)
-    push    r15             ; r15 = contador (counter)
-    
-    ; -----------------------------------
-    ; Alinear pila y reservar Shadow Space
-    ; -----------------------------------
-    ; (Prólogo: 5 QWORDs pusheados = 40 bytes)
-    ; La pila está 8 bytes desalineada. 
-    ; Necesitamos 32 (shadow) + 8 (alineación) = 40 bytes (0x28).
-    sub     rsp, 0x28
-    
-    ; -----------------------------------
-    ; Mover argumentos a registros no volátiles
-    ; -----------------------------------
-    mov     r14, rcx        ; r14 = base_module (64-bit)
-    mov     r12, rdx        ; r12 = ptr_source (puntero a DWORDs)
-    mov     r13, r8         ; r13 = ptr_dest (puntero a QWORDs)
-    xor     r15, r15        ; r15 = 0 (contador)
+    sub     rsp, 0x18 
 
+    mov     [rbp + base_module], RCX
+    mov     [rbp + ptr_source], RDX
+    mov     [rbp + ptr_dest], R8
+
+    
 ; -----------------------------------
 ; Iteramos la lista de Hashes (DWORDs)
 ; -----------------------------------
+    xor     r15, r15
+
 .loop:
     ; Cargar el hash de 32 bits (DWORD)
     ; (Usamos EAX como temporal)
-    mov     eax, dword [r12 + r15*4] ; <-- CAMBIO: dword y r15*4
+    mov     rdx, [rbp + ptr_source]
+    lea     rdx, [rdx + r15*4]
+    mov     eax, dword [rdx]
 
     ; Comprobar el terminador de 32 bits
     cmp     eax, 0xFFFFFFFF
@@ -54,14 +47,17 @@ _multi_import:
     ; Llamar a _get_proc_address
     ; Args: RCX = base_module (64-bit), RDX = hash_api (32-bit)
     ; -----------------------------------
-    mov     rcx, r14        ; 1er arg: base_module (64-bit)
-    mov     edx, eax        ; 2º arg: hash_api (32-bit)
-    call    _get_proc_address
+    mov     rcx, [rbp + base_module]    ; 1er arg: base_module (64-bit)
+    mov     edx, eax                    ; 2º arg: hash_api (32-bit)
+    call    _x64_get_proc_address
 
     ; -----------------------------------
     ; Guardamos la direccion de 64 bits (RAX)
     ; -----------------------------------
-    mov     [r13 + r15*8], rax
+    mov     rdx, [rbp + ptr_dest]
+    mov     [rdx + r15*8], rax
+
+    
 
     ; Siguiente iteración
     add     r15, 1
@@ -72,11 +68,7 @@ _multi_import:
     ; Epílogo y retorno
     ; -----------------------------------
     mov     rax, r15        ; Valor de retorno (el contador)
-    
-    add     rsp, 0x28       ; Limpiar shadow space
-    pop     r15
-    pop     r14
-    pop     r13
-    pop     r12
-    pop     rbp
-    ret
+
+    mov rsp, rbp    ; limpia la pila
+    pop rbp         ; restaura el viejo frame pointer
+    ret             ; vuelve a la dirección de retorno
