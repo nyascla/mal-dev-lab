@@ -30,3 +30,7 @@ y tendra que reconstruir
 sudo apt install latexmk texlive-latex-extra texlive-lang-spanish
 latexmk --version
 ```
+
+## Atajos
+
+`Ctr + Alt + J` muestra el codigo del .tex en el pdf

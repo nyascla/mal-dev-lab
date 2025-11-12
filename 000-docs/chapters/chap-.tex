@@ -29,6 +29,7 @@ atacante, con el fin de reforzar sus habilidades de detección, interpretación 
 respuesta ante amenazas reales.
 
 
+
 \chapter{Marco Teórico}
 
 \begin{quote}
@@ -38,58 +39,169 @@ informacion sobre adversarios de forma efectiva?}
 
 \section{MITRE ATT\&CK}
 
-\section{CKC}
+el procedimiento debe ser lo suficientemente detallaco como para que el blue team 
+pueda crear una regla de deteccion y el red team pueda recrearlo
 
-el framework consiste en dividir un ciberatque en cinco fases:
+\section{Cyber Kill Chain (CKC)}
 
-1. Reconocimiento: investigacion del objetivo
-2. Armazenamiento: creacion del payload
-3. Entrega: envio del payload al objetivo
-4. Explotacion: ejecucion del payload
-5. Instalacion: sistema de staging
-6. Comando y control: establecimiento del canal de comunicacion
-7. Acciones sobre objetivos: acciones finales
+el framework consiste en dividir un ciberatque en las siguientes fases:
+\begin{enumerate}
+    \item Reconocimiento: investigacion del objetivo
+    \item Armazenamiento: creacion del payload
+    \item Entrega: envio del payload al objetivo
+    \item Explotacion: ejecucion del payload
+    \item Instalacion: sistema de staging
+    \item Comando y control: establecimiento del canal de comunicacion
+    \item Acciones sobre objetivos: acciones finales
+\end{enumerate}
 
-\chapter{Threat Intelligence}
+\section{Threat Intelligence}
 
-\begin{quote}
-\textit{¿Como obtener informacion sobre adversarios?}
-\end{quote}
-
-
-\chapter{Panorama Actual de Amenazas}
-
-\begin{quote}
-\textit{¿Cuales son las ttp mas utilizadas en la actualidad?}
-\end{quote}
-
-Nos centraremos en dos documentos principalemten el m-trends de mandiant
-y el 
+\section{Adversary simulation}
 
 
+% 
+% 
+% 
 \chapter{Creando nuestro adversario}
 
+El atacante logra la ejecución de código en la máquina objetivo e inicia el
+stage 1. Este primer componente se conecta a un servidor controlado por el
+adversario para descargar el stage 2. 
 
-\section{1. Reconocimiento}
+En algunos escenarios, entre ambos
+stages, se realizan tareas de reconocimiento interno para recopilar
+información sobre la víctima (por ejemplo, enumeración de usuarios, servicios
+o topología de red). 
 
-\subsection{}
+El stage 2 consiste en una DLL maliciosa que se hace
+pasar por una biblioteca legítima del sistema. Esta DLL actúa como proxy de
+la original, garantizando que las aplicaciones que dependen de ella funcionen
+correctamente sin generar errores, mientras que, en paralelo, carga en
+memoria un implante de Sliver. 
 
-\section{2. Armazenamiento}
+Una vez inyectado el implante, este ejecuta
+acciones de escaneo interno, movimiento lateral y establece comunicación
+periódica (beaconing) con el servidor de comando y control (C2). Cuando el
+atacante lo considere oportuno, se activará el payload de ransomware,
+procediendo al cifrado de archivos en el dispositivo comprometido.
 
-\section{3. Entrega}
-
-\section{4. Explotacion}
-
-\section{5. Instalacion}
-
-\section{6. Comando y control}
-
-\section{7. Acciones sobre objetivo}
+\section{Fase 1. Reconocimiento}
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-reconocimiento}.}
 
 
+\section{Fase 2. Armamento}
+
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-armamento}.}
 
 
-stage 1 (stub) (Downloader)
-stage 2 (Dropper)
-payload
-payload final
+\section{Fase 3: Entrega}
+
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-entrega}.}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Initial Access (TA0001) \cite{mitre-TA0001}.
+        \item[Técnica:] Replication Through Removable Media (T1091) \cite{mitre-T1091}.
+        \item[Procedimiento:] Se emplea un dispositivo \textit{BadUSB} que, al ser conectado, emula un dispositivo de interfaz humana (HID) para inyectar y ejecutar un script de PowerShell.
+    \end{description}
+\end{leftbar}
+
+
+\section{Fase 4: Explotación}
+
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-explotacion}.}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Execution (TA0002) \cite{mitre-TA0002}.
+        \item[Técnica:] Command and Scripting Interpreter: PowerShell (T1059.001) \cite{mitre-T1059-001}.
+        \item[Procedimiento:] El script inicial utiliza técnicas de \textit{marshalling} para evadir la Interfaz de Escaneo Antimalware (AMSI) de PowerShell, permitiendo la ejecución de código malicioso en memoria.
+    \end{description}
+\end{leftbar}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Command and Control (TA0011) \cite{mitre-TA0011}.
+        \item[Técnica:] Ingress Tool Transfer (T1105) \cite{mitre-T1105}.
+        \item[Procedimiento:] El \textit{payload} inicial se conecta a un servidor C2 externo para descargar la siguiente fase (\textit{stage 2}).
+    \end{description}
+\end{leftbar}
+
+\section{Fase 5: Instalación y Persistencia}
+ 
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-instalacion}.}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Tácticas:]
+            \begin{itemize}
+                \item Persistence (TA0003)
+                \item Defense Evasion (TA0005)
+            \end{itemize}
+        \item[Técnica:] Hijack Execution Flow: DLL Search Order Hijacking (T1574.001) \cite{mitre-T1574-001}.
+        \item[Procedimiento:] La DLL (\textit{stage 2}) se escribe en disco en una ubicación específica para ser cargada por un proceso legítimo y vulnerable a secuestro de DLL, asegurando la persistencia. Se consultan repositorios como \cite{hijacklibs} para identificar binarios vulnerables.
+    \end{description}
+\end{leftbar}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Defense Evasion (TA0005).
+        \item[Técnica:] Reflective Code Loading (T1620) \cite{mitre-T1620}.
+        \item[Procedimiento:] El \textit{stage 2} (la DLL secuestrada) actúa como un cargador (\textit{loader}) que mapea reflectivamente el \textit{payload} final directamente en la memoria del proceso anfitrión, evitando así las llamadas estándar a \texttt{LoadLibrary} y la detección basada en módulos cargados.
+    \end{description}
+\end{leftbar}
+
+\section{Fase 6: Mando y Control (C2)}
+
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-c2}.}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Command and Control (TA0011) \cite{mitre-TA0011}.
+        \item[Técnicas:]
+            \begin{itemize}
+                \item Application Layer Protocol: Web Protocols (T1071.001) \cite{mitre-T1071-001}.
+                \item Encrypted Channel (T1573) \cite{mitre-T1573}.
+            \end{itemize}
+        \item[Procedimiento:] El implante final establece un canal de comunicación (\textit{beaconing}) con el servidor C2. Esta comunicación se tuneliza sobre HTTPS (T1071.001) y utiliza un canal de cifrado (T1573) para ocultar las órdenes y la exfiltración de datos, mimetizando el tráfico web legítimo.
+    \end{description}
+\end{leftbar}
+
+\section{Fase 7: Acciones sobre el Objetivo}
+
+\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-acciones}.}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Impact (TA0040) \cite{mitre-TA0040}.
+        \item[Técnica:] Data Encrypted for Impact (T1486) \cite{mitre-T1486}.
+        \item[Procedimiento:] El \textit{payload} final ejecuta su objetivo principal: cifrar los archivos del sistema de la víctima y solicitar un rescate para su recuperación.
+    \end{description}
+\end{leftbar}
+
+% 
+% 
+% 
+\chapter{Analizando al adversario}
+
+\section{Análisis del Reconocimiento}
+\label{sec:detalle-reconocimiento} 
+
+\section{Análisis del Armamento}
+\label{sec:detalle-armamento} 
+
+\section{Análisis de la Entrega}
+\label{sec:detalle-entrega} 
+
+\section{Análisis de la Explotación}
+\label{sec:detalle-explotacion} 
+
+\section{Análisis de la Instalación y Persistencia}
+\label{sec:detalle-instalacion} 
+
+\section{Análisis del C2}
+\label{sec:detalle-c2} 
+
+\section{Análisis de las acciones sobre el objetivo}
+\label{sec:detalle-acciones} 

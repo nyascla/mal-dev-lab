@@ -1,5 +1,3 @@
-# 
-dissertation/build
 
 # IDA
 *exe.id0
@@ -64,3 +62,12 @@ dkms.conf
 # debug information files
 *.dwo
 .vscode/settings.json
+000-docs/main.aux
+000-docs/main.bbl
+000-docs/main.blg
+000-docs/main.fdb_latexmk
+000-docs/main.fls
+000-docs/main.log
+000-docs/main.pdf
+000-docs/main.synctex.gz
+000-docs/main.toc
