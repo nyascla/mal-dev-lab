@@ -1,4 +1,3 @@
-LIBRARY real
 EXPORTS
-    FuncB = og_real.FuncB
-    FuncC = og_real.FuncC
+FuncB=og_real.FuncB @2
+FuncC=og_real.FuncC @3

