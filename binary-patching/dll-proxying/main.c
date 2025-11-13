@@ -6,7 +6,7 @@ __declspec(dllimport) void FuncB();
 __declspec(dllimport) void FuncC();
 
 // solo para MSVC
-#pragma comment(lib, ".bin/real.lib")
+#pragma comment(lib, ".\\bin\\real.lib")
 
 int main() {
     printf("[MAIN] Hello from main!\n");

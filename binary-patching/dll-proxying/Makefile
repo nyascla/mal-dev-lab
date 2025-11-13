@@ -5,17 +5,29 @@ CC       = x86_64-w64-mingw32-gcc
 CFLAGS   = -Wall -s -O2 -shared
 LDFLAGS  = -Wl,--def,$(DEF)
 
-all: linux
+all: win
 
 # =======================================
 # WINDOWS
 # =======================================
-win:
-	cl /LD /Fe:bin\real.dll real.c /link /OUT:bin\real.dll
+dirs:
+	if not exist build mkdir build
+	if not exist bin mkdir bin
 
-	cl /LD malicious.c /link /DEF:dll\proxy.def /OUT:bin\malicious.dll
+clean_win:
+	if exist build rmdir /s /q build
+	if exist bin rmdir /s /q bin
+
+win: dirs
+	cl /LD /Fe:bin\real.dll dll\real.c /link /OUT:bin\real.dll
+
+	cl /LD dll\malicious.c /link /DEF:dll\proxy.def /OUT:bin\malicious.dll
 
 	cl main.c /Fe:bin\main.exe
+
+hijack_win:
+	move bin\real.dll bin\og_real.dll
+	move bin\malicious.dll bin\real.dll
 
 
 # =======================================
