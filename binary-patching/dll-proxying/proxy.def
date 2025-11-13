@@ -1,5 +1,0 @@
-LIBRARY "original.dll"
-EXPORTS
-    FuncA = malicious.FuncA
-    FuncB = original_real.FuncB
-    FuncC = original_real.FuncC

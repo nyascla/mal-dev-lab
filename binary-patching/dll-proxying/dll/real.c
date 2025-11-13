@@ -3,17 +3,17 @@
 
 __declspec(dllexport) void FuncA()
 {
-    printf("(DLL original) func FuncA\n");
+    printf("[DLL real] func FuncA\n");
 }
 
 __declspec(dllexport) void FuncB()
 {
-    printf("(DLL original) func FuncB\n");
+    printf("[DLL real] func FuncB\n");
 }
 
 __declspec(dllexport) void FuncC()
 {
-    printf("(DLL original) func FuncC\n");
+    printf("[DLL real] func FuncC\n");
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
@@ -22,16 +22,16 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
     {
 
     case DLL_PROCESS_ATTACH:
-        printf("(DLL original) Process Attached\n");
+        printf("[DLL real] Process Attached\n");
         break;
     case DLL_PROCESS_DETACH:
-        printf("(DLL original) Process Detached\n");
+        printf("[DLL real] Process Detached\n");
         break;
     case DLL_THREAD_ATTACH:
-        printf("(DLL original) Thread Created\n");
+        printf("[DLL real] Thread Created\n");
         break;
     case DLL_THREAD_DETACH:
-        printf("(DLL original) Thread Terminated\n");
+        printf("[DLL real] Thread Terminated\n");
         break;
     }
 
