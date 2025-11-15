@@ -1,7 +1,6 @@
 # .NET Assemblies (C# o VB.NET)
 
 
-
 ## El Ecosistema "Sharp"
 
 - SharpHound: El recolector de datos de BloodHound.
