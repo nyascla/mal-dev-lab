@@ -33,4 +33,4 @@ latexmk --version
 
 ## Atajos
 
-`Ctr + Alt + J` muestra el codigo del .tex en el pdf
+`Ctr + Alt + j` muestra el codigo del .tex en el pdf
