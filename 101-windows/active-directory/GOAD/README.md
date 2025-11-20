@@ -32,7 +32,8 @@ ping NORTH.SEVENKINGDOMS.LOCAL
 nslookup NORTH.SEVENKINGDOMS.LOCAL
 
 # Unir al dominio
-Add-Computer -DomainName north.sevenkingdoms.local -Credential north\Administrator -Restart
+$cred = Get-Credential north\Administrator
+Add-Computer -DomainName north.sevenkingdoms.local -Credential $cred -Restart
 NgtI75cKV+Pu
 ```
 
