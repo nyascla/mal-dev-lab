@@ -34,9 +34,11 @@ nslookup NORTH.SEVENKINGDOMS.LOCAL
 # Unir al dominio
 Add-Computer -DomainName "NORTH.SEVENKINGDOMS.LOCAL" -Credential "NORTH\eddard.stark" -Restart
 FightP3aceAndHonor!.
-Add-Computer -DomainName "NORTH.SEVENKINGDOMS.LOCAL" -Credential ".\Administrator" -Restart
+Add-Computer -DomainName "NORTH.SEVENKINGDOMS.LOCAL" -Credential "NORTH\Administrator" -Restart
+Add-Computer -DomainName "NORTH.SEVENKINGDOMS.LOCAL" -Credential "SEVENKINGDOMS\Administrator" -Restart
 NgtI75cKV+Pu 
 
+LetMeInPlease123!
 
 ```
 
