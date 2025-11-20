@@ -35,6 +35,15 @@ nslookup NORTH.SEVENKINGDOMS.LOCAL
 $cred = Get-Credential north\Administrator
 Add-Computer -DomainName north.sevenkingdoms.local -Credential $cred -Restart
 NgtI75cKV+Pu
+
+# 1. Escribe aquí la contraseña en texto plano (es un laboratorio, no pasa nada)
+$pass = ConvertTo-SecureString "NgtI75cKV+Pu" -AsPlainText -Force
+
+# 2. Crea el objeto de credencial manualmente
+$cred = New-Object System.Management.Automation.PSCredential ("north\Administrator", $pass)
+
+# 3. Ejecuta el comando usando esa credencial creada
+Add-Computer -DomainName north.sevenkingdoms.local -Credential $cred -Restart
 ```
 
 # GOAD-Light
