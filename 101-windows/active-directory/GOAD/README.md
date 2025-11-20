@@ -27,10 +27,17 @@ Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 192.168.5
 # ipconfig /renew
 
 # Verificar que todo está bien
-ipconfig
+Get-DnsClientServerAddress
+ping NORTH.SEVENKINGDOMS.LOCAL
+nslookup NORTH.SEVENKINGDOMS.LOCAL
 
 # Unir al dominio
 Add-Computer -DomainName "NORTH.SEVENKINGDOMS.LOCAL" -Credential "NORTH\eddard.stark" -Restart
+FightP3aceAndHonor!.
+Add-Computer -DomainName "NORTH.SEVENKINGDOMS.LOCAL" -Credential ".\Administrator" -Restart
+NgtI75cKV+Pu 
+
+
 ```
 
 # GOAD-Light
