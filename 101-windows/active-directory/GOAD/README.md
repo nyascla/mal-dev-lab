@@ -44,6 +44,8 @@ $cred = New-Object System.Management.Automation.PSCredential ("north\Administrat
 
 # 3. Ejecuta el comando usando esa credencial creada
 Add-Computer -DomainName north.sevenkingdoms.local -Credential $cred -Restart
+
+VK7JG-NPHTM-C97JM-9MPGT-3V66T
 ```
 
 # GOAD-Light
