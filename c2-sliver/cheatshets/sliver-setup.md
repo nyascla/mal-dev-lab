@@ -3,9 +3,13 @@
 ```
 curl https://sliver.sh/install | sudo bash
 ```
+
 ```
 systemctl status sliver
 ```
+
+## Info
+
 - Installs server binary to `/root/sliver-server`
 - Installs mingw
 - Runs the server in daemon mode using systemd
@@ -14,7 +18,3 @@ systemctl status sliver
 
 > Server related logs are saved to: `~/.sliver/logs/` (default log level is INFO)
 > Client logs: `~/.sliver-client/sliver-client.log`
-
-```
-
-```

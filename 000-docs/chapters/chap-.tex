@@ -68,16 +68,19 @@ El atacante logra la ejecución de código en la máquina objetivo e inicia el
 stage 1. Este primer componente se conecta a un servidor controlado por el
 adversario para descargar el stage 2. 
 
+
 En algunos escenarios, entre ambos
 stages, se realizan tareas de reconocimiento interno para recopilar
 información sobre la víctima (por ejemplo, enumeración de usuarios, servicios
 o topología de red). 
+
 
 El stage 2 consiste en una DLL maliciosa que se hace
 pasar por una biblioteca legítima del sistema. Esta DLL actúa como proxy de
 la original, garantizando que las aplicaciones que dependen de ella funcionen
 correctamente sin generar errores, mientras que, en paralelo, carga en
 memoria un implante de Sliver. 
+
 
 Una vez inyectado el implante, este ejecuta
 acciones de escaneo interno, movimiento lateral y establece comunicación
@@ -86,17 +89,17 @@ atacante lo considere oportuno, se activará el payload de ransomware,
 procediendo al cifrado de archivos en el dispositivo comprometido.
 
 \section{Fase 1. Reconocimiento}
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-reconocimiento}.}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-reconocimiento} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-reconocimiento}.}
 
 
 \section{Fase 2. Armamento}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-armamento} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-armamento}.}
 
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-armamento}.}
 
 
 \section{Fase 3 (Opt 1)): Entrega: BadUSB}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-entrega} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-entrega}.}
 
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-entrega}.}
 
 \begin{leftbar}
     \begin{description}
@@ -111,8 +114,8 @@ procediendo al cifrado de archivos en el dispositivo comprometido.
 \section{Fase 3 (Opt 3): Entrega: Phishing}
 
 \section{Fase 4: Explotación}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-explotacion} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-explotacion}.}
 
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-explotacion}.}
 
 \begin{leftbar}
     \begin{description}
@@ -131,8 +134,8 @@ procediendo al cifrado de archivos en el dispositivo comprometido.
 \end{leftbar}
 
 \section{Fase 5: Instalación y Persistencia}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-instalacion} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-instalacion}.}
  
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-instalacion}.}
 
 \begin{leftbar}
     \begin{description}
@@ -155,8 +158,8 @@ procediendo al cifrado de archivos en el dispositivo comprometido.
 \end{leftbar}
 
 \section{Fase 6: Mando y Control (C2)}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-c2} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-c2}.}
 
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-c2}.}
 
 \begin{leftbar}
     \begin{description}
@@ -171,8 +174,8 @@ procediendo al cifrado de archivos en el dispositivo comprometido.
 \end{leftbar}
 
 \section{Fase 7: Acciones sobre el Objetivo}
+\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-acciones} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-acciones}.}
 
-\textit{Ver el análisis detallado en la Sección~\ref{sec:detalle-acciones}.}
 
 \begin{leftbar}
     \begin{description}
@@ -185,25 +188,52 @@ procediendo al cifrado de archivos en el dispositivo comprometido.
 % 
 % 
 % 
-\chapter{Analizando al adversario}
+\chapter{Red Team}
+
+\section{Reconocimiento}
+\label{sec:red-team-reconocimiento} 
+
+\section{Armamento}
+\label{sec:red-team-armamento} 
+
+\section{Entrega}
+\label{sec:red-team-entrega} 
+
+\section{Explotación}
+\label{sec:red-team-explotacion} 
+
+\section{Instalación y Persistencia}
+\label{sec:red-team-instalacion} 
+
+\section{C2}
+\label{sec:red-team-c2} 
+
+\section{Acciones sobre el objetivo}
+\label{sec:red-team-acciones} 
+
+
+% 
+% 
+% 
+\chapter{Blue Team}
 
 \section{Análisis del Reconocimiento}
-\label{sec:detalle-reconocimiento} 
+\label{sec:blue-team-reconocimiento} 
 
 \section{Análisis del Armamento}
-\label{sec:detalle-armamento} 
+\label{sec:blue-team-armamento} 
 
 \section{Análisis de la Entrega}
-\label{sec:detalle-entrega} 
+\label{sec:blue-team-entrega} 
 
 \section{Análisis de la Explotación}
-\label{sec:detalle-explotacion} 
+\label{sec:blue-team-explotacion} 
 
 \section{Análisis de la Instalación y Persistencia}
-\label{sec:detalle-instalacion} 
+\label{sec:blue-team-instalacion} 
 
 \section{Análisis del C2}
-\label{sec:detalle-c2} 
+\label{sec:blue-team-c2} 
 
 \section{Análisis de las acciones sobre el objetivo}
-\label{sec:detalle-acciones} 
+\label{sec:blue-team-acciones} 

@@ -1,6 +1,20 @@
 {
   "version": "2.0.0",
   "tasks": [
+
+    {
+      "label": "(SERVER UP) c2",
+      "type": "shell",
+      "command": "/home/llorens/projects/mal-dev-lab/venv/bin/python",
+      "args": [
+        "${workspaceFolder}/c2-sliver/mocks/mini_c2.py",  // Arg 0: El script
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/c2-sliver/mocks/"      
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
     {
       "label": "(BUILD) x64 Reverse Shell",
       "type": "shell",

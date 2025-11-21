@@ -25,3 +25,14 @@ Ejecutar scripts no esta permitido en un equipo para usuaios no administradores
 podemos cambair la politica para nuestro usuaio
 
 set-executionpolicy unrestricted --scope currentuser
+
+## Payload Runner Development
+
+lookupfunc -  busca asm referencias en memoria
+getdelegatetype - set argumente types
+
+virtualalloc
+
+otra vez con la tecnica de marshall copy pasamos el paylaod a memoria
+
+depues lo ejecutamos con create thred function

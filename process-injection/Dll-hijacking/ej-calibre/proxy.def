@@ -1,0 +1,3 @@
+EXPORTS
+execute_python_entrypoint=calibre-launcher-old.execute_python_entrypoint @1
+simple_print=calibre-launcher-old.simple_print @2

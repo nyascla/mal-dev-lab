@@ -76,6 +76,8 @@ By default if a software is installed on the C:\ directory instead of the C:\Pro
 
 podemos hacer que nuestra dll maliciosa haga de proxy y llama a la real para no romper la funcionalidad
 
+[Dll Proxying](../../binary-patching/dll-proxying)
+
 ## Recursos
 
 - [DLL Hijacking - A New Spin on Proxying your Shellcode w/ Matthew Eidelberg](https://www.youtube.com/watch?v=1OzeSv9mUOk)
