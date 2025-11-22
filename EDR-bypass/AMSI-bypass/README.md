@@ -1,38 +1,53 @@
-## AMSI bypass (AV Evasion)
+## Execution policy bypass
 
-Antimalware Scan Interface - middlem main entre script y WD
+```
+powershell -ep bypass -File ".\x64.ps1"
+```
 
-amsi.dll - amsiscanbuffer() - modificaremos la funcion para que siempre devuelva lo mismo
+## AMSI Bypass - Memory Patching via Reflection
+
+> "El bypass de Matt Graeber"
+
+### Objetivo
+
+Desactivar completamente AMSI en la sesión actual de PowerShell sin tocar un solo byte de amsi.dll, evitando así todas las detecciones basadas en parcheo de memoria.
+
+### Cómo funciona
+
+Cuando PowerShell inicia, la clase privada `System.Management.Automation.AmsiUtils` crea una variable estática llamada `amsiInitFailed`. Si esta variable está en $true, AMSI considera que la inicialización falló y desactiva todos los escaneos durante toda la sesión, aunque amsi.dll siga cargada y perfectamente funcional.
 
 desde un script combinando poweshell y c# utilizaremos getprocaddress loadlibrary y virutalprotect prara cargar amsi.dll en memoria
 
 con la marshall copy tecnic modificareemos el dea eax para que siempre devuelva lo mismo
 
-https://learn.microsoft.com/es-es/windows/win32/api/amsi/nf-amsi-amsiscanbuffer
 
 si la funcion devuelve un hresult cualquier script se puede ejecutar
 
-https://learn.microsoft.com/es-es/shows/inside/hresult
+## AMSI Bypass – Memory Patching
 
-invoque ofuscation for powershell
+### Objetivo
 
-la parte de c# puede dar problemas a la hora de ofuscar, cuidao ahi
+Hacer que cualquier script PowerShell pase el escaneo de AMSI (Antimalware Scan Interface) sin ser bloqueado por Windows Defender u otros AV/EDR que usen esta interfaz.
 
-## Execution policy bypass
+### Cómo funciona AMSI
 
-Ejecutar scripts no esta permitido en un equipo para usuaios no administradores
+Cuando PowerShell (o cualquier motor de scripting) ejecuta código, antes de interpretarlo llama a la función AmsiScanBuffer() dentro de amsi.dll.
+Esta función analiza el buffer y devuelve un HRESULT:
 
-podemos cambair la politica para nuestro usuaio
+- https://learn.microsoft.com/es-es/windows/win32/api/amsi/nf-amsi-amsiscanbuffer
+- https://learn.microsoft.com/es-es/shows/inside/hresult
 
-set-executionpolicy unrestricted --scope currentuser
+### Idea del bypass
 
-## Payload Runner Development
+Modificar en tiempo de ejecución los primeros bytes de AmsiScanBuffer() para que siempre devuelva un valor “limpio” (normalmente 0x80070057 → E_INVALIDARG, que paradójicamente AMSI interpreta como “no es malware” en muchas versiones).
+Técnica paso a paso:
 
-lookupfunc -  busca asm referencias en memoria
-getdelegatetype - set argumente types
+1. Cargar amsi.dll (ya está en memoria en cualquier proceso PowerShell).
+1. Obtener la dirección de AmsiScanBuffer usando `GetProcAddress`.
+1. Cambiar los permisos de esa región de memoria a PAGE_EXECUTE_READWRITE con `VirtualProtect`.
+1. Sobreescribir los primeros bytes con un parche pequeño: (bytes: B8 57 00 07 80 C3)
 
-virtualalloc
-
-otra vez con la tecnica de marshall copy pasamos el paylaod a memoria
-
-depues lo ejecutamos con create thred function
+``` nasm
+mov eax, 0x80070057   ; E_INVALIDARG → AMSI lo toma como “limpio”
+ret                  
+```

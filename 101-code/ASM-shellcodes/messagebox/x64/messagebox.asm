@@ -102,17 +102,17 @@ KERNEL32_HASHES:
     dd 0x1FC062EF ; GETPROCADDRESS
     dd 0xFFFFFFFF
 
-KERNEL32_HASHES:
-    KERNEL32:
-        dd 0x4b1ffe8e
-    LOADLIBRARYA:
-        dd 0xC8E88006
-    GETPROCADDRESS:
-        dd 0x1FC062EF
-    EXE_NAME: ; simple_mod_extra.exe
-        dd 0x78058130
-    EXE_NAME_A: ; messagebox.exe
-        dd 0x0C4C8BE9
+; KERNEL32_HASHES:
+;     KERNEL32:
+;         dd 0x4b1ffe8e
+;     LOADLIBRARYA:
+;         dd 0xC8E88006
+;     GETPROCADDRESS:
+;         dd 0x1FC062EF
+;     EXE_NAME: ; simple_mod_extra.exe
+;         dd 0x78058130
+;     EXE_NAME_A: ; messagebox.exe
+;         dd 0x0C4C8BE9
 
 STRINGS:
     USER32:

@@ -16,6 +16,8 @@ En VS Code, el atajo `Ctrl + Shift + B` despliega las tareas de compilación (bu
 
 ![alt text](image.png)
 
+
+
 ## Cabecera
 ```
 ; =============================================================================

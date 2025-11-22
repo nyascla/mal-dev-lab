@@ -1,6 +1,6 @@
 import pefile
 
-dll = pefile.PE('./calibre-launcher.dll')
+dll = pefile.PE('calibre-launcher.dll')
 
 print("EXPORTS")
 for export in dll.DIRECTORY_ENTRY_EXPORT.symbols:

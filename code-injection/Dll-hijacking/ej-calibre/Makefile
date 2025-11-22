@@ -1,5 +1,11 @@
 all: linux
 
+win: win-bin/malicious.dll
+
+win-bin/malicious.dll: malicious.c
+	@echo "Compilando DLL con MSVC..."
+	@mkdir -p bin
+	cl /LD /Febin/malicious.dll malicious.c /link /DEF:proxy.def /DLL /SUBSYSTEM:WINDOWS /NODEFAULTLIB
 
 
 # =======================================

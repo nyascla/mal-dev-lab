@@ -175,6 +175,8 @@ def main():
     args = parser.parse_args()
 
     try:
+        logging.info(f"\n\n=== Build del proyecto '{args.project_name}' iniciando... === \n\n")
+
         if args.arch == 'all':
             compile_target("x86", args.project_name, args.execute)
             compile_target("x64", args.project_name, args.execute)
