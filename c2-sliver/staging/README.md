@@ -22,3 +22,5 @@ ficheros lmk
 extensiones de chrome
 
 persistance puede ser triqui, si la maquina es re explotable alomejor conviene no tener persistencia para ser mas dificil de detectar
+
+https://github.com/TheWover/donut
