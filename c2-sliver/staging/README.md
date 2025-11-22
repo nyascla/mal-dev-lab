@@ -1,5 +1,7 @@
 # Staging system
 
+## Stage 1
+
 Sliver está diseñado principalmente como `payload de etapa 2 (stager)`.
 Ver documentación oficial: https://sliver.sh/docs?name=Stagers
 
@@ -24,3 +26,8 @@ extensiones de chrome
 persistance puede ser triqui, si la maquina es re explotable alomejor conviene no tener persistencia para ser mas dificil de detectar
 
 https://github.com/TheWover/donut
+
+## Stage 2
+
+se conecta con el servidor y se decarga un blob
+

