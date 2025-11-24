@@ -1,9 +1,9 @@
 #include <windows.h>
 #include <stdio.h>
 
-__declspec(dllexport) void ReflectiveLoader()
+__declspec(dllexport) void func()
 {
-    printf("(DLL) func ReflectiveLoader\n");
+    printf("(DLL) func func\n");
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
