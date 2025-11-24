@@ -10,8 +10,10 @@ int main(void) {
     HMODULE module = LoadLibraryA("ws2_32.dll");
     printf("[+] Start 1 \n");
 
+    getchar();
+
     hello_fn hello = (hello_fn)(module, "hello_from_dll");
-       printf("[+] Start 2\n");
+    printf("[+] Start 2\n");
  
     hello();
     printf("[+] Start 3\n");
