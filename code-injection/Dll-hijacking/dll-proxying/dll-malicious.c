@@ -14,7 +14,7 @@ __declspec(dllexport) void WINAPI FuncA() {
     // 
     // El loader detecta estos exports como una dependecia con "og_real.dll" y carga la dll en memoria
 
-    HINSTANCE hOriginal = LoadLibraryA("og_real.dll");      // Solo recuperamos el handle la dll ya esta en memoria
+    HINSTANCE hOriginal = LoadLibraryA("real-old.dll");      // Solo recuperamos el handle la dll ya esta en memoria
     typedef void (WINAPI* pFuncA)();                        // Prototipo de la función original
     pFuncA orig = (pFuncA)GetProcAddress(hOriginal, "FuncA");
     

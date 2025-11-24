@@ -1,8 +1,8 @@
 import pefile
 
-dll = pefile.PE('./bin/real.dll')
+dll = pefile.PE('./real.dll')
 
 print("EXPORTS")
 for export in dll.DIRECTORY_ENTRY_EXPORT.symbols:
     if export.name:
-        print('{}=og_real.{} @{}'.format(export.name.decode(), export.name.decode(), export.ordinal))
+        print('{}=real-old.{} @{}'.format(export.name.decode(), export.name.decode(), export.ordinal))

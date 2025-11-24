@@ -33,7 +33,7 @@ bin/main.exe: main.c
 bin/dll-evil.dll: dll-evil.c
 	@echo "Compilando DLL..."
 	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -Wall -s dll-evil.c -o bin/dll-evil.dll -shared
+	x86_64-w64-mingw32-gcc -Wall -s dll-evil.c -o bin/dll-evil.dll -shared -luser32
 
 	mv bin/dll-evil.dll bin/ws2_32.dll
 
