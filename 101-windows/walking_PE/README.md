@@ -1,6 +1,6 @@
 # Portable Executable (PE)
 
-Un "image" es unarepresentación completa de un ejecutable (PE) cargado en memoria. 
+Un "image" es una representación completa de un ejecutable (PE) cargado en memoria. 
 Se llama así porque el loader de Windows mapea el archivo en disco en la 
 memoria virtual del proceso como una imagen coherente del binario (cabeceras + secciones + datos).
 
