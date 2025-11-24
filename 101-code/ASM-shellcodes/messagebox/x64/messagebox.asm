@@ -91,6 +91,11 @@ x64_messagebox:
     call    RAX
     add     rsp, 0x28                       ; mantener rsp 16-byte aligned
 
+    ; -----------------------------------
+    xor     rax, rax
+    mov     rsp, rbp    ; destruimos el stack de la funcion
+    pop     rbp         ; restauramos el stack frame de la funcion anterior
+
     ret
 
 ; ---------------------------------------
