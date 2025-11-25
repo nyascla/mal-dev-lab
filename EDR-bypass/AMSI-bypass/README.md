@@ -16,13 +16,6 @@ Desactivar completamente AMSI en la sesión actual de PowerShell sin tocar un so
 
 Cuando PowerShell inicia, la clase privada `System.Management.Automation.AmsiUtils` crea una variable estática llamada `amsiInitFailed`. Si esta variable está en $true, AMSI considera que la inicialización falló y desactiva todos los escaneos durante toda la sesión, aunque amsi.dll siga cargada y perfectamente funcional.
 
-desde un script combinando poweshell y c# utilizaremos getprocaddress loadlibrary y virutalprotect prara cargar amsi.dll en memoria
-
-con la marshall copy tecnic modificareemos el dea eax para que siempre devuelva lo mismo
-
-
-si la funcion devuelve un hresult cualquier script se puede ejecutar
-
 ## AMSI Bypass – Memory Patching
 
 ### Objetivo
@@ -39,7 +32,7 @@ Esta función analiza el buffer y devuelve un HRESULT:
 
 ### Idea del bypass
 
-Modificar en tiempo de ejecución los primeros bytes de AmsiScanBuffer() para que siempre devuelva un valor “limpio” (normalmente 0x80070057 → E_INVALIDARG, que paradójicamente AMSI interpreta como “no es malware” en muchas versiones).
+Modificar en tiempo de ejecución los bytes del return de AmsiScanBuffer() para que siempre devuelva un valor “limpio” (normalmente 0x80070057 → E_INVALIDARG, que paradójicamente AMSI interpreta como “no es malware” en muchas versiones).
 Técnica paso a paso:
 
 1. Cargar amsi.dll (ya está en memoria en cualquier proceso PowerShell).

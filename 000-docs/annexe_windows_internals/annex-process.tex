@@ -1,26 +1,19 @@
 \section{Process}
 
-\subsection{EPROCESS}
-Estructura que mantiene toda la información de un proceso en el kernel.
+\begin{itemize}
+    \item \textbf{EPROCESS:} Estructura que mantiene toda la información de un proceso en el kernel.
+    \item \textbf{Threads:} Representan las hebras de ejecución asociadas al proceso.
+    \item \textbf{Handles:} Son equivalentes a los \textit{file descriptors} en Linux.
+    \item \textbf{Memory:} Gestión del espacio de direcciones y memoria asignada al proceso.
+    \item \textbf{Modules:} Lista de módulos y librerías cargadas en el proceso.
+\end{itemize}
 
-\subsection{Threads}
-Representan las hebras de ejecución asociadas al proceso.
-
-\subsection{Handles}
-Son equivalentes a los \textit{file descriptors} en Linux.
-
-\subsection{Memory}
-Gestión del espacio de direcciones y memoria asignada al proceso.
-
-\subsection{Modules}
-Lista de módulos y librerías cargadas en el proceso.
-
-\section{Process Creation (Kernel)}
+\subsection{Process Creation (Kernel)}
 
 La creación de un proceso en Windows sigue una serie de pasos específicos a nivel
 del kernel.
 
-\subsection*{(1) Inicialización del espacio de direcciones}
+\subsubsection*{(1) Inicialización del espacio de direcciones}
 
 \begin{itemize}[leftmargin=1.5cm]
     \item \textbf{Modelo en Linux vs. Windows:} En Linux, los nuevos procesos se crean
@@ -51,7 +44,7 @@ del kernel.
     \end{itemize}
 \end{itemize}
 
-\subsection*{(2) Creación del hilo inicial}
+\subsubsection*{(2) Creación del hilo inicial}
 
 \begin{itemize}[leftmargin=1.5cm]
     \item \textbf{Mapeo del stack:} Se asigna el espacio de pila necesario para el hilo
@@ -63,3 +56,63 @@ del kernel.
     ejecución se coloca en la función \texttt{ntdll.LdrInitializeThunk}, encargada de
     completar la carga dinámica del proceso.
 \end{itemize}
+
+
+\section{PEB y la lista de módulos}
+El \textbf{Process Environment Block (PEB)} es una estructura interna de Windows 
+que contiene información sobre el proceso, incluyendo los módulos (DLLs) 
+cargados. 
+
+Dentro del PEB, el campo:
+\begin{verbatim}
+PEB->Ldr->InMemoryOrderModuleList
+\end{verbatim}
+es una lista enlazada que mantiene todos los módulos cargados en memoria, 
+incluyendo la DLL principal del proceso y todas las DLLs dependientes. Cada 
+entrada de esta lista contiene:
+
+\begin{itemize}
+    \item La \texttt{base address} del módulo en memoria.
+    \item El nombre del archivo de la DLL.
+    \item Información sobre sus secciones.
+\end{itemize}
+
+Recorrer esta lista permite obtener todas las DLLs cargadas y sus direcciones en 
+memoria.
+
+
+\section{Secciones de un proceso}
+
+El espacio de direcciones de un proceso en memoria se organiza en diferentes secciones.
+A continuación, se enumeran las mismas desde las direcciones más altas hasta las más bajas:
+
+\begin{description}[style=nextline, leftmargin=2cm]
+
+    \item[\textbf{Páginas del Kernel}]  
+    Ocupan la misma dirección en todos los procesos del sistema y corresponden al kernel.  
+    Como todas las páginas de kernel apuntan a los mismos \textit{frames} de memoria física, 
+    no se desperdicia espacio cargando el kernel en cada proceso.  
+    El acceso se realiza únicamente mediante llamadas al sistema.
+
+    \item[\textbf{Stack (lectura y escritura)}]  
+    Estructura de almacenamiento \textit{LIFO}, que crece hacia abajo 
+    (desde el final del espacio de direcciones del proceso hacia la sección BSS).  
+    Cada función tiene su propio \textit{stack frame}, con variables locales y argumentos.  
+    El tamaño suele estar limitado entre 1 y 8 MB, según la arquitectura y el sistema operativo.  
+    Su gestión mediante el puntero de pila es muy rápida.
+
+    \item[\textbf{Heap (lectura y escritura)}]  
+    Espacio para memoria dinámica gestionada por llamadas como \texttt{malloc}.  
+    Crece hacia arriba, desde el final de la BSS hasta el final del espacio de direcciones.  
+    Su administración mediante el puntero de \textit{heap} es más lenta que la del \textit{stack}.
+
+    \item[\textbf{BSS y Data (lectura y escritura)}]  
+    Almacenan las variables globales y estáticas del programa.  
+    La sección \textbf{BSS} contiene las variables no inicializadas,  
+    mientras que la sección \textbf{Data} guarda las variables inicializadas.
+
+    \item[\textbf{Text (lectura y ejecución)}]  
+    Contiene el código ejecutable del programa, cargado desde el binario en disco.  
+    Generalmente está marcada como de solo lectura y ejecución.
+
+\end{description}

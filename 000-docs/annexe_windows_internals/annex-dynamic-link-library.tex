@@ -23,28 +23,6 @@ Cada DLL se carga como un módulo completo, incluyendo sus secciones
 \texttt{.text}, \texttt{.rdata}, \texttt{.data}, etc., mapeadas en memoria 
 contigua a partir de la \emph{base address} del módulo.
 
-\subsection{PEB y la lista de módulos}
-El \textbf{Process Environment Block (PEB)} es una estructura interna de Windows 
-que contiene información sobre el proceso, incluyendo los módulos (DLLs) 
-cargados. 
-
-Dentro del PEB, el campo:
-\begin{verbatim}
-PEB->Ldr->InMemoryOrderModuleList
-\end{verbatim}
-es una lista enlazada que mantiene todos los módulos cargados en memoria, 
-incluyendo la DLL principal del proceso y todas las DLLs dependientes. Cada 
-entrada de esta lista contiene:
-
-\begin{itemize}
-    \item La \texttt{base address} del módulo en memoria.
-    \item El nombre del archivo de la DLL.
-    \item Información sobre sus secciones.
-\end{itemize}
-
-Recorrer esta lista permite obtener todas las DLLs cargadas y sus direcciones en 
-memoria.
-
 \subsection{Import Address Table (IAT)}
 Para que un proceso llame a funciones de una DLL, Windows utiliza la 
 \textbf{Import Address Table (IAT)}. La IAT contiene punteros a las funciones 
@@ -74,3 +52,10 @@ eficiente con sus DLLs:
 Esto garantiza que el proceso pueda utilizar código externo (DLLs) sin necesidad 
 de incorporarlo estáticamente en su binario, manteniendo modularidad y eficiencia 
 en el uso de memoria.
+
+
+
+
+
+
+
