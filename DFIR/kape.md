@@ -15,7 +15,11 @@ Get-KAPEUpdate.ps1
 ```
 ## `.tkape` files
 
+https://ericzimmerman.github.io/KapeDocs/#!Pages/2.1-Targets.md
+
 Los archivos Target KAPE (.tkape) definen qué artefactos deben recolectarse y cómo deben copiarse. Incluyen rutas, variables dinámicas, exclusiones y prioridades. Los Targets determinan la fase de adquisición.
+
+Interesantes: !SANS_Triage, EventLogs
 
 ## `.mkape` files
 
@@ -40,3 +44,4 @@ KAPE realiza primero una pasada copiando los artefactos que puede extraer median
 ## GUI
 
 Los comandos tambien se puedes crear desde la interfaz grafica 
+
