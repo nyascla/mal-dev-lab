@@ -2,33 +2,25 @@
 
 \chapter{Introducción}
 
-\section{Adversary emulation}
-
-La Emulación de Adversarios reproduce, de forma controlada, el comportamiento de actores maliciosos reales para evaluar la eficacia de las defensas existentes. Basándose en inteligencia de amenazas y TTPs documentados, permite replicar ataques específicos dentro del entorno de la organización, verificando de manera práctica si soluciones como EDR, SIEM o sistemas de detección de integridad los detectarían o mitigarían. Este enfoque no solo identifica brechas y configuraciones deficientes, sino que también contribuye a la mejora de los procesos de seguridad y al entrenamiento y concienciación del personal, conectando la inteligencia de amenazas con la defensa activa.
-
 \section{Objetivos del trabajo}
 
-El objetivo de este trabajo es desarrollar un escenario didáctico que permita a
-los analistas de ciberseguridad mejorar sus capacidades de deteccion e investigación
-mediante la comprensión del proceso completo de creación de un ciberataque. El
-resultado final del proyecto será un conjunto de artefactos forenses de los
-sistemas infectados, que servirá como base para ejercicios de análisis forense
-(blue team).
+El objetivo de este trabajo es desarrollar un escenario didáctico que permita a los analistas de ciberseguridad mejorar sus capacidades de detección e investigación mediante la comprensión del proceso completo de creación de un ciberataque. El resultado final del proyecto será un conjunto de artefactos forenses de los sistemas infectados, que servirá como base para ejercicios de análisis forense (blue team).
 
-Para generar dicho recurso, el núcleo del trabajo se centrará en la concepción,
-diseño y desarrollo de un ciberataque realista, su ejecución controlada en un
-sistema víctima y la documentación íntegra del proceso ofensivo llevado a cabo. 
-De este modo, quien reciba los artefactos forenses podrá analizar la infección 
-desde el punto de vista del analista forense, pero también interpretar las acciones del atacante, entendiendo mejor
-el cómo y el porqué de cada artefacto encontrado.
+Para generar dicho recurso, el núcleo del trabajo se centrará en la concepción, diseño y desarrollo de un ciberataque realista, su ejecución controlada en un sistema víctima y la documentación íntegra del proceso ofensivo llevado a cabo. De este modo, quien reciba los artefactos forenses podrá analizar la infección desde el punto de vista del analista forense, pero también interpretar las acciones del atacante, entendiendo mejor el cómo y el porqué de cada artefacto encontrado.
 
-En definitiva, este trabajo busca aproximar al analista a la mentalidad del
-atacante, con el fin de reforzar sus habilidades de detección, interpretación y
-respuesta ante amenazas reales.
+En definitiva, este trabajo busca aproximar al analista a la mentalidad del atacante, con el fin de reforzar sus habilidades de detección, interpretación y respuesta ante amenazas reales.
 
-\section{Infraestructura}
+\section{Adversary Emulation}
 
-La infraestructura utilizada para el ejercicio se compone de dos entornos diferenciados: la red víctima y la infraestructura del adversario.
+Este trabajo se sitúa dentro del ámbito de la \textit{simulación de adversarios} (\textit{Adversary Simulation}), una metodología que permite evaluar de forma controlada tanto la eficacia de los sistemas de defensa como las capacidades del personal ante incidentes de seguridad. 
+
+Aunque esta técnica puede aplicarse para probar sistemas, en este caso concreto el enfoque principal es la formación del personal. Se utiliza un escenario de ataque realista para que los analistas practiquen la detección, el análisis y la interpretación de un incidente completo, mejorando sus habilidades y comprensión del comportamiento de un atacante.
+
+\section{Enunciado}
+
+Este recurso está diseñado para servir como material práctico de entrenamiento para analistas de seguridad. A continuación se presenta una breve descripción de la infraestructura de la organización víctima, junto con un enlace al conjunto completo de artefactos recopilados durante el incidente.
+
+El objetivo del analista es reconstruir la historia completa del ataque a partir de dichos artefactos. Para facilitar este proceso, el trabajo se organiza en dos capítulos principales: en el capítulo \textit{El Incidente} \ref{chap:incidente} se detalla de forma minuciosa cada acción realizada por el atacante, sus objetivos, las técnicas MITRE ATT\&CK asociadas y los artefactos donde pueden encontrarse evidencias; por otra parte, el capítulo \textit{Red Team Notes} \ref{chap:red-team} ofrece una visión desde la perspectiva del atacante, explicando los procedimientos empleados para ejecutar el ataque.
 
 \subsection*{Infraestructura de la víctima}
 
@@ -36,17 +28,35 @@ Como base del entorno corporativo se emplea \textbf{GOAD-Light}, una versión re
 
 Las características completas del entorno GOAD-Light están documentadas por sus autores \cite{goad-light}.
 
-Dentro del dominio se integra una \textbf{workstation Windows 11}, actualizada y con todas las protecciones nativas habilitadas (SmartScreen, Defender, ASR, Credential Guard, etc.). Esta máquina actúa como punto de entrada inicial del ataque y como elemento de interacción principal del usuario víctima.
+Dentro del dominio se integra una \textbf{workstation Windows 11}, actualizada y con todas las protecciones nativas habilitadas. Esta máquina actúa como punto de entrada inicial del ataque y como elemento de interacción principal del usuario víctima.
 
-\subsection*{Infraestructura del adversario}
-
-La infraestructura del atacante se despliega en \textbf{AWS} para garantizar aislamiento, escalabilidad y control de tráfico. Se compone de dos sistemas diferenciados:
+Para maximizar la visibilidad durante el análisis forense y aumentar el volumen de artefactos disponibles, se incorporan dos componentes adicionales:
 
 \begin{itemize}
-    \item \textbf{Servidor de entrega y control inicial}: utilizado como CDN improvisada y punto de conexión para la \textit{reverse shell} del \textit{stage 1}. Aloja los binarios iniciales y recibe las conexiones interactivas del atacante.
-    \item \textbf{Servidor C2 del implante}: instancia separada destinada a ejecutar el servidor de \textit{Command and Control} del implante principal (Sliver). Gestiona comunicación, tareas, carga de módulos y telemetría durante el \textit{stage 2}.
+    \item \textbf{Suricata}: desplegada para la monitorización y captura del tráfico de red, permitiendo correlacionar actividad sospechosa, conexiones salientes y patrones asociados al \textit{command and control}.
+    \item \textbf{Sysmon}: configurado en la workstation para generar telemetría enriquecida de eventos de Windows (creación de procesos, carga de DLLs, conexiones de red, modificaciones en el registro, entre otros), facilitando la reconstrucción temporal y contextual del ataque.
 \end{itemize}
 
+\subsection{Recopilación de evidencias}
+
+En el siguiente enlace se encuentran todas las evidencias recopiladas del incidente:
+
+\begin{center}
+\href{https://drive.google.com/drive/folders/18eekh9kx51psuuTZ_nHl3NHEQLJb7zRV?usp=drive_link}{\textbf{Carpeta de evidencias del incidente}}
+\end{center}
+
+Cada carpeta corresponde a un equipo de la organización y lleva su nombre. Dentro de cada una se incluyen todos los artefactos adquiridos.
+
+Los artefactos consisten en un volcado de la memoria RAM del equipo y otros elementos relevantes obtenidos durante la adquisición.
+
+La recopilación se ha realizado con la herramienta \textbf{KAPE}, utilizando archivos \texttt{.tkape}. Estos archivos definen qué artefactos se recolectan, desde qué rutas y con qué reglas. Una explicación detallada sobre qué es un Target de KAPE puede consultarse en \cite{kape-targets}.
+
+En este caso, se han utilizado los siguientes Targets:
+
+\begin{itemize}
+    \item \texttt{\string!SANS\_Triage} \cite{sans_triage_kape}
+    \item \texttt{EventLogs} \cite{eventlogs_kape}
+\end{itemize}
 
 \chapter{Marco Teórico}
 
@@ -87,9 +97,17 @@ La Inteligencia de Amenazas es esencial para la simulación de adversarios (\tex
 Esta información, estructurada mediante MITRE ATT\&CK y contextualizada a través de la \textit{Cyber Kill Chain}, permite diseñar simulaciones realistas, evaluar defensas, identificar brechas y entrenar al personal frente a amenazas alineadas con el panorama actual.
 
 
-\chapter{Creación de un Adversario}
+\chapter{El Incidente}
 
-La definición de un adversario propio resulta esencial en un entorno didáctico y controlado, especialmente cuando el objetivo es diseñar escenarios de emulación adaptados a requisitos concretos. Frente a la simple reproducción de TTPs pertenecientes a un APT real, la construcción de un adversario personalizado ofrece una mayor flexibilidad, permite modular la complejidad técnica y facilita focalizar los ejercicios en las capacidades específicas que se desean analizar o entrenar. Además, posibilita incorporar técnicas actuales sin estar limitado a un perfil cerrado, integrando comportamientos representativos de múltiples actores con un enfoque puramente formativo.
+\label{chap:incidente}
+
+\section{Descripción del Atacante}
+
+En este trabajo no se utiliza un adversario existente ni se replica el comportamiento de un APT conocido. En su lugar, se crea un atacante propio con el fin de construir un escenario didáctico totalmente adaptado a los objetivos del ejercicio. Esto permite ajustar, durante la elaboración del ataque, sus tácticas, técnicas y decisiones operativas para que encajen exactamente con las necesidades formativas del proyecto.
+
+Aunque el adversario no está definido por completo al inicio, el ataque presentado sí constituye un escenario cerrado: la intrusión ya ha ocurrido y todas las evidencias están disponibles para su análisis. Lo que no se ofrece al lector es un perfil prefabricado del atacante. Su identidad, motivaciones y capacidades no se explican de antemano porque forman parte del propio trabajo del analista.
+
+El analista, por tanto, adopta un papel activo. A partir de los artefactos, trazas y comportamientos observados, debe reconstruir cómo opera este adversario y entender la secuencia completa del ataque. Este enfoque convierte el ejercicio en una práctica guiada de análisis de incidentes, donde el objetivo principal es que el analista desarrolle criterio, metodología y capacidad de interpretación frente a un compromiso realista.
 
 \section{Descripción del Ataque (Resumen Ejecutivo)}
 
@@ -99,20 +117,22 @@ En la segunda fase, el adversario despliega su componente principal, diseñado p
 
 Este modelo de ataque permite evaluar la eficacia de las defensas técnicas, la adecuación de los procesos internos y la capacidad de respuesta del personal ante un incidente que replica patrones habituales en intrusiones modernas.
 
-\section{Mapeo del Ataque a la CKC y MITRE ATT\&CK}
+\section{Mapeo del Ataque a la Cyber Kill Chain y MITRE ATT\&CK}
+
+Esta sección documenta de forma estructurada todas las acciones realizadas durante el ataque, utilizando la \textit{Cyber Kill Chain} (CKC) como marco cronológico general. Para cada fase se describen los objetivos del atacante, las técnicas MITRE ATT\&CK empleadas y los artefactos donde la actividad podría quedar registrada.  
+El propósito es ofrecer una referencia clara para analistas de DFIR, facilitando la correlación entre actividad ofensiva y evidencias disponibles en el sistema comprometido.
 
 \subsection{Reconocimiento}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-reconocimiento} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-reconocimiento}.}
-
+para nuestro caso concreto no compete
 
 \subsection{Armamento}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-armamento} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-armamento}.}
+seria mayotia de los temas tratados en Red Team Notes
 
 \subsection{Entrega}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-entrega} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-entrega}.}
+
 
 \begin{leftbar}
     \begin{description}
@@ -122,9 +142,15 @@ Este modelo de ataque permite evaluar la eficacia de las defensas técnicas, la 
     \end{description}
 \end{leftbar}
 
-\subsection{Explotación}
+\textbf{Artefactos relevantes.}  
+\begin{itemize}
+    \item Logs
+    \item Entradas de registro
+    \item Capturas de red (Suricata)
+    \item Eventos de Sysmon
+\end{itemize}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-explotacion} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-explotacion}.}
+\subsection{Explotación}
 
 \subsubsection{Stage 1}
 
@@ -170,7 +196,6 @@ Este modelo de ataque permite evaluar la eficacia de las defensas técnicas, la 
 
 \subsection{Instalación}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-instalacion} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-instalacion}.}
 
 \subsubsection{Stage 2}
 
@@ -225,7 +250,6 @@ Este modelo de ataque permite evaluar la eficacia de las defensas técnicas, la 
 
 \subsection{Mando y Control (C2)}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-c2} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-c2}.}
 
 \begin{leftbar}
     \begin{description}
@@ -241,14 +265,15 @@ Este modelo de ataque permite evaluar la eficacia de las defensas técnicas, la 
 
 \subsection{Acciones sobre Objetivos}
 
-\textit{Consultar la actividad del Red Team en la Sección~\ref{sec:red-team-acciones} y el análisis del Blue Team en la Sección~\ref{sec:blue-team-acciones}.}
 
  
 \chapter{Red Team Notes}
 
+\label{chap:red-team}
+
 En esta sección se presentan todos los detalles relacionados con el desarrollo técnico del ataque, incluyendo la justificación de las decisiones adoptadas y las referencias a los repositorios necesarios para comprender y reproducir las técnicas empleadas.
 
-\section{Vectores de Acceso Inicial en Ejercicios Red Team: Justificación del Uso de BadUSB}
+\section{Acceso Inicial: Justificación del Uso de BadUSB}
 
 El vector de \textit{Initial Access} seleccionado para este proyecto se basa en el uso de un dispositivo \textit{BadUSB}. Aunque no se trata de un método habitual en operaciones reales —debido a la necesidad de acceso físico, la existencia de controles como el bloqueo de puertos USB o la restricción de combinaciones como \texttt{Win + R}— su utilización resulta especialmente adecuada en un contexto didáctico.
 
@@ -410,69 +435,264 @@ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs
 
 solo pueden cargarse desde \texttt{System32}, lo que imposibilita su secuestro mediante \textit{DLL Hijacking} tradicional.
 
-\subsection{Weaponización de DLL Hijacking}
+\section{Weaponización de DLL Hijacking}
 
-Para convertir este mecanismo en una técnica ofensiva se emplean tres enfoques complementarios: \textit{Side Loading}, \textit{DLL Proxying} y \textit{Reflective Loading}.
+Para transformar este mecanismo en una técnica ofensiva se emplean tres enfoques complementarios: \textit{Side Loading}, \textit{DLL Proxying} y \textit{Reflective Loading}.
 
-para el ataque concreto este trabajo se exploto la aplicacion legitima calibre y se su dll (https://hijacklibs.net/entries/3rd_party/calibre/calibre-launcher.html)
+En el ataque desarrollado en este trabajo se explota la aplicación legítima \textit{Calibre} y, en concreto, su librería \texttt{calibre-launcher.dll}. La vulnerabilidad asociada a esta DLL está documentada en la plataforma \textit{HijackLibs} \cite{hijacklibs-calibre-launcher}, que mantiene un catálogo actualizado de DLLs susceptibles de ser secuestradas.
 
-% -----------------------------------------------------------
-\subsubsection{Side Loading}
+El objetivo es conseguir que un ejecutable legítimo, ya presente en el sistema, cargue una DLL bajo control del atacante. En este escenario, la DLL maliciosa actúa como stage 2 del ataque. Su cometido es establecer una conexión con el C2 y descargar la carga final: una DLL que contiene un implante de Sliver. Esta DLL descargada no se escribe en disco en ningún momento; la propia DLL maliciosa la carga directamente en memoria mediante reflective loading y transfiere la ejecución al implante. De este modo, un proceso legítimo termina ejecutando código malicioso sin dejar artefactos en el sistema de archivos.
 
-El \textit{Side Loading} consiste en colocar una DLL maliciosa en el mismo directorio que el ejecutable objetivo, confiando en que el orden de carga priorizará ese directorio.  
-Una limitación habitual es la falta de permisos de escritura en las rutas donde residen los binarios legítimos. Sin embargo, estas rutas sí permiten lectura, por lo que es posible copiar el ejecutable legítimo a un directorio controlado por el atacante, donde sí se pueden introducir DLLs maliciosas.
-
-Para explotar correctamente esta técnica, la DLL maliciosa debe utilizar exactamente el mismo nombre que la DLL legítima requerida por el programa.
-
-por ejemplo podemos mover los archivos de la ruta legitima a una ruta que no sea muy sospechosa
-
-robocopy "C:\Program Files\Calibre2" "C:\Users\test\Documents\zz" /E /COPY:DAT /R:3 /W:5
+De este modo, se consigue que un proceso legítimo —en este caso, \textit{Calibre}— ejecute dentro de su propio espacio de direcciones un \textit{implant} de \textit{Sliver}, manteniendo la operación completamente \textit{fileless}.
 
 % -----------------------------------------------------------
-\subsubsection{DLL Proxying}
+\subsection{Side Loading}
 
-Sustituir una DLL legítima por una maliciosa puede causar fallos, ya que el programa depende de las funciones exportadas por la DLL original.  
-Para evitarlo, se utiliza \textit{DLL Proxying}. Esta técnica consiste en compilar una DLL maliciosa que:
+El primer objetivo es conseguir que un ejecutable legítimo cargue nuestra DLL maliciosa. La técnica de \textit{Side Loading} se basa en colocar una DLL bajo control del atacante en el mismo directorio que el ejecutable objetivo, utilizando exactamente el mismo nombre que la DLL legítima que el programa espera cargar. Para ello, es necesario identificar previamente aplicaciones vulnerables a este tipo de \textit{DLL Hijacking}.
+
+Una limitación habitual es que los directorios donde residen los binarios legítimos no permiten la escritura por parte de usuarios sin privilegios elevados, lo que impide introducir la DLL maliciosa directamente. No obstante, estos directorios sí permiten lectura, de modo que el atacante puede copiar el ejecutable legítimo a una ubicación donde sí disponga de permisos de escritura y, posteriormente, insertar allí la DLL manipulada.
+
+Una vez trasladado el ejecutable a un directorio controlado, basta con colocar la DLL maliciosa con el mismo nombre que la DLL legítima requerida por el programa. De este modo, al ejecutarse, el binario cargará la versión maliciosa en lugar de la original.
+
+Por ejemplo, es posible copiar los archivos de la aplicación a un directorio menos restrictivo mediante:
+
+\begin{verbatim}
+robocopy "C:\Program Files\Calibre2" ^
+         "%LOCALAPPDATA%\Microsoft\WindowsApps" ^
+         /E /COPY:DAT /R:3 /W:5
+\end{verbatim}
+
+
+% -----------------------------------------------------------
+\subsection{DLL Proxying}
+
+Con la técnica de \textit{Side Loading} hemos logrado que un ejecutable legítimo cargue una DLL maliciosa. Sin embargo, esto introduce un nuevo problema: al sustituir la DLL original, el programa deja de disponer de las funciones que necesita para funcionar correctamente. Si la DLL maliciosa no reproduce esas exportaciones, la aplicación fallará o directamente no arrancará.
+
+Para resolver este problema se utiliza \textit{DLL Proxying}. Esta técnica consiste en compilar una DLL maliciosa que:
 
 \begin{itemize}
-    \item Inyecta el comportamiento deseado (payload).
-    \item Replica todas las exportaciones de la DLL legítima.
-    \item Redirige cada exportación a la DLL original renombrada.
+\item Ejecuta las operaciones ofensivas necesarias (en nuestro caso, cargar en memoria el implante final).
+\item Mantiene toda la funcionalidad original de la DLL legítima, reenviando sus exportaciones reales.
 \end{itemize}
 
-El resultado es un comportamiento equivalente a un \textit{man-in-the-middle} dentro del propio mecanismo de carga de DLLs.
+\subsubsection*{Ficheros \texttt{.def}}
 
+Para que una DLL maliciosa actúe como sustituta de otra es necesario replicar exactamente sus exportaciones. Esto se consigue mediante un fichero \texttt{.def} (Module Definition File), que permite definir explícitamente qué funciones expone la DLL y, opcionalmente, redirigir cada una a otra DLL.
+
+La estructura básica de un fichero \texttt{.def} es:
+
+\begin{verbatim}
+EXPORTS
+FuncB = real-old.FuncB @2
+FuncC = real-old.FuncC @3
+\end{verbatim}
+
+Cada línea indica:
+
+\begin{itemize}
+\item el nombre que exporta la DLL maliciosa,
+\item la función real a la que se redirige,
+\item y el ordinal asociado.
+\end{itemize}
+
+El ordinal debe conservarse porque algunos programas importan funciones por número en lugar de por nombre.
+
+Durante el proyecto se utilizó un script en Python para generar automáticamente estos ficheros \texttt{.def}. El script está disponible en \cite{exports_py}.
+Asimismo, puede encontrarse una demostración completa de \textit{Side Loading} + \textit{DLL Proxying} en \cite{dll_proxy_demo}.
+
+En esa prueba de concepto se crea un ejecutable que importa tres funciones (\texttt{FuncA}, \texttt{FuncB}, \texttt{FuncC}) y una DLL legítima que las implementa. La DLL maliciosa se compila de forma que:
+
+\begin{itemize}
+\item exporta su propia versión de \texttt{FuncA} (donde podría incluirse cualquier lógica ofensiva),
+\item redirige \texttt{FuncB} y \texttt{FuncC} a la DLL real mediante el fichero \texttt{proxy.def}.
+\end{itemize}
+
+Una compilación típica sería:
+
+\begin{verbatim}
+x86_64-w64-mingw32-gcc -shared -o bin/malicious.dll
+dll-malicious.c proxy.def -s
+\end{verbatim}
+
+Para finalizar la demostración, basta con renombrar \texttt{malicious.dll} a \texttt{dll-real.dll} y colocarlo junto al ejecutable vulnerable: en ese momento, \textit{Side Loading} y \textit{DLL Proxying} quedan operativos.
+
+El resultado es similar a un \textit{man-in-the-middle} dentro del propio mecanismo de carga de DLLs: el programa cree estar usando la DLL legítima, pero en realidad está ejecutando código controlado por el atacante mientras conserva su funcionalidad original.
 % -----------------------------------------------------------
-\subsubsection{Reflective Loading}
+\subsection{Reflective Loading}
 
-Una limitación inherente al diseño de Windows es que las DLL solo pueden cargarse desde disco mediante las API estándar.  
-La técnica de \textit{Reflective Loading} elude esta restricción cargando la DLL directamente desde memoria, sin necesidad de que exista en disco. Esto permite evadir firmas estáticas y gran parte de las detecciones basadas en \textit{file scanning}.
+Una vez logramos que un proceso legítimo cargue una DLL maliciosa sin alterar su flujo normal, el siguiente paso es introducir la carga ofensiva real. En este escenario, el objetivo es cargar una DLL directamente en el espacio de direcciones del proceso, sin que exista físicamente en disco.
+
+Windows impone una limitación importante: las DLL solo pueden cargarse mediante las APIs estándar (\texttt{LoadLibrary} y derivados), las cuales requieren que el archivo exista en el sistema de ficheros. La técnica de \textit{Reflective Loading} evita esta restricción cargando la DLL íntegramente desde memoria. De este modo, es posible ejecutar código arbitrario sin generar artefactos en disco, reduciendo la exposición a firmas estáticas y detecciones basadas en \textit{file scanning}.
+
+Como referencia, se ha desarrollado una demostración en C que implementa la carga manual de una DLL sin utilizar las funciones estándar del sistema~\cite{walkingloader}. El código puede consultarse en el repositorio mencionado.
+
+\subsubsection*{Proceso de carga reflectiva}
+
+Para implementar \textit{Reflective Loading}, el programa debe llevar a cabo las siguientes etapas:
+
+\begin{enumerate}
+    \item \textbf{Preparar la DLL en memoria.}  
+    El archivo PE de la DLL debe estar ya cargado en memoria, normalmente como un bloque continuo de bytes.
+
+    \item \textbf{Procesar las cabeceras.}  
+    Se interpretan las estructuras PE iniciales para obtener información crítica, incluyendo el tamaño total que ocupará la DLL en memoria (\texttt{IMAGE\_OPTIONAL\_HEADER64.SizeOfImage}).
+
+    \item \textbf{Reservar memoria para la DLL.}  
+    Se solicita al proceso un bloque de memoria con el tamaño indicado por \texttt{SizeOfImage}, donde se cargará la DLL reconstruida.
+
+    \item \textbf{Copiar las cabeceras.}  
+    Las cabeceras del PE se copian al nuevo bloque de memoria, ya que algunas estructuras deberán ser modificadas durante la carga.
+
+    \item \textbf{Mapear las secciones.}  
+    Utilizando \texttt{IMAGE\_FIRST\_SECTION}, se obtiene la dirección del primer \texttt{IMAGE\_SECTION\_HEADER}.  
+    Para cada sección:
+    \begin{itemize}
+        \item Se leen los offsets y tamaños desde el PE en memoria.
+        \item Se copian los datos a la ubicación adecuada dentro del bloque reservado, respetando el RVA definido en las cabeceras.
+    \end{itemize}
+
+    \item \textbf{Resolver la tabla de importaciones.}  
+    La estructura \texttt{IMAGE\_IMPORT\_DESCRIPTOR} define los módulos y funciones requeridos por la DLL.  
+    Para cada módulo importado:
+    \begin{itemize}
+        \item Se comprueba si ya está cargado en el proceso; si no, se carga.
+        \item Se obtiene su \textit{base address}.
+        \item Se recorren las tablas \texttt{PIMAGE\_THUNK\_DATA} para resolver cada función:
+        \begin{itemize}
+            \item El nombre de la función se obtiene de la estructura original.
+            \item Se localiza su dirección en el módulo cargado.
+            \item Se escribe esa dirección en la IAT reconstruida.
+        \end{itemize}
+    \end{itemize}
+    Esto garantiza que, cuando la DLL cargada reflectivamente invoque funciones externas, las llamadas apunten a direcciones válidas.
+
+    \item \textbf{(Opcional) Aplicar relocaciones.}  
+    Si la DLL no se carga en su \texttt{ImageBase} preferido, deben procesarse las entradas de la tabla de relocaciones.  
+    En esta explicación se omite por simplicidad, aunque sería necesario en una implementación completa.
+
+    \item \textbf{Invocar \texttt{DllMain}.}  
+    Con la DLL completamente mapeada en memoria y las dependencias resueltas, solo queda ejecutar:  
+    \texttt{DllMain(baseAddress, DLL\_PROCESS\_ATTACH, NULL);}  
+\end{enumerate}
+
+En este punto, la DLL queda cargada y ejecutándose íntegramente desde memoria, sin intervención de las APIs estándar de Windows y sin necesidad de que exista como archivo en disco.
+
+Esta sección no pretende ofrecer una explicación completamente sistemática de la técnica, sino proporcionar una visión operativa que permita comprender sus fundamentos. Para profundizar en el funcionamiento interno del proceso, se recomienda revisar en el anexo la sección dedicada a los ficheros PE, así como examinar detenidamente el código fuente del repositorio \cite{walkingloader}. En dicha implementación se emplean las estructuras oficiales definidas en \texttt{winnt.h}, por lo que resulta especialmente útil comparar estas estructuras con los offsets y campos especificados en la documentación del formato PE. Para ello, puede consultarse la infografía técnica incluida en \cite{peinfografia}, lo que facilita relacionar las estructuras utilizadas en la implementación con sus equivalentes formales dentro del estándar PE definido por Microsoft.
+
+\section{Syscalls y evasión de EDR}
+
+En este punto del ataque, el implante ya está completamente desplegado: se ejecuta en el sistema comprometido, mantiene comunicación estable con el C2 y está preparado para iniciar técnicas de post-explotación. Antes de avanzar, es imprescindible comprender los mecanismos modernos de detección utilizados por soluciones EDR, especialmente aquellos basados en \textit{hooking} de APIs.
+
+Los EDR actuales instrumentan funciones críticas de \texttt{kernel32.dll}, \texttt{kernelbase.dll} y \texttt{ntdll.dll} mediante \textbf{API hooking}. De este modo, cada vez que el implante invoca funciones como \texttt{CreateProcessW}, \texttt{VirtualAllocEx}, \texttt{NtWriteVirtualMemory} o similares, el EDR intercepta la llamada, analiza los parámetros y decide si permitir, alertar o bloquear la operación.
+
+Para minimizar la superficie de detección, los operadores utilizan diferentes grados de interacción directa con el sistema operativo. Estos niveles pueden organizarse en cuatro categorías progresivas, desde las API de mayor visibilidad hasta técnicas de evasión más avanzadas.
+
+\subsection{Nivel 1 – Win32 API}
+
+\begin{itemize}
+\item Conjunto de funciones de alto nivel diseñadas para desarrollo estándar.
+\item Ejemplos típicos: \texttt{CreateFileW}, \texttt{VirtualAllocEx}, \texttt{WriteProcessMemory}.
+\item Resueltas estática o dinámicamente desde \texttt{kernel32.dll} o \texttt{kernelbase.dll}.
+\item Constituyen el nivel más monitorizado: cualquier EDR comercial detecta su uso de forma prácticamente completa.
+\end{itemize}
+
+\cite{ref:win32api} – Demo de uso Win32 API.  
+
+\subsection{Nivel 2 – Native API}
+
+\begin{itemize}
+\item Funciones de bajo nivel exportadas por \texttt{ntdll.dll}.
+\item Siguen el prefijo \texttt{Nt} o \texttt{Zw}, como \texttt{NtCreateFile} o \texttt{NtAllocateVirtualMemory}.
+\item Representan los \textit{wrappers} oficiales en espacio de usuario que preparan los registros y ejecutan la instrucción \texttt{syscall}.
+\item Aunque ofrecen mayor control, muchos EDR siguen aplicando \textit{hooks} sobre estas funciones críticas.
+\end{itemize}
+
+\cite{ref:nativeapi} – Implementación de Native API para evitar hooks.  
+
+\subsection{Nivel 3 – Direct Syscalls}
+
+\begin{itemize}
+\item Eliminan por completo la dependencia de \texttt{ntdll.dll}.
+\item El operador carga manualmente el \textbf{System Service Number} (SSN) en \texttt{RAX} (x64) o \texttt{EAX} (x86) y ejecuta \texttt{syscall}.
+\item El SSN varía entre versiones y compilaciones de Windows, lo cual requiere enumeración dinámica o bases de datos específicas por build.
+\item Ejemplo habitual para \texttt{NtAllocateVirtualMemory}:
+\begin{lstlisting}[language=C]
+NtAllocateVirtualMemory PROC
+mov r10, rcx
+mov eax, 18h
+syscall
+ret
+NtAllocateVirtualMemory ENDP
+\end{lstlisting}
+\item Los EDR modernos pueden detectar esta técnica comparando el origen de la instrucción \texttt{syscall} mediante ETW/ETW-TI, ya que no proviene de \texttt{ntdll.dll}.
+\end{itemize}
+
+\cite{ref:directsyscalls} – Ejemplo de Direct Syscalls en Windows.  
+
+\subsection{Nivel 4 – Indirect Syscalls}
+
+\begin{itemize}
+\item Variante avanzada de las direct syscalls que reintroduce un retorno controlado hacia \texttt{ntdll.dll}.
+\item El flujo salta a la instrucción original de \texttt{ntdll.dll} inmediatamente después de su propia \texttt{syscall}, preservando la legitimidad aparente del contexto.
+\item Ejemplo simplificado:
+\begin{lstlisting}[language=C]
+EXTERN sysAddrNtAllocateVirtualMemory:QWORD
+
+NtAllocateVirtualMemory PROC
+mov r10, rcx
+mov eax, 18h
+jmp QWORD PTR [sysAddrNtAllocateVirtualMemory]
+NtAllocateVirtualMemory ENDP
+\end{lstlisting}
+\item Desde la perspectiva del EDR (y de ETW), la instrucción \texttt{syscall} parece ejecutarse dentro de \texttt{ntdll.dll}, lo que la vuelve extremadamente difícil de detectar sin medidas basadas en telemetría avanzada o heurísticas de integridad de memoria.
+\end{itemize}
+
+\cite{ref:indirectsyscalls} – Ejemplo de Indirect Syscalls en Windows.
+
+Librerías como HellGate, HaloGate, Freshycalls y SysWhispers3 automatizan la ejecución de direct e indirect syscalls para evadir hooks de EDR en ntdll.dll. Resuelven los SSN y direcciones en tiempo de compilación o carga, generan stubs limpios o reutilizan gadgets legítimos terminados en syscall; ret dentro de secciones no hookeadas de ntdll.dll (técnicas Hell’s Gate, Halo’s Gate y Tartarus’ Gate), permitiendo llamar syscalls sin tocar las funciones exportadas monitorizadas y sin escribir ensamblador manualmente.
+
+Aunque en esta primera versión del ataque no se han empleado \textit{syscalls} directas ni técnicas de \textit{syscall bypass}, entender cómo funcionan los \textit{hooks} en \texttt{ntdll.dll} y las formas de evitarlos es esencial. Estas capacidades son clave para reducir la visibilidad frente a EDR y serán necesarias en futuras versiones del ataque.
+
+\section{Persistencia}
+
+En un entorno Windows existen múltiples métodos para establecer persistencia tras comprometer un sistema. 
+Entre las técnicas más comunes destacan:
+
+\begin{itemize}
+    \item \textbf{Claves de registro} para ejecutar binarios maliciosos al inicio del sistema o sesión.
+    \item \textbf{Servicios} configurados para iniciarse automáticamente.
+    \item \textbf{Tareas programadas} creadas mediante \texttt{schtasks}.
+    \item \textbf{Elementos del menú \textit{Start-up}} o carpetas de inicio.
+    \item \textbf{DLL Hijacking}, aprovechando ejecutables que cargan librerías sin rutas absolutas; si el binario vulnerable se ejecuta al iniciar el sistema.
+\end{itemize}
+
+Aunque el ecosistema de técnicas de persistencia es amplio, en este ataque se optó por un método sencillo, 
+estable y difícil de detectar a simple vista: la creación de una tarea programada que simula una actualización 
+legítima del software instalado en el equipo. Para ello, se configuró una tarea diaria denominada 
+\texttt{CalibreUpdater}, cuyo propósito aparente es ejecutar un componente de actualización del software 
+Calibre, pero que en realidad invoca el \textit{payload} malicioso.
+
+La tarea fue creada mediante el siguiente comando:
+
+\begin{verbatim}
+schtasks /create ^
+  /tn "CalibreUpdater" ^
+  /tr "%LOCALAPPDATA%\Microsoft\WindowsApps\Calibre2\calibre-debug.exe \
+       -c \"import time; time.sleep(86400)\"" ^
+  /sc daily ^
+  /st 09:00
+\end{verbatim}
 
 
-\section{Persistenca}
-
-claves de registro
-
-servicios
-
-tareas programas
-
-strat menu
-
-dll hijacking de un ejecutable que cargue el sistema
-
-
+Este enfoque permite que la persistencia pase desapercibida al camuflarse como una tarea rutinaria de 
+mantenimiento del sistema, lo que reduce la probabilidad de detección durante una inspección superficial.
 \section{Infraestructura C2}
 
-> fata toda la parte de AWS
+> falta desarrollar todas las decisiones de opsec \\
 
-% 
-% 
-% 
-\chapter{Blue Team}
+La infraestructura del atacante se despliega en \textbf{AWS} para garantizar aislamiento, escalabilidad y control de tráfico. Se compone de dos sistemas diferenciados:
 
-\section{Recopilacion de evidencias}
-
-kepe + memoria
-
-la idea seria hacer la pate inversa a la seccion del red team, ahora todo lo que se ha desarrollado buscarlo y demostrarlo con artefactos
+\begin{itemize}
+    \item \textbf{Servidor de entrega y control inicial}: utilizado como CDN improvisada y punto de conexión para la \textit{reverse shell} del \textit{stage 1}. Aloja los binarios iniciales y recibe las conexiones interactivas del atacante.
+    \item \textbf{Servidor C2 del implante}: instancia separada destinada a ejecutar el servidor de \textit{Command and Control} del implante principal (Sliver). Gestiona comunicación, tareas, carga de módulos y telemetría durante el \textit{stage 2}.
+\end{itemize}
