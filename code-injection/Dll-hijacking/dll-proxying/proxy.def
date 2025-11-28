@@ -1,4 +1,0 @@
-EXPORTS
-FuncA=real-old.FuncA @1
-FuncB=real-old.FuncB @2
-FuncC=real-old.FuncC @3
