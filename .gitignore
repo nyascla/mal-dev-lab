@@ -1,76 +1,16 @@
+## Threat Intelligence Reports
+adversary-emulation/threat-intelligence/reports/
+
+## Build results
+bin/
+obj/
 
 # python
 venv
 
-# IDA
-*exe.id0
-*exe.id1
-*exe.id2
-*exe.nam
-*exe.til
+# Latex
+000-docs/main*
+!000-docs/main.tex 
 
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.dll
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# debug information files
-*.dwo
+# VS Code
 .vscode/settings.json
-000-docs/main.aux
-000-docs/main.bbl
-000-docs/main.blg
-000-docs/main.fdb_latexmk
-000-docs/main.fls
-000-docs/main.log
-000-docs/main.pdf
-000-docs/main.synctex.gz
-000-docs/main.toc

@@ -58,6 +58,34 @@ En este caso, se han utilizado los siguientes Targets:
     \item \texttt{EventLogs} \cite{eventlogs_kape}
 \end{itemize}
 
+\subsection{Cómo utilizar este recurso}
+
+Este recurso está pensado para servir como guía de apoyo durante el análisis del incidente y como material de referencia técnica para comprender en detalle cómo se desarrolló el ataque.
+
+El contenido se organiza en dos bloques complementarios:
+
+\begin{itemize}
+    \item \textbf{Bloque 1: Reconstrucción del ciberataque.}  
+    Presenta una visión estructurada del ataque, mapeando cada acción del adversario con las técnicas MITRE ATT\&CK aplicadas y con los artefactos del sistema víctima donde podría encontrarse evidencia relevante. Este bloque está orientado a facilitar el trabajo del analista DFIR durante el proceso de correlación y reconstrucción de los hechos.
+
+    \item \textbf{Bloque 2: Red Team Notes.}  
+    Describe el ataque desde el punto de vista del adversario, explicando el razonamiento, las decisiones técnicas y los procedimientos utilizados en cada fase. Ofrece una visión interna del flujo del ataque y del funcionamiento de cada componente ofensivo.
+\end{itemize}
+
+El documento está diseñado para que el analista pueda avanzar de forma autónoma utilizando únicamente las evidencias del caso. Si en algún momento necesita orientación sobre dónde buscar rastros de una técnica, puede consultar el Bloque~1. Si, en cambio, desea entender en profundidad por qué el atacante actuó de una determinada manera o cómo funciona una técnica concreta, puede acudir al Bloque~2, donde se detalla su implementación desde la perspectiva del red team.
+
+\begin{center}
+\fbox{
+    \begin{minipage}{0.75\textwidth}
+        \centering
+        \textbf{Si deseas analizar el caso sin spoilers, no continúes leyendo.}
+    \end{minipage}
+}
+\end{center}
+
+
+
+
 \chapter{Marco Teórico}
 
 \section{MITRE ATT\&CK}
@@ -98,16 +126,13 @@ Esta información, estructurada mediante MITRE ATT\&CK y contextualizada a trav�
 
 
 \chapter{El Incidente}
-
 \label{chap:incidente}
 
 \section{Descripción del Atacante}
 
 En este trabajo no se utiliza un adversario existente ni se replica el comportamiento de un APT conocido. En su lugar, se crea un atacante propio con el fin de construir un escenario didáctico totalmente adaptado a los objetivos del ejercicio. Esto permite ajustar, durante la elaboración del ataque, sus tácticas, técnicas y decisiones operativas para que encajen exactamente con las necesidades formativas del proyecto.
 
-Aunque el adversario no está definido por completo al inicio, el ataque presentado sí constituye un escenario cerrado: la intrusión ya ha ocurrido y todas las evidencias están disponibles para su análisis. Lo que no se ofrece al lector es un perfil prefabricado del atacante. Su identidad, motivaciones y capacidades no se explican de antemano porque forman parte del propio trabajo del analista.
-
-El analista, por tanto, adopta un papel activo. A partir de los artefactos, trazas y comportamientos observados, debe reconstruir cómo opera este adversario y entender la secuencia completa del ataque. Este enfoque convierte el ejercicio en una práctica guiada de análisis de incidentes, donde el objetivo principal es que el analista desarrolle criterio, metodología y capacidad de interpretación frente a un compromiso realista.
+Aunque el adversario no está definido por completo al inicio, el ataque presentado sí constituye un escenario cerrado: la intrusión ya ha ocurrido y todas las evidencias están disponibles para su análisis.
 
 \section{Descripción del Ataque (Resumen Ejecutivo)}
 
@@ -115,24 +140,215 @@ El escenario planteado reproduce un ataque estructurado en dos fases, diseñado 
 
 En la segunda fase, el adversario despliega su componente principal, diseñado para operar de forma discreta y mantenerse en el sistema sin levantar alertas. Este componente establece persistencia, amplía la capacidad de control del atacante y se integra en procesos legítimos del sistema para dificultar su detección. A partir de este momento, el adversario puede llevar a cabo acciones más avanzadas, como analizar el entorno, escalar privilegios, desplazarse por la red o extraer información.
 
-Este modelo de ataque permite evaluar la eficacia de las defensas técnicas, la adecuación de los procesos internos y la capacidad de respuesta del personal ante un incidente que replica patrones habituales en intrusiones modernas.
-
 \section{Mapeo del Ataque a la Cyber Kill Chain y MITRE ATT\&CK}
 
-Esta sección documenta de forma estructurada todas las acciones realizadas durante el ataque, utilizando la \textit{Cyber Kill Chain} (CKC) como marco cronológico general. Para cada fase se describen los objetivos del atacante, las técnicas MITRE ATT\&CK empleadas y los artefactos donde la actividad podría quedar registrada.  
-El propósito es ofrecer una referencia clara para analistas de DFIR, facilitando la correlación entre actividad ofensiva y evidencias disponibles en el sistema comprometido.
+En esta sección se presenta una referencia técnica que describe el ataque desde el punto de vista del adversario. Se detalla qué acciones llevó a cabo el atacante, cuáles eran sus objetivos en cada fase y qué técnicas MITRE ATT\&CK aplicó. Cada acción se mapea con los artefactos del sistema víctima donde podría encontrarse información relevante sobre dicha actividad, proporcionando una visión clara y útil para el análisis.
 
-\subsection{Reconocimiento}
+La \textit{Cyber Kill Chain} se utiliza como marco para organizar la exposición. El orden elegido es cronológico inverso —del estado final del ataque hacia sus fases iniciales—, ya que este enfoque facilita que el analista comprenda la secuencia real de los hechos: en un escenario DFIR, la investigación siempre comienza desde el impacto final y progresa hacia atrás.
 
-para nuestro caso concreto no compete
+El objetivo de esta sección es ofrecer una guía técnica que relacione de forma directa:
+\begin{itemize}
+    \item Las acciones ofensivas del atacante,
+    \item Las técnicas MITRE ATT\&CK asociadas,
+    \item Los artefactos del sistema donde podría hallarse evidencia de cada acción.
+\end{itemize}
 
-\subsection{Armamento}
+No se trata de una investigación completa, sino de una referencia estructurada que ayuda a entender cómo se manifiestan las técnicas del atacante en el sistema comprometido.
 
-seria mayotia de los temas tratados en Red Team Notes
+\subsection{Acciones sobre el objetivo}
+
+\paragraph{Ransomware} En este punto, el atacante ya ha permanecido un periodo considerable dentro de la organización, llevando a cabo diversas actividades de post‑explotación. En la fase final de su operación ejecuta el cifrado de información crítica en el sistema comprometido.
+
+Para una descripción detallada del procedimiento llevado a cabo por el adversario, consúltese el Capítulo~\ref{chap:red-team}, específicamente la Sección~\ref{sec:ransomware}, donde se analiza el proceso completo con mayor profundidad.
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Impact (TA0040).
+        \item[Técnicas:] Data Encrypted for Impact (T1486).
+        \item[Procedimiento:] Se desplegó un \textit{.NET assembly} dentro del proceso donde residía el implante. Este componente cifró el fichero \texttt{documento\_importante.txt} utilizando criptografía simétrica. La clave simétrica fue posteriormente cifrada con una clave pública de un esquema asimétrico controlado por el atacante. Finalmente, se dejó una nota de rescate con un correo electrónico de contacto.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\subsection{Mando y Control (C2)}
+
+\paragraph{Sliver C2} En este punto, el atacante ya ha superado las fases de explotación e instalación y dispone de un mecanismo persistente que le permite interactuar de forma continua con el sistema víctima mediante un implante de \textit{Sliver}.
+
+Para una descripción detallada del proceso mediante el cual el implante de Sliver se carga en memoria en cada ejecución, evitando la detección por parte del EDR, consúltese el Capítulo~\ref{chap:red-team}, Sección~\ref{sec:reflective}. 
+
+Asimismo, para obtener información sobre la infraestructura de servidores utilizada por el atacante, véase la Sección~\ref{sec:infraestructura}.
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Defense Evasion (TA0005).
+        \item[Técnica:] Reflective Code Loading (T1620).
+        \item[Procedimiento:] La DLL maliciosa carga el implante de Sliver directamente en memoria mediante carga reflexiva, evitando el uso de APIs convencionales de carga de librerías y reduciendo la presencia de artefactos en disco. Este método permite ejecutar el payload de forma sigilosa dentro del proceso legítimo comprometido.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Command and Control (TA0011).
+        \item[Técnicas:]
+        \begin{itemize}
+            \item Application Layer Protocol: Web Protocols (T1071.001).
+            \item Encrypted Channel (T1573).
+        \end{itemize}
+        \item[Procedimiento:] El implante residente en memoria mantiene un canal de comunicación continuo (\textit{beaconing}) con la infraestructura de mando y control (C2). Para evitar su detección, todo el intercambio de información se realiza a través de tráfico HTTPS (T1071.001), encapsulando las órdenes y las respuestas dentro de peticiones y respuestas web aparentemente legítimas. Además, el canal está protegido mediante cifrado (T1573), lo que dificulta la inspección del contenido y permite al atacante operar sin generar patrones de tráfico anómalos.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\subsection{Instalación}
+
+\paragraph{Stage 2} En esta fase, el atacante ya ha superado la etapa de explotación inicial y ha logrado ejecutar código en el sistema víctima, obteniendo una \textit{reverse shell}. A partir de este acceso, procede a preparar el \textit{stage 2} del ataque y a desplegar su \textit{payload} final, cuyo objetivo es establecer un mecanismo de acceso persistente al sistema comprometido.
+
+Para lograrlo, el adversario emplea una combinación de técnicas basadas en \textit{DLL Hijacking}, \textit{Side Loading} y \textit{DLL Proxying}. Un análisis detallado de este procedimiento puede consultarse en el Capítulo~\ref{chap:red-team}, Sección~\ref{sec:dll-hijacking}.
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Defense Evasion (TA0005).
+        \item[Técnica:] Modify Registry or File Permissions: File and Directory Permissions Modification (T1222).
+        \item[Procedimiento:] El atacante traslada un ejecutable legítimo a un directorio donde tiene permisos de escritura. Esto le permite manipular su entorno de carga de librerías y preparar el escenario para el secuestro de DLL.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Execution (TA0002).
+        \item[Técnica:] Ingress Tool Transfer (T1105).
+        \item[Procedimiento:] El atacante descarga una DLL maliciosa (implante de Sliver) dentro del mismo directorio del binario legítimo. La DLL recibe el nombre exacto de la librería que la aplicación espera cargar, preparando el entorno para alterar su flujo de ejecución.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Defense Evasion / Privilege Escalation (TA0005 / TA0004).
+        \item[Técnica:] Hijack Execution Flow: DLL Search Order Hijacking (T1574.001).
+        \item[Procedimiento:] El atacante renombra la DLL legítima y coloca la DLL maliciosa con el nombre original. Debido al orden de búsqueda de DLLs en Windows, la aplicación carga primero la DLL maliciosa, permitiendo al atacante ejecutar su código implantado.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Defense Evasion (TA0005).
+        \item[Técnica:] Masquerading: Match Legitimate Name or Location (T1036.005).
+        \item[Procedimiento:] La DLL maliciosa exporta las mismas funciones que la DLL legítima y actúa como proxy, reenviando llamadas al componente renombrado. Esto reduce los indicadores de anomalía y asegura que el comportamiento externo de la aplicación permanezca funcional mientras el implante ejecuta sus acciones encubiertas.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\paragraph{Persistencia} El atacante establece un mecanismo de persistencia mediante la creación de una tarea programada, garantizando así que su \textit{payload} se ejecute automáticamente tras cada reinicio del sistema y mantenga el acceso al entorno comprometido.
+
+Para una descripción detallada del procedimiento, consúltese el Capítulo~\ref{chap:red-team}, Sección~\ref{sec:persistencia}.
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Persistence (TA0003).
+        \item[Técnica:] Scheduled Task/Job (T1053).
+        \item[Procedimiento:] El atacante crea una tarea programada para ejecutar el binario legítimo modificado en cada reinicio del sistema. De esta forma garantiza que la DLL maliciosa se cargue de nuevo y el implante de Sliver recupere la persistencia tras reinicios.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\subsection{Explotación}
+
+\paragraph{Stage 1} En este punto, el atacante obtiene la primera ejecución de código en el sistema víctima y despliega el \textit{payload} inicial que le permite establecer una reverseshell con el equipo comprometido.
+
+Para una descripción detallada del desarrollo y funcionamiento de este \textit{payload}, véase el Capítulo~\ref{chap:red-team}, Sección~\ref{sec:shellcode}.
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Execution (TA0002).
+        \item[Técnica:] Command and Scripting Interpreter: PowerShell (T1059.001).
+        \item[Procedimiento:] El atacante ejecuta un script de PowerShell automatizado para descargar y lanzar un payload malicioso, aprovechando las capacidades nativas del sistema para evadir controles.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Resource Development / Execution (TA0002, TA0042).
+        \item[Técnica:] Ingress Tool Transfer (T1105).
+        \item[Procedimiento:] El atacante transfiere un binario al sistema comprometido utilizando canales de comunicación permitidos.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Execution (TA0002).
+        \item[Técnica:] User Execution: Malicious File (T1204.002).
+        \item[Procedimiento:] El atacante induce al sistema a ejecutar un archivo aparentemente benigno (descargado desde PowerShell), que en realidad contiene código malicioso diseñado para establecer el acceso inicial.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
+
+\begin{leftbar}
+    \begin{description}
+        \item[Táctica:] Execution (TA0002) / Command and Control (TA0011).
+        \item[Técnica:] Remote Services / Reverse Shell (T1021).
+        \item[Procedimiento:] El atacante ejecuta un payload que establece una reverse shell hacia un servidor remoto, permitiendo el control interactivo del sistema comprometido desde la infraestructura del atacante.
+    \end{description}
+\end{leftbar}
+
+\textbf{Artefactos relevantes}
+\begin{itemize}
+    \item ...
+\end{itemize}
 
 \subsection{Entrega}
 
+\paragraph{BadUSB} En este punto, el atacante interactúa por primera vez con la organización víctima, marcando el inicio del incidente de seguridad. El objetivo de esta acción es introducir el primer \textit{payload} dentro del entorno de la víctima mediante un dispositivo \textit{BadUSB}.
 
+Para un análisis detallado de las decisiones tomadas durante esta fase, véase el Capítulo~\ref{chap:red-team}, Sección~\ref{sec:bad-usb}.
 
 \begin{leftbar}
     \begin{description}
@@ -142,18 +358,6 @@ seria mayotia de los temas tratados en Red Team Notes
     \end{description}
 \end{leftbar}
 
-\textbf{Artefactos relevantes.}  
-\begin{itemize}
-    \item Logs
-    \item Entradas de registro
-    \item Capturas de red (Suricata)
-    \item Eventos de Sysmon
-\end{itemize}
-
-\subsection{Explotación}
-
-\subsubsection{Stage 1}
-
 \begin{leftbar}
     \begin{description}
         \item[Táctica:] Execution (TA0002).
@@ -162,111 +366,26 @@ seria mayotia de los temas tratados en Red Team Notes
     \end{description}
 \end{leftbar}
 
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Execution (TA0002).
-        \item[Técnica:] Command and Scripting Interpreter: PowerShell (T1059.001).
-        \item[Procedimiento:] La carga inicial ejecuta comandos PowerShell para conectarse a la infraestructura del atacante, descargar un archivo malicioso y ejecutarlo en el sistema comprometido.
-    \end{description}
-\end{leftbar}
+\textbf{Artefactos relevantes.}  
+\begin{itemize}
+    \item ... 
+\end{itemize}
 
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Command and Control (TA0011).
-        \item[Técnica:] Ingress Tool Transfer (T1105).
-        \item[Procedimiento:] A través de la conexión establecida, el atacante transfiere un ejecutable adicional desde su servidor de mando y control, el cual actuará como componente de acceso remoto o reverse shell.
-    \end{description}
-\end{leftbar}
+\subsection{Armamento}
 
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Execution (TA0002).
-        \item[Técnica:] User Execution: Malicious File (T1204.002).
-        \item[Procedimiento:] El archivo malicioso descargado es ejecutado en el host, activando la carga útil diseñada para proporcionar al atacante acceso remoto.
-    \end{description}
-\end{leftbar}
+En esta fase, el atacante prepara los \textit{payloads}, herramientas y la infraestructura que utilizará durante el ataque. Al igual que ocurre con la fase de reconocimiento, esta etapa se sitúa más cerca del análisis preventivo que del análisis forense de un incidente.
 
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Command and Control (TA0011).
-        \item[Técnica:] Remote Access Software (T1219).
-        \item[Procedimiento:] El ejecutable estable una comunicación activa con el servidor C2, ofreciendo al atacante una shell interactiva mediante software de acceso remoto legítimo utilizado de forma maliciosa.
-    \end{description}
-\end{leftbar}
+Las acciones llevadas a cabo por el atacante en esta fase se describen en el capítulo \textit{Red Team Notes} (ver Sección~\ref{chap:red-team}), donde se detallan, desde la perspectiva ofensiva, el desarrollo de los \textit{payloads}, las decisiones técnicas tomadas y la infraestructura empleada para ejecutar el ataque.
 
-\subsection{Instalación}
+Desde el punto de vista del analista, esta fase puede apoyarse en servicios externos que realizan escaneos continuos de Internet en busca de infraestructuras maliciosas, como servidores de \textit{Cobalt Strike} u otros \textit{C2} con configuraciones mínimas o pobre \textit{fingerprinting}. Estos servicios permiten a la organización detectar tempranamente posibles activos maliciosos relacionados con campañas activas y, en caso necesario, aplicar medidas preventivas como el bloqueo automático de conexiones hacia o desde dichas infraestructuras.
 
+\subsection{Reconocimiento}
 
-\subsubsection{Stage 2}
+En esta fase, el atacante intenta recopilar información relevante sobre la organización, sus sistemas y posibles vectores de entrada. Desde el punto de vista del analista, estas actividades suelen considerarse parte de un análisis preventivo más que de un análisis de incidente propiamente dicho.
 
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Discovery (TA0007).
-        \item[Técnica:] File and Directory Discovery (T1083).
-        \item[Procedimiento:] El adversario examina directorios de aplicación en busca de DLLs cargadas mediante rutas relativas, identificando candidatos apropiados para manipular el orden de búsqueda de DLLs.
-    \end{description}
-\end{leftbar}
-
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Defense Evasion / Privilege Escalation (TA0005 / TA0004).
-        \item[Técnica:] Hijack Execution Flow: DLL Search Order Hijacking (T1574.001).
-        \item[Procedimiento:] Una vez identificado un binario vulnerable, el atacante inserta una DLL maliciosa con el mismo nombre que la DLL legítima esperada por la aplicación, logrando que sea cargada primero debido al orden de búsqueda de DLLs en Windows.
-    \end{description}
-\end{leftbar}
-
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Defense Evasion (TA0005).
-        \item[Técnica:] Signed Binary Proxy Execution (T1218).
-        \item[Procedimiento:] El binario legítimo se emplea como contenedor para ejecutar la DLL maliciosa, aprovechando su firma y reputación para evadir mecanismos de seguridad basados en confianza.
-    \end{description}
-\end{leftbar}
-
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Defense Evasion (TA0005).
-        \item[Técnica:] Reflective Code Loading (T1620).
-        \item[Procedimiento:] La DLL maliciosa ejecuta el implante de Sliver directamente desde memoria mediante carga reflexiva, evitando la escritura en disco y reduciendo exponencialmente la superficie de detección.
-    \end{description}
-\end{leftbar}
-
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Execution (TA0002).
-        \item[Técnica:] Ingress Tool Transfer (T1105).
-        \item[Procedimiento:] El implante de Sliver o componentes adicionales son transferidos desde la infraestructura del adversario hacia la máquina víctima para completar el proceso de compromiso.
-    \end{description}
-\end{leftbar}
-
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Command and Control (TA0011).
-        \item[Técnica:] Application Layer Protocol (T1071).
-        \item[Procedimiento:] El implante establece un canal de comunicación cifrado con el servidor C2 del atacante para continuar con acciones post-compromiso.
-    \end{description}
-\end{leftbar}
-
-
-\subsection{Mando y Control (C2)}
-
-
-\begin{leftbar}
-    \begin{description}
-        \item[Táctica:] Command and Control (TA0011).
-        \item[Técnicas:]
-            \begin{itemize}
-                \item Application Layer Protocol: Web Protocols (T1071.001).
-                \item Encrypted Channel (T1573).
-            \end{itemize}
-        \item[Procedimiento:] El implante final establece un canal de comunicación (\textit{beaconing}) con el servidor C2. Esta comunicación se tuneliza sobre HTTPS (T1071.001) y utiliza un canal de cifrado (T1573) para ocultar las órdenes y la exfiltración de datos, mimetizando el tráfico web legítimo.
-    \end{description}
-\end{leftbar}
-
-\subsection{Acciones sobre Objetivos}
-
-
+Dentro de esta categoría se incluyen tareas como el monitoreo de actividades de reconocimiento dirigidas a los endpoints expuestos de la organización, la revisión de bases de datos comercializadas por ciberdelincuentes que contengan información relacionada con la empresa y, en general, la supervisión de cualquier actividad externa que pueda indicar la recopilación de información previa a un ataque.
  
+
 \chapter{Red Team Notes}
 
 \label{chap:red-team}
@@ -274,6 +393,7 @@ seria mayotia de los temas tratados en Red Team Notes
 En esta sección se presentan todos los detalles relacionados con el desarrollo técnico del ataque, incluyendo la justificación de las decisiones adoptadas y las referencias a los repositorios necesarios para comprender y reproducir las técnicas empleadas.
 
 \section{Acceso Inicial: Justificación del Uso de BadUSB}
+\label{sec:bad-usb}
 
 El vector de \textit{Initial Access} seleccionado para este proyecto se basa en el uso de un dispositivo \textit{BadUSB}. Aunque no se trata de un método habitual en operaciones reales —debido a la necesidad de acceso físico, la existencia de controles como el bloqueo de puertos USB o la restricción de combinaciones como \texttt{Win + R}— su utilización resulta especialmente adecuada en un contexto didáctico.
 
@@ -295,6 +415,7 @@ El segundo método utilizado fue el \textit{AMSI Bypass – Memory Patching via 
 
 
 \section{Programar shellcodes}
+\label{sec:shellcode}
 
 Un shellcode es una secuencia de instrucciones ensambladas en formato position-independent, capaz de ejecutarse en cualquier ubicación de memoria sin asumir un punto de entrada fijo. Esto permite que, independientemente de dónde sea cargado el bloque de código, su ejecución produzca un comportamiento controlado y determinista, característica esencial en escenarios de explotación y ejecución arbitraria.
 
@@ -436,6 +557,7 @@ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs
 solo pueden cargarse desde \texttt{System32}, lo que imposibilita su secuestro mediante \textit{DLL Hijacking} tradicional.
 
 \section{Weaponización de DLL Hijacking}
+\label{sec:dll-hijacking}
 
 Para transformar este mecanismo en una técnica ofensiva se emplean tres enfoques complementarios: \textit{Side Loading}, \textit{DLL Proxying} y \textit{Reflective Loading}.
 
@@ -527,6 +649,7 @@ Windows impone una limitación importante: las DLL solo pueden cargarse mediante
 Como referencia, se ha desarrollado una demostración en C que implementa la carga manual de una DLL sin utilizar las funciones estándar del sistema~\cite{walkingloader}. El código puede consultarse en el repositorio mencionado.
 
 \subsubsection*{Proceso de carga reflectiva}
+\label{sec:reflective}
 
 Para implementar \textit{Reflective Loading}, el programa debe llevar a cabo las siguientes etapas:
 
@@ -654,6 +777,7 @@ Librerías como HellGate, HaloGate, Freshycalls y SysWhispers3 automatizan la ej
 Aunque en esta primera versión del ataque no se han empleado \textit{syscalls} directas ni técnicas de \textit{syscall bypass}, entender cómo funcionan los \textit{hooks} en \texttt{ntdll.dll} y las formas de evitarlos es esencial. Estas capacidades son clave para reducir la visibilidad frente a EDR y serán necesarias en futuras versiones del ataque.
 
 \section{Persistencia}
+\label{sec:persistencia}
 
 En un entorno Windows existen múltiples métodos para establecer persistencia tras comprometer un sistema. 
 Entre las técnicas más comunes destacan:
@@ -687,6 +811,7 @@ schtasks /create ^
 Este enfoque permite que la persistencia pase desapercibida al camuflarse como una tarea rutinaria de 
 mantenimiento del sistema, lo que reduce la probabilidad de detección durante una inspección superficial.
 \section{Infraestructura C2}
+\label{sec:infraestructura}
 
 > falta desarrollar todas las decisiones de opsec \\
 
@@ -696,3 +821,11 @@ La infraestructura del atacante se despliega en \textbf{AWS} para garantizar ais
     \item \textbf{Servidor de entrega y control inicial}: utilizado como CDN improvisada y punto de conexión para la \textit{reverse shell} del \textit{stage 1}. Aloja los binarios iniciales y recibe las conexiones interactivas del atacante.
     \item \textbf{Servidor C2 del implante}: instancia separada destinada a ejecutar el servidor de \textit{Command and Control} del implante principal (Sliver). Gestiona comunicación, tareas, carga de módulos y telemetría durante el \textit{stage 2}.
 \end{itemize}
+
+\section{Post Explotacion}
+
+\subsection{Exfiltracion}
+
+\subsection{Ransomware}
+\label{sec:ransomware}
+

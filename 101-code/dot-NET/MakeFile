@@ -1,0 +1,8 @@
+# Opción A: Usando csc.exe de Windows (el más compatible)
+wine csc.exe /target:exe /out:HelloSliver.exe /platform:anycpu HelloSliver.cs
+
+# Opción B: Usando .NET 6+ SDK (recomendado 2025)
+dotnet new console -o HelloSliverTmp
+cp HelloSliver.cs HelloSliverTmp/Program.cs
+dotnet publish HelloSliverTmp -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o .
+# → genera HelloSliverTmp.exe (también funciona perfecto)

@@ -3,8 +3,8 @@ import http.server
 import socketserver
 
 PORT = 8000
-DIRECTORY = "/home/llorens/projects/mal-dev-lab/c2-sliver/mocks/"  # Carpeta con el binario que quieres servir
-# DIRECTORY1 = "/home/llorens/projects/sliver"  # Carpeta con el binario que quieres servir
+#DIRECTORY = "/home/llorens/projects/mal-dev-lab/c2-sliver/mocks/"  # Carpeta con el binario que quieres servir
+DIRECTORY = "/home/llorens/projects/sliver"  # Carpeta con el binario que quieres servir
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
