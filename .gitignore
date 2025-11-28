@@ -4,6 +4,12 @@ adversary-emulation/threat-intelligence/reports/
 ## Build results
 bin/
 obj/
+*.exe
+*.dll
+*.obj
+
+# Debugg
+*.pdb
 
 # python
 venv
