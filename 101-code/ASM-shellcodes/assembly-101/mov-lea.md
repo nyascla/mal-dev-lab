@@ -1,40 +1,48 @@
+# (MOV vs LEA) Data movement 
 
-## Data movement (MOV vs LEA)
+`LEA`: Calcula una dirección 
+`MOV`: Mueve datos entre registros y memoria.
 
-### MOV
-1. Su función principal es copiar un valor de un lugar a otro.
-2. Puede mover datos entre registros, memoria y registros, o memoria y registros.
-3. Importante: no calcula direcciones, simplemente copia el contenido tal cual.
+## LEA (Load Effective Address)
 
-``` nasm
-; MOV entre registros
-mov eax, ebx        ; eax = ebx
+> No copia datos
 
-; MOV inmediato a registro
-mov eax, 0x12345678 ; eax = constante
+Calcula una dirección y la carga en un registro, Nunca accede a memoria
 
-; MOV desde memoria a registro
-mov eax, [ebx + 0x0]      ; eax = valor en la dirección apuntada por ebx + 0x0
+`[]`: Indica cálculo de dirección (como un paréntesis matemático).
 
-; MOV desde registro a memoria
-mov [ebx + 0x0], eax      ; memoria[ebx + 0x0] = eax
-
-; MOV entre memoria y memoria no permitido directamente
-; Necesita un registro intermedio
-mov eax, [ebx]
-mov [ecx], eax
-
-; MOV con registros parciales
-mov al, 0xFF        ; parte baja de eax
-```
-
-### LEA
-
-1. No copia datos, sino que calcula una dirección según la expresión de direccionamiento y la carga en un registro.
-
-``` nasm
-lea eax, [ebx]              ; eax = dirección contenida en ebx
+``` c
+lea eax, ebx                ; eax = ebx
 lea eax, [ebx + ecx*4]      ; eax = ebx + ecx*4
 lea eax, [ebx + 8]          ; eax = ebx + 8
 lea eax, [ebx + ecx*2 + 16] ; eax = ebx + ecx*2 + 16
+```
+
+## MOV
+
+> No calcula direcciones
+
+Copiar un valor de un lugar a otro.
+
+`[]`: Indica acceso a memoria. Lee o escribe en la dirección contenida
+
+### To Registro
+
+``` c
+mov eax, ebx            ; eax = ebx
+mov eax, 0x12345678     ; eax = constante
+mov al, 0xFF            ; 8 bits menos significativos de eax = 0xFF
+mov ah, 0xFF            ; 8 bits mas significativos de eax = 0xFF
+mov eax, dword [ebx + 0x0]    ; eax = valor en la dirección de memoria [ebx + 0x0](memoria)
+```
+
+### To Memoria 
+``` c
+mov [ebx + 0x0], eax      ; [ebx + 0x0](memoria) = eax
+// Memoria to Memoria
+// Moveremos el cotenido de memoria donde apunto ebx 
+// A la direccion de memoria donde apunta ecx
+// Usaremos eax como registro intermedio
+mov eax, dword [ebx]      ; eax = [ebx](memoria)
+mov dword [ecx], eax      ; [ecx](memoria) = eax
 ```
