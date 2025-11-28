@@ -1,38 +1,41 @@
-
 ifeq ($(OS),Windows_NT)
-    CC = cl
+    EXE        = hola.exe
+    RM         = del /Q
+    NULLDEV    = NUL
+    # Target: MSVC ABI nativo o Windows con Clang
+    TARGET     = -target x86_64-pc-windows-msvc
+    RUN_CMD    = $(EXE)
 else
-    CC = x86_64-w64-mingw32-gcc
+    EXE        = hola.exe
+    RM         = rm -f
+    NULLDEV    = /dev/null
+    # Cross-compilación Windows desde Linux
+    TARGET     = -target x86_64-w64-mingw32
+    RUN_CMD    = wine $(EXE)
 endif
 
-# =======================================
-# Windows
-# =======================================
-CC = cl
-win:
-	@echo "Compilando en Windows con $(CC)"
+# Compilador y flags
+CC      = clang
+CFLAGS  = -Wall -Wextra -O2
+LDFLAGS = -fuse-ld=lld
 
-# =======================================
-# LINUX
-# =======================================
-CC = x86_64-w64-mingw32-gcc
-LDFLAGS = -luser32 
-DLL_FLAGS = -shared $(LDFLAGS)
+# Fuentes y objetos
+SRC     = main.c
+OBJ     = $(SRC:.c=.o)
 
-lin: aa
+all: $(EXE)
 
-aa:
-	@echo "Compilando en Linux con $(CC)"
-
-main.exe: main.c lib.dll
-	
-	@echo "Enlazando el ejecutable final: main.exe"
-	$(CC) main.c lib.dll -o main.exe $(LDFLAGS)
-
-lib.dll: lib.c
-	@echo "Compilando la biblioteca: lib"
-	$(CC) lib.c -o lib.dll $(DLL_FLAGS)
+# Compilación y linking en una sola línea
+$(EXE): $(SRC)
+	@echo "Compilando $(EXE) para $(OS)..."
+	$(CC) $(CFLAGS) $(TARGET) $(SRC) -o $(EXE) $(LDFLAGS)
 
 clean:
 	@echo "Limpiando archivos compilados..."
-	rm -f main.exe lib.dll
+	-$(RM) $(EXE) 2>$(NULLDEV)
+
+run: $(EXE)
+	@echo "Ejecutando $(EXE)..."
+	$(RUN_CMD)
+
+.PHONY: all clean run
