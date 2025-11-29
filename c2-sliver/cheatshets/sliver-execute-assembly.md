@@ -1,3 +1,5 @@
+Sliver sí soporta la ejecución de assemblies .NET a través de comandos como execute-assembly, que inyecta y carga código .NET en memoria (usando herramientas como Donut para generar shellcode).
+
 ```
 use <ID>
 ```
