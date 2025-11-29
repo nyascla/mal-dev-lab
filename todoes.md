@@ -1,0 +1,1 @@
+- [ ] Bug: el stage2 carga varias veces el implante
