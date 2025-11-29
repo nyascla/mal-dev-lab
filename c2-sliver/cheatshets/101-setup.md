@@ -4,8 +4,11 @@
 curl https://sliver.sh/install | sudo bash
 ```
 
-```
-systemctl status sliver
+# Iniciar Sliver
+
+``` bash
+systemctl start sliver
+sliver
 ```
 
 ## Info

@@ -1,12 +1,4 @@
-# Iniciar Sliver
 
-```bash
-systemctl start sliver
-```
-
-```bash
-sliver
-```
 
 # Crear un implante
 
