@@ -1,24 +1,32 @@
-\section*{Flujo de llamadas: User Mode vs Kernel Mode}
+\section{User Mode y Kernel Mode}
+
+El espacio de ejecución en Windows se divide en dos niveles principales: \textbf{User Mode} y \textbf{Kernel Mode}. Cada uno tiene responsabilidades y privilegios distintos.  
+
+En este ejemplo se muestran todas las llamadas que realiza una aplicación para que una función pase de User Mode a Kernel Mode, es decir, el flujo completo desde las librerías de alto nivel hasta la ejecución de operaciones críticas en el núcleo del sistema.
 
 \begin{enumerate}
-    \item \textbf{User Mode (U) - Aplicación y librerías de alto nivel}
+    \item \textbf{User Mode (U) – Aplicaciones y librerías de alto nivel}
     \begin{itemize}
-        \item notepad++.exe: SetLibraryProperty (operaciones internas de la aplicación)
-        \item user32.dll: CallWindowProcW, IsWindowUnicode (interacción con interfaz Windows)
-        \item KernelBase.dll: WriteFile + 0x8d (función de usuario de alto nivel)
-        \item ntdll.dll: ZwWriteFile (interfaz hacia la syscall)
+        \item \texttt{notepad++.exe}: operaciones internas de la aplicación, \\ como: \texttt{SetLibraryProperty}.
+        \item \texttt{user32.dll}: funciones de interacción con la interfaz de Windows, por ejemplo \texttt{CallWindowProcW} o \texttt{IsWindowUnicode}.
+        \item \texttt{KernelBase.dll}: funciones de usuario de alto nivel que abstraen operaciones del sistema, como \texttt{WriteFile + 0x8d}.
+        \item \texttt{ntdll.dll}: proporciona la interfaz directa hacia las syscalls, por ejemplo \texttt{ZwWriteFile}.
     \end{itemize}
 
-    \item \textbf{Kernel Mode (K) - Operaciones de bajo nivel y hardware}
+    \item \textbf{Kernel Mode (K) – Operaciones de bajo nivel y acceso a hardware}
     \begin{itemize}
-        \item FLTMGR.SYS: FltPerformSynchronousIo, FltSetCancelCompletion (filtro de sistema de archivos)
-        \item ntoskrnl.exe: IoCallDriver, NtDeviceIoControlFile, NtWriteFile (operaciones sobre drivers y disco)
+        \item \texttt{FLTMGR.SYS}: manejo de filtros de sistema de archivos, con funciones como \texttt{FltPerformSynchronousIo} y \texttt{FltSetCancelCompletion}.
+        \item \texttt{ntoskrnl.exe}: operaciones sobre drivers y dispositivos, incluyendo \texttt{IoCallDriver}, \texttt{NtDeviceIoControlFile} y \texttt{NtWriteFile}.
     \end{itemize}
 \end{enumerate}
 
-\noindent
-\textbf{Interpretación:} El flujo comienza en User Mode con la aplicación y librerías de alto nivel, y termina en Kernel Mode ejecutando operaciones de escritura en disco con privilegios elevados.
+El flujo típico de ejecución comienza en User Mode, con la aplicación y librerías de alto nivel, y termina en Kernel Mode, donde se realizan operaciones críticas sobre el sistema y el hardware, como la escritura en disco con privilegios elevados.
+Este ejemplo ilustra cómo cada llamada permite que una función pase de User Mode a Kernel Mode, siguiendo la cadena completa de llamadas hasta el núcleo del sistema.
+
 
 \begin{center}
     \includegraphics[width=0.95\textwidth]{figures/fig-syscall-path.png}
+    
+    \vspace{0.3cm}
+    \small{Figura: Captura de la herramienta \textit{Process Monitor (ProMon)} de Sysinternals mostrando el flujo de llamadas de User Mode a Kernel Mode.}
 \end{center}

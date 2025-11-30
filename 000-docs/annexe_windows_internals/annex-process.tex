@@ -1,118 +1,211 @@
-\section{Process}
+\section{Procesos Windows}
+
+Un proceso en Windows representa una entidad de ejecución que actúa como contenedor de los recursos necesarios para que uno o varios hilos puedan ejecutarse. Desde el punto de vista del sistema operativo, un proceso no ejecuta código por sí mismo, sino que proporciona el contexto y los recursos que los hilos utilizan.  
+A continuación se describen sus componentes principales:
 
 \begin{itemize}
-    \item \textbf{EPROCESS:} Estructura que mantiene toda la información de un proceso en el kernel.
-    \item \textbf{Threads:} Representan las hebras de ejecución asociadas al proceso.
-    \item \textbf{Handles:} Son equivalentes a los \textit{file descriptors} en Linux.
-    \item \textbf{Memory:} Gestión del espacio de direcciones y memoria asignada al proceso.
-    \item \textbf{Modules:} Lista de módulos y librerías cargadas en el proceso.
+    \item \textbf{EPROCESS:}  
+    Estructura interna del kernel que representa a un proceso. Contiene información crítica como el identificador del proceso (PID), la lista de hilos asociados, permisos, límites de memoria, una referencia al \textit{Process Environment Block} (PEB), así como metadatos utilizados por el planificador y el gestor de seguridad. Constituye la representación fundamental del proceso en modo kernel.
+
+    \item \textbf{Hilos:}  
+    Conjunto de hilos pertenecientes al proceso. Cada hilo es administrado en modo kernel mediante la estructura \texttt{ETHREAD}, mientras que en modo usuario dispone de su propio \textit{Thread Environment Block} (TEB).
+
+    \item \textbf{Handles:}  
+    Los \textit{handles} son referencias a objetos administrados por el kernel, tales como archivos, sockets, secciones de memoria, procesos o hilos. Funcionan de manera equivalente a los \textit{file descriptors} en Linux, pero con un modelo mucho más generalista. El proceso mantiene una \textit{handle table} que almacena y gestiona estas referencias.
+
+    \item \textbf{Memoria:}  
+    Comprende todo el espacio de direcciones virtuales asignado al proceso, incluyendo secciones de código, datos, pilas, \textit{heaps} y regiones mapeadas dinámicamente.
+
+    \item \textbf{Módulos (DLLs):}  
+    Lista de módulos y bibliotecas cargadas en el proceso, mantenida en el \textit{PEB Ldr}.
 \end{itemize}
 
-\subsection{Process Creation (Kernel)}
 
-La creación de un proceso en Windows sigue una serie de pasos específicos a nivel
-del kernel.
+\subsection{Creación de un proceso (Kernel)}
+
+La creación de un proceso en Windows sigue una secuencia estricta de pasos a nivel del kernel.
 
 \subsubsection*{(1) Inicialización del espacio de direcciones}
 
 \begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Modelo en Linux vs. Windows:} En Linux, los nuevos procesos se crean
-    mediante la llamada \texttt{fork}, mientras que en Windows los procesos se inicializan
-    completamente desde cero.
-    \item \textbf{Mapeo de \texttt{KUSER\_SHARED\_DATA}:} Al crear un nuevo proceso, el
-    kernel debe mapear memoria. Una de las primeras acciones es mapear la página de 4KB
-    denominada \texttt{KUSER\_SHARED\_DATA}, la cual permite intercambiar información entre
-    \textit{user mode} y \textit{kernel mode} sin necesidad de \textit{syscalls}. En esta
-    página se encuentran datos como el reloj del sistema y las rutas a directorios del
-    sistema.
-    \item \textbf{Mapeo del ejecutable:} Posteriormente, el kernel carga el ejecutable
-    dentro del proceso. Concretamente, carga el código PE en la sección \texttt{.text}.
-    \item \textbf{Mapeo de \texttt{ntdll.dll}:} El kernel carga el módulo \texttt{ntdll.dll},
-    el cual actúa como intermediario entre el \textit{user-mode} y el kernel. Este módulo
-    contiene las funciones necesarias para la comunicación con el kernel y cumple un rol
-    similar al \texttt{ld.so} en Linux.
-    \item \textbf{Asignación del PEB (Process Environment Block):} El \texttt{PEB} es una
-    estructura de datos en \textit{user mode} (aproximadamente 1--2 páginas de memoria) que
-    contiene:
+
+    \item \textbf{Modelo en Linux vs.\ Windows:}  
+    En Linux, los procesos se crean mediante \texttt{fork()}.  
+    En Windows el kernel crea un proceso completamente nuevo, partiendo de un espacio de direcciones vacío que debe ser configurado desde el inicio.
+
+    \item \textbf{Mapeo de \texttt{KUSER\_SHARED\_DATA}:}  
+    Una de las primeras acciones del kernel es mapear en el nuevo espacio de direcciones una página especial de 4\,KB llamada \texttt{KUSER\_SHARED\_DATA}.  
+    Esta página está presente simultáneamente en \textit{user mode} y \textit{kernel mode} y permite compartir información sin necesidad de realizar una llamada al sistema.  
+    Contiene datos como:
     \begin{itemize}
-        \item Variables de entorno.
-        \item Línea de comandos completa con la que se inició el proceso.
-        \item Directorio de trabajo.
-        \item Lista de módulos cargados (\texttt{Ldr}).
-        \item Punteros al \texttt{stack} y \texttt{heap}.
-        \item Dirección base de la imagen.
+        \item El reloj del sistema,
+        \item Información de versión y arquitectura,
+        \item Rutas internas del sistema operativo,
+        \item Indicadores de configuración global.
     \end{itemize}
+
+    \item \textbf{Mapeo inicial del ejecutable:}  
+    Antes de cargar \texttt{ntdll.dll}, el kernel reserva el espacio de direcciones del proceso y mapea únicamente la sección de código principal (\texttt{.text}) del ejecutable en memoria.  
+    
+    \item \textbf{Mapeo de \texttt{ntdll.dll}:}  
+    El siguiente módulo en cargarse es \texttt{ntdll.dll}.  
+    Este componente es esencial, ya que:
+    \begin{itemize}
+        \item Contiene las \textit{syscall stubs} que permiten la transición a \textit{kernel mode};
+        \item Implementa funciones internas utilizadas por el loader de \textit{user mode};
+        \item Cumple un rol análogo a \texttt{ld.so} en sistemas Linux.
+    \end{itemize}
+
+    \item \textbf{Asignación del PEB (Process Environment Block):}  
+    Una vez inicializado el espacio de direcciones, el kernel crea y mapea el \texttt{PEB}, una estructura de 1--2 páginas ubicada en \textit{user mode} que describe el estado general del proceso.  
+    El \texttt{PEB} contiene, entre otros:
+    \begin{itemize}
+        \item Variables de entorno,
+        \item El directorio de trabajo,
+        \item La lista de módulos cargados (\texttt{PEB.Ldr}),
+        \item Punteros al \textit{heap} y datos relacionados a la pila,
+        \item La dirección base de la imagen del ejecutable.
+    \end{itemize}
+
 \end{itemize}
 
 \subsubsection*{(2) Creación del hilo inicial}
 
 \begin{itemize}[leftmargin=1.5cm]
-    \item \textbf{Mapeo del stack:} Se asigna el espacio de pila necesario para el hilo
-    principal.
-    \item \textbf{Mapeo del TEB (Thread Environment Block):} El \texttt{TEB} es una
-    estructura pequeña (2 páginas aprox.) que almacena información específica de cada hilo.
-    Su función es equivalente al \texttt{PEB}, pero a nivel de hilo.
-    \item \textbf{Inicialización del puntero de ejecución:} Finalmente, el puntero de
-    ejecución se coloca en la función \texttt{ntdll.LdrInitializeThunk}, encargada de
-    completar la carga dinámica del proceso.
+
+    \item \textbf{Mapeo del stack:}  
+    El kernel reserva y mapea la pila (\textit{stack}) del hilo principal con sus límites superior e inferior, además de aplicar las protecciones apropiadas.
+
+    \item \textbf{Mapeo del TEB (Thread Environment Block):}  
+    Para cada hilo se asigna un \texttt{TEB}, una estructura de aproximadamente 2 páginas que almacena información específica del hilo.
+
+    \item \textbf{Inicialización del punto de entrada del hilo:}  
+    Finalmente, el contador de programa (IP) del nuevo hilo se inicializa en la función  
+    \texttt{ntdll!LdrInitializeThunk}.  
+    Esta rutina es responsable de completar la carga dinámica del proceso en modo usuario, incluyendo:
+    \begin{itemize}
+        \item Resolución de importaciones,
+        \item Ejecución de inicializadores (\texttt{TLS callbacks}),
+        \item La transferencia final al \textit{entry point} del ejecutable.
+    \end{itemize}
+
 \end{itemize}
 
 
-\section{PEB y la lista de módulos}
-El \textbf{Process Environment Block (PEB)} es una estructura interna de Windows 
-que contiene información sobre el proceso, incluyendo los módulos (DLLs) 
-cargados. 
+\subsection{Process Environment Block (PEB)}
 
-Dentro del PEB, el campo:
-\begin{verbatim}
-PEB->Ldr->InMemoryOrderModuleList
-\end{verbatim}
-es una lista enlazada que mantiene todos los módulos cargados en memoria, 
-incluyendo la DLL principal del proceso y todas las DLLs dependientes. Cada 
-entrada de esta lista contiene:
+El \textbf{Process Environment Block (PEB)} es una estructura interna de Windows que almacena información esencial sobre un proceso en ejecución. Aunque Microsoft no publica una definición oficial completa de esta estructura, su diseño es conocido gracias al análisis inverso y puede variar ligeramente entre versiones del sistema operativo. El PEB reside en \textit{user mode} y es único para cada proceso.
+
+Entre los elementos más relevantes del PEB se encuentran:
 
 \begin{itemize}
-    \item La \texttt{base address} del módulo en memoria.
-    \item El nombre del archivo de la DLL.
-    \item Información sobre sus secciones.
+    \item \textbf{ImageBaseAddress:} Dirección base donde se ha mapeado la imagen principal del proceso.
+    \item \textbf{BeingDebugged:} Indicador de si el proceso está siendo depurado.
+    \item \textbf{Ldr (PEB\_LDR\_DATA):} Estructura que mantiene la lista de módulos cargados (DLLs).  
+    Recorrer esta lista es un mecanismo ampliamente utilizado por \textit{shellcode} para recuperar la base de \texttt{kernel32.dll} y resolver funciones de la WinAPI.
 \end{itemize}
 
-Recorrer esta lista permite obtener todas las DLLs cargadas y sus direcciones en 
-memoria.
+Una explicación detallada y ejemplos de cómo iterar el PEB, tanto desde C como desde WinDbg, pueden encontrarse en \cite{nyascla_walking_peb}.
 
+\subsubsection*{Iterar el PEB para recuperar la base de un módulo}
 
-\section{Secciones de un proceso}
+El procedimiento estándar para recorrer el PEB y obtener la base de una DLL concreta es el siguiente:
 
-El espacio de direcciones de un proceso en memoria se organiza en diferentes secciones.
-A continuación, se enumeran las mismas desde las direcciones más altas hasta las más bajas:
+\begin{enumerate}
+    \item Desde la estructura \texttt{\_PEB}, acceder al miembro \texttt{Ldr}, de tipo \texttt{\_PEB\_LDR\_DATA}.
+    \item Desde \texttt{\_PEB\_LDR\_DATA}, acceder a la lista doblemente enlazada \texttt{InLoadOrderModuleList}, de tipo \texttt{\_LIST\_ENTRY}.
+    \item Cada entrada de esta lista corresponde a una estructura \texttt{\_LDR\_DATA\_TABLE\_ENTRY}.
+    \item Desde \texttt{\_LDR\_DATA\_TABLE\_ENTRY}, acceder al campo \texttt{BaseDllName}, de tipo \texttt{\_UNICODE\_STRING}, para obtener el nombre del módulo.
+    \item Si el nombre coincide con el módulo deseado, recuperar el campo \texttt{DllBase} desde \texttt{\_LDR\_DATA\_TABLE\_ENTRY}, que contiene la dirección base cargada en memoria.
+    \item Si no coincide, avanzar al siguiente elemento de la lista (offset \texttt{0x00} de \texttt{\_LDR\_DATA\_TABLE\_ENTRY}).
+\end{enumerate}
 
-\begin{description}[style=nextline, leftmargin=2cm]
+Implementaciones prácticas de esta técnica en ensamblador, desarrolladas para este proyecto, están disponibles tanto para \textbf{x64} como para \textbf{x86}:
+
+\begin{itemize}
+    \item Versión x64: \cite{nyascla_get_module_handle_x64}
+    \item Versión x86: \cite{nyascla_get_module_handle_x86}
+\end{itemize}
+
+\subsection{Secciones de un proceso}
+
+El espacio de direcciones de un proceso en memoria se organiza en varias secciones, que se enumeran de las direcciones más altas a las más bajas:
+
+\begin{description}
 
     \item[\textbf{Páginas del Kernel}]  
-    Ocupan la misma dirección en todos los procesos del sistema y corresponden al kernel.  
-    Como todas las páginas de kernel apuntan a los mismos \textit{frames} de memoria física, 
-    no se desperdicia espacio cargando el kernel en cada proceso.  
-    El acceso se realiza únicamente mediante llamadas al sistema.
+    Contienen el kernel y ocupan las mismas direcciones en todos los procesos.  
+    Como todas apuntan a los mismos \textit{frames} de memoria física, el kernel no se carga repetidamente en cada proceso.  
+    Solo se accede a ellas mediante llamadas al sistema.
 
-    \item[\textbf{Stack (lectura y escritura)}]  
-    Estructura de almacenamiento \textit{LIFO}, que crece hacia abajo 
-    (desde el final del espacio de direcciones del proceso hacia la sección BSS).  
-    Cada función tiene su propio \textit{stack frame}, con variables locales y argumentos.  
-    El tamaño suele estar limitado entre 1 y 8 MB, según la arquitectura y el sistema operativo.  
-    Su gestión mediante el puntero de pila es muy rápida.
+    \item[\textbf{Stack (RW)}]  
+    Área de almacenamiento \textit{LIFO} que crece hacia abajo, desde el final del espacio de direcciones hacia la BSS.  
+    Cada función tiene su propio \textit{stack frame} con variables locales y argumentos.  
+    Su tamaño suele estar limitado entre 1 y 8 MB, y su acceso mediante el puntero de pila es muy rápido.
 
-    \item[\textbf{Heap (lectura y escritura)}]  
-    Espacio para memoria dinámica gestionada por llamadas como \texttt{malloc}.  
-    Crece hacia arriba, desde el final de la BSS hasta el final del espacio de direcciones.  
-    Su administración mediante el puntero de \textit{heap} es más lenta que la del \textit{stack}.
+    \item[\textbf{Heap (RW)}]  
+    Espacio para memoria dinámica, gestionada con llamadas como \texttt{malloc}.  
+    Crece hacia arriba, desde el final de la BSS hasta el inicio del stack.  
+    Su administración es más lenta que la del stack.
 
-    \item[\textbf{BSS y Data (lectura y escritura)}]  
-    Almacenan las variables globales y estáticas del programa.  
-    La sección \textbf{BSS} contiene las variables no inicializadas,  
-    mientras que la sección \textbf{Data} guarda las variables inicializadas.
+    \item[\textbf{BSS y Data (RW)}]  
+    Contienen variables globales y estáticas.  
+    La sección \textbf{BSS} guarda variables no inicializadas, mientras que \textbf{Data} almacena variables inicializadas.
 
-    \item[\textbf{Text (lectura y ejecución)}]  
+    \item[\textbf{Text (RX)}]  
     Contiene el código ejecutable del programa, cargado desde el binario en disco.  
-    Generalmente está marcada como de solo lectura y ejecución.
+    Generalmente es de solo lectura y ejecución.
 
 \end{description}
+
+\section{Genealogía de Procesos en Windows}
+
+Al iniciar, Windows lanza una serie de procesos fundamentales para gestionar todo el sistema operativo, desde la administración de recursos y servicios hasta la interacción con el usuario. Estos procesos forman una jerarquía, donde cada nuevo proceso puede generar otros procesos hijos según las necesidades del sistema o del usuario.
+
+La genealogía de procesos muestra esta estructura desde el arranque del sistema hasta el inicio de sesión del usuario. Comprenderla es clave para análisis forense, respuesta a incidentes y detección de malware, ya que permite identificar comportamientos anómalos en los procesos del sistema.
+
+\vspace{1em}
+\noindent Una genealogía típica de procesos en Windows se representa a continuación:
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/fig-annex-win-process-genealogy.png}
+\end{center}
+
+\noindent Fuente: \texttt{youtube.com/13cubed}
+
+\subsection*{Nivel 0: Proceso raíz}
+\begin{itemize}
+    \item \textbf{System}: Primer proceso de espacio de usuario iniciado por el kernel. Tiene un PID fijo (normalmente 4) y no tiene padre.
+\end{itemize}
+
+\subsection*{Nivel 1: Session Manager}
+\begin{itemize}
+    \item \textbf{smss.exe (Session Manager Subsystem)}: Primer proceso real del espacio de usuario. Inicia las sesiones del sistema y lanza procesos críticos como \texttt{csrss.exe}, \texttt{wininit.exe} y \texttt{winlogon.exe}.
+\end{itemize}
+
+\subsection*{Nivel 2: Procesos críticos del sistema}
+\begin{itemize}
+    \item \textbf{csrss.exe}: Gestiona la consola y la creación de procesos. Hay una instancia por sesión.
+    \item \textbf{wininit.exe}: Lanza procesos esenciales como \texttt{services.exe}, \texttt{lsaiso.exe} y \texttt{lsass.exe}.
+    \item \textbf{winlogon.exe}: Gestiona la autenticación del usuario y permanece activo durante la sesión interactiva.
+\end{itemize}
+
+\subsection*{Nivel 3: Procesos del sistema}
+\begin{itemize}
+    \item \textbf{services.exe}: Service Control Manager. Inicia y gestiona los servicios del sistema, incluidos los alojados por \texttt{svchost.exe}.
+    \item \textbf{lsaiso.exe}: Proceso de seguridad aislado que implementa funciones de cifrado y autenticación (opcional en versiones modernas de Windows).
+    \item \textbf{lsass.exe}: Local Security Authority Subsystem Service. Encargado de políticas de seguridad, autenticación y gestión de credenciales.
+\end{itemize}
+
+\subsection*{Nivel 4: Servicios alojados y utilidades del sistema}
+\begin{itemize}
+    \item \textbf{svchost.exe}: Proceso contenedor que aloja múltiples servicios del sistema. Existen varias instancias según los grupos de servicios.
+    \item \textbf{runtimebroker.exe / taskhostw.exe}: Procesos auxiliares para la ejecución de aplicaciones y tareas programadas.
+\end{itemize}
+
+\subsection*{Procesos del usuario interactivo}
+\begin{itemize}
+    \item \textbf{userinit.exe}: Iniciado por \texttt{winlogon.exe} tras la autenticación. Lanza el shell principal del usuario y termina.
+    \item \textbf{explorer.exe}: Shell gráfico de Windows, representa el escritorio, la barra de tareas y el menú de inicio. Es el proceso raíz del entorno del usuario.
+\end{itemize}
+
