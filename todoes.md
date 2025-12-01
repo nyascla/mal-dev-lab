@@ -7,7 +7,14 @@
 - [ ] **DEV**: Terminar el payload de .NET
     - Mas sigiloso con BOF
 - [ ] **DEV**: Probar SysWhispers2
+- [ ] **DEV**: shellcode injection basica en un otro proceso
 
 ## Bug
 
 - [ ] **BUG**: El stage2 carga varias veces el implante
+- [ ] **BUG**: ensamblado shellcode
+    - rutas relativas
+    - cross compilation
+    - Makefile
+- [ ] **BUG**: dejar en reflective injection una demo y mover el ataque a red team 
+

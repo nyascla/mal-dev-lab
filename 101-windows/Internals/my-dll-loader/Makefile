@@ -19,7 +19,7 @@ BIN_DIR = bin
 SRC_DIR = src
 
 # Archivos generados
-EXE1 = $(BIN_DIR)/main-loader-NOASLR.exe
+EXE1 = $(BIN_DIR)/main-loader-noaslr.exe
 EXE2 = $(BIN_DIR)/main-loader.exe
 DLL  = $(BIN_DIR)/dllmock.dll
 
@@ -28,7 +28,7 @@ CC     = clang
 CFLAGS = -Wall -s
 
 # Fuentes
-SRC_EXE1 = $(SRC_DIR)/main-loader-NOASLR.c
+SRC_EXE1 = $(SRC_DIR)/main-loader-noaslr.c
 SRC_EXE2 = $(SRC_DIR)/main-loader.c
 SRC_DLL  = $(SRC_DIR)/dllmock.c
 
