@@ -1,4 +1,12 @@
-# BOF = Beacon Object File
+# BOF (Beacon Object File)
 
-Un BOF es un archivo .o compilado con clang/mingw en formato COFF.
-Se usa para ejecutar código nativo muy pequeño, rápido y sigiloso, sin cargar DLLs ni tocar disco.
+Ejecutar código nativo muy pequeño, rápido y sigiloso, sin cargar DLLs ni tocar disco.
+
+Un `BOF` (Beacon Object File) es un archivo .o compilado en formato `COFF` (Common Object File Format)` formato estándar de archivo objeto utilizado por MSVC (ejecutables de windows)
+
+https://github.com/Cobalt-Strike/bof_template
+
+https://github.com/sliverarmory/COFFLoader
+
+
+
