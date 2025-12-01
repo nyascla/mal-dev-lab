@@ -1,16 +1,20 @@
-#include <windows.h>
+#include <stdio.h>
+#include "suma.h"
 
-// 1. IMPORTANTE: Declaramos la función que está en la DLL.
-//    __declspec(dllimport) le dice al compilador:
-//    "Esta función no está aquí, vive en una DLL externa".
-__declspec(dllimport) void HolaDLL();
+
+__declspec(dllimport) void dll_func();
+
+typedef int (*suma_func)(int,int);
+
 
 int main() {
-    MessageBoxA(NULL, "EXE iniciado. Llamando a la DLL...", "Mi Programa EXE", MB_OK);
 
-    // 2. Simplemente llamamos a la función.
-    //    El sistema operativo se encarga de todo lo demás.
-    HolaDLL();
+    printf("[+] Main \n");
+
+    int resultado = suma(5, 3);
+    printf("Resultado: %d\n", resultado);
+
+    dll_func();
     
     return 0;
 }

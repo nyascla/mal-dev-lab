@@ -1,40 +1,3 @@
-# Clang LLVM
-
-```
-clang --version
-```
-
-- Compilation:
-    - `Clang`: Convierte el código fuente (`.c`) en archivos objeto (`.o`)
-    - `LLVM`: Transforma los archivos objeto de Clang en código máquina
-
-- Linkings: 
-    - `ld.lld`: linker nativo de LLVM, rápido y multiplataforma.
-    - `ld` en Linux
-    - `link.exe` en Windows (MSVC)
-    - `x86_64-w64-mingw32-ld` cross-compilar a Windows.
-
-
-## Install Windows
-
-https://docs.chocolatey.org/en-us/choco/setup/
-
-```
-choco install llvm -y
-choco install make -y
-```
-
-
-## Install Linux
-
-```
-sudo apt update
-sudo apt install clang llvm lld lldb clang-tools
-```
-
-## Template
-
-```makefile
 ifeq ($(OS),Windows_NT)
     RM         = del /Q
     NULLDEV    = NUL
@@ -83,4 +46,3 @@ run: $(EXE)
 	$(RUN_CMD)
 
 .PHONY: all clean run
-```
