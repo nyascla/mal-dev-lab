@@ -6,7 +6,7 @@ Ese mensaje aparece antes de que PowerShell siquiera cargue el script, y lo gene
 - El archivo fue descargado de Internet y tiene Mark-of-the-Web (MOTW)
 - El hash o parte del contenido está en la nube de Microsoft como “PUA” o “Trojan:Script/Wacatac”
 
-![alt text](image.png)
+![alt text](./img/image.png)
 
 En este caso: 
 

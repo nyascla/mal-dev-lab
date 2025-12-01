@@ -1,62 +1,68 @@
-FILE_NAME = compilation_time
-FILE_NAME_2 = run_time
-DLL_NAME = my_dll
-MYLOADER = myLoader
+# =======================================
+# Makefile para Clang (cross-compiling a Windows)
+# =======================================
 
-all: linux
+ifeq ($(OS),Windows_NT)
+    RM         = del /Q
+    NULLDEV    = NUL
+    TARGET     = -target x86_64-pc-windows-msvc
+    RUN_CMD    = $(EXE1)
+else
+    RM         = rm -rf
+    NULLDEV    = /dev/null
+    TARGET     = -target x86_64-w64-mingw32
+    RUN_CMD    = wine $(EXE1)
+endif
+
+# Directorio de salida
+BIN_DIR = bin
+SRC_DIR = src
+
+# Archivos generados
+EXE1 = $(BIN_DIR)/main-loader-NOASLR.exe
+EXE2 = $(BIN_DIR)/main-loader.exe
+DLL  = $(BIN_DIR)/dllmock.dll
+
+# Compilador y flags
+CC     = clang
+CFLAGS = -Wall -s
+
+# Fuentes
+SRC_EXE1 = $(SRC_DIR)/main-loader-NOASLR.c
+SRC_EXE2 = $(SRC_DIR)/main-loader.c
+SRC_DLL  = $(SRC_DIR)/dllmock.c
 
 # =======================================
-# WINDOWS
+# Targets principales
 # =======================================
-win:
+all: $(EXE1) $(EXE2) $(DLL)
 
-dirs:
-	if not exist build mkdir build
-	if not exist bin mkdir bin
+# Crear directorio bin si no existe
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
 
-myLoader-win: dirs dll
-	cl /nologo /W3 /MD /I include /c $(MYLOADER).c /Fo:build\$(MYLOADER).obj
-	link /OUT:bin\$(MYLOADER).exe build\$(MYLOADER).obj
-
-	bin\$(MYLOADER).exe
-
-dll:
-	cl /nologo /W3 /MD /c dll\$(DLL_NAME).c /Fo:build\$(DLL_NAME).obj 
-	link /DLL /OUT:bin\$(DLL_NAME).dll build\$(DLL_NAME).obj user32.lib
-
-compilation: dll
-	cl /nologo /W3 /MD /I include /c $(FILE_NAME).c /Fo:build\$(FILE_NAME).obj 
-	link /OUT:bin\$(FILE_NAME).exe build\$(FILE_NAME).obj bin\$(DLL_NAME).lib user32.lib
-
-run: dll
-	cl /nologo /W3 /MD /I include /c $(FILE_NAME_2).c /Fo:build\$(FILE_NAME_2).obj 
-	link /OUT:bin\$(FILE_NAME_2).exe build\$(FILE_NAME_2).obj user32.lib
-
-clean:
-	if exist build rmdir /s /q build
-	if exist bin rmdir /s /q bin
-
-# =======================================
-# LINUX
-# =======================================
-linux: bin/main-loader.exe bin/main-loader-NOASLR.exe bin/dllmock.dll
-
-bin/main-loader.exe: main-loader.c
+# Compilar main-loader.exe
+$(EXE1): $(SRC_EXE1) | $(BIN_DIR)
 	@echo "Compilando y enlazando main-loader.c..."
-	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -Wall -s main-loader.c -o bin/main-loader.exe
+	$(CC) $(CFLAGS) $(TARGET) $(SRC_EXE1) -o $(EXE1)
 
-bin/main-loader-NOASLR.exe: main-loader-NOASLR.c 
+# Compilar main-loader-NOASLR.exe
+$(EXE2): $(SRC_EXE2) | $(BIN_DIR)
 	@echo "Compilando y enlazando main-loader-NOASLR.c..."
-	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -Wall -s main-loader-NOASLR.c -o bin/main-loader-NOASLR.exe
+	$(CC) $(CFLAGS) $(TARGET) $(SRC_EXE2) -o $(EXE2)
 
-bin/dllmock.dll: dllmock.c
+# Compilar DLL
+$(DLL): $(SRC_DLL) | $(BIN_DIR)
 	@echo "Compilando DLL..."
-	@mkdir -p bin
-	x86_64-w64-mingw32-gcc -Wall -s dllmock.c -o bin/dllmock.dll -shared
+	$(CC) $(CFLAGS) $(TARGET) -shared $(SRC_DLL) -o $(DLL)
 
-# Regla para limpiar
+run: $(EXE1)
+	@echo "Ejecutando $(EXE1)..."
+	$(RUN_CMD)
+
+# Limpiar binarios
 clean:
 	@echo "Limpiando..."
-	@rm -rf bin
+	-rm -rf $(BIN_DIR)
+
+.PHONY: all clean

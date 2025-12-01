@@ -148,7 +148,7 @@ int main(void)
     // Como esto es una version NO ASLR, reservamos en la misma direccion que el ImageBase original
     DWORD SizeOfImage = (DWORD)optional_header->SizeOfImage;
 
-    uintptr_t ImageBase = VirtualAlloc(
+    LPVOID ImageBase = VirtualAlloc(
         (LPVOID)optional_header->ImageBase,     // dirección preferida (NULL = sistema elige)
         SizeOfImage,                            // tamaño en bytes
         MEM_COMMIT | MEM_RESERVE,               // reservar y comprometer
