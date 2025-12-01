@@ -24,3 +24,9 @@ cl /nologo /W3 /MDd /Zi /Od /RTC1 /I include /c $(FILE_NAME).c /Fo:build\$(FILE_
 ```
 /link /DEBUG /OUT:bin\main.exe build\main.obj
 ```
+
+## Template
+
+```makefile
+
+```

@@ -1,4 +1,4 @@
-# Shellcode VS Object files  
+# Shellcode VS Object files VS PE Files 
 
 Ambos son ficheros que contienen codigo maquina.
 
@@ -26,3 +26,5 @@ Contenido:
 nasm -f elf64 hello.asm -o hello.o
 nasm -f win64 hello.asm -o hello.obj
 ```
+
+## PE Files

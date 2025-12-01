@@ -1,3 +1,15 @@
+## Mittre-Caldera
+
+https://github.com/mitre/caldera?tab=readme-ov-file
+
+Herramienta para simulaciones red team
+- Agentes/Playbooks
+- IT/OT
+
+``Test``: lanzar un ataque basico de caldera, depues personalizar alguna de las partes.
+
+---
+
 ``` bash
 git clone https://github.com/mitre/caldera.git --recursive --branch 5.3.0
 ```

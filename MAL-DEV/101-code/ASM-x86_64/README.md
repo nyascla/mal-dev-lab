@@ -1,4 +1,4 @@
-## Lab Setup
+# ASM-x86_64
 
 1. [Visual Studio Code](https://code.visualstudio.com/Download)
     1. (ext) x86 and x86_64 Assembly

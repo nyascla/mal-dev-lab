@@ -4,7 +4,9 @@
 
 # 🚧 Under Construction 🚧
 
-## Memoria
+## CTF
+
+encontar un pequenyo documeto que aglutima todos los conocimientos del resto del repositiorio en un pequenyo desafio a modo de CTF
 
 - [Dissertation](./000-docs/)
 
