@@ -1,4 +1,4 @@
-# Weaponization: CALIBRE
+# Operation TFM (Stage 1) 
 
 - Target DLL: `calibre-launcher.dll`
 - [HijackLibs Reference](https://hijacklibs.net/entries/3rd_party/calibre/calibre-launcher.html)

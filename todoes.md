@@ -8,6 +8,8 @@
     - Mas sigiloso con BOF
 - [ ] **DEV**: Probar SysWhispers2
 - [ ] **DEV**: shellcode injection basica en un otro proceso
+- [ ] **DEV**: payloads shellcode con xor 
+- [ ] **DEV**: pasar los malwares del trabajo por una sandbox 
 
 ## Bug
 
@@ -17,4 +19,5 @@
     - cross compilation
     - Makefile
 - [ ] **BUG**: dejar en reflective injection una demo y mover el ataque a red team 
+- [ ] **BUG**: arreglar el .bib con la refactorizacion
 
