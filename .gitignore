@@ -20,3 +20,4 @@ venv
 
 # VS Code
 .vscode/settings.json
+.vs
