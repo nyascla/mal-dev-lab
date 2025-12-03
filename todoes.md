@@ -1,6 +1,10 @@
 # To Does
 
-## Dev
+- [ ] **BUG**: arreglar el .bib con la refactorizacion
+
+## `DFIR`
+
+## `MAL-DEV`
 
 - [ ] **DEV**: Walking TEB, hijacking hilos
 - [ ] **DEV**: Terminar el loader para que tambien haga parches de las relocaciones
@@ -11,7 +15,7 @@
 - [ ] **DEV**: payloads shellcode con xor 
 - [ ] **DEV**: pasar los malwares del trabajo por una sandbox 
 
-## Bug
+---
 
 - [ ] **BUG**: El stage2 carga varias veces el implante
 - [ ] **BUG**: ensamblado shellcode
@@ -19,5 +23,6 @@
     - cross compilation
     - Makefile
 - [ ] **BUG**: dejar en reflective injection una demo y mover el ataque a red team 
-- [ ] **BUG**: arreglar el .bib con la refactorizacion
+
+## `RED-TEAM`
 
