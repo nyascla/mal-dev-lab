@@ -1,5 +1,9 @@
 \section{Memoria Virtual}
 
+La memoria virtual es uno de los pilares del diseño moderno de Windows y constituye un concepto clave para entender cómo se ejecutan y aíslan los procesos en el sistema operativo. Este mecanismo permite que cada proceso disponga de su propio espacio de direcciones lógico, independiente del resto, lo que facilita la protección, la gestión eficiente de recursos y la estabilidad del sistema.
+
+Las infografías presentadas en esta sección se han extraído de \cite{memoria_virtual_paging}.
+
 \subsection{Problemas Memoria Fisica}
 \begin{itemize}
     \item Escasez de memoria
@@ -15,36 +19,122 @@ Pero por detras el SO esta mapeando esas direcciones virtuales a distintas regio
 
 \subsection{Paginación}
 
-Mapear cada byte de la memoria virtual a un byte de la moria fisica seria muy ineficiente,
-Se crean paginas de moria que son bloques de bytes para simplificar este proceso (normalmente de 4KB | 4096 bytes),
+Mapear cada byte de la memoria virtual directamente a un byte de la memoria física sería un proceso extremadamente ineficiente. Para optimizar este mecanismo, Windows —como la mayoría de sistemas operativos modernos— utiliza un esquema de paginación. En este modelo, la memoria virtual se divide en bloques llamados \textit{pages}, mientras que la memoria física se organiza en bloques del mismo tamaño denominados \textit{frames}. El tamaño habitual de una página es de 4\,KB (4096 bytes), aunque pueden existir tamaños mayores en configuraciones específicas.
 
-page - memoria virtual
-frame - memoria fisica
+Cuando un proceso se ejecuta, sus páginas virtuales se asocian a \textit{frames} disponibles en la memoria física. Este sistema permite una gestión más flexible, eficiente y segura de la memoria, facilitando además mecanismos como la protección de páginas, la paginación a disco y el aislamiento entre procesos.
 
-Cuando un proceso se carga sus paginas son cargadas en frames disponibles en moria fisica
+\subsection{Tabla de páginas}
 
-\subsection{Tabla de paginas}
+Cada proceso mantiene su propia tabla de páginas, una estructura residente en memoria física dentro del espacio del kernel y, por tanto, no accesible desde modo usuario. Esta tabla define cómo se traducen las direcciones virtuales a direcciones físicas y es utilizada por la \textit{Memory Management Unit} (MMU), el componente de hardware encargado de realizar la traducción y aplicar las correspondientes protecciones de memoria. Para cada página se almacena información como el número de \textit{frame}, los permisos asociados y distintos bits de control necesarios para garantizar la seguridad y el aislamiento entre procesos.
 
-Cada proceso tiene una tabla de paginas que mapea las direcciones virtuales a las fisicas,
-La tabla de paginas es gestionada por la MMU (Memory Management Unit),
-Para cada pagina se mantiene, su numero de frame, permisos, etc. 
+\subsubsection{Tabla de páginas Multinivel}
 
-\subsection{MMU}
+Las tablas de páginas lineales, donde cada entrada mapea directamente una página virtual a un \textit{frame} físico, presentan importantes limitaciones en sistemas con grandes espacios de direcciones. Por ejemplo, en un sistema de 32 bits con páginas de 4\,KB, se necesitarían \(2^{20}\) entradas (aproximadamente 4 millones) para mapear 4\,GB de memoria, lo que implicaría un consumo enorme de memoria para la propia tabla de páginas.
 
-La CPU tiene que accedr a la RAM primero para consultar la tabla de paginasy Despues para acceder a la memoria fisica, 
-para cada lectura tenemos que hacer 2 accesos a memoria,
-Para optimizar esto, la MMU, hardaware especifico de la CPU, se encarga de traducir las direcciones virtuales a fisicas,
-la MMU tiene un caché de la tabla de paginas llamado TLB (Translation Lookaside Buffer),
-La MMU tambien es la encargada de gestion que un proceso no acceda a memoria que no le pertenece,
+Para resolver este problema, los sistemas operativos modernos utilizan tablas de páginas multinivel (\textit{multilevel page tables}). En este esquema, la tabla de páginas se organiza jerárquicamente: cada tabla superior apunta a varias tablas de nivel inferior, que a su vez contienen las entradas finales que mapean las páginas a los \textit{frames} físicos.  
+
+Este enfoque permite:
+\begin{itemize}
+    \item Reducir el consumo de memoria, ya que solo se crean las tablas de nivel inferior necesarias para las regiones de memoria utilizadas por el proceso.
+    \item Mantener la escalabilidad en espacios de direcciones muy grandes (como 64 bits), evitando que una sola tabla lineal crezca hasta tamaños imprácticos.
+    \item Facilitar la implementación de protección y aislamiento por regiones, ya que cada nivel puede contener información de permisos y control.
+\end{itemize}
+
+En resumen, las tablas de páginas multinivel combinan eficiencia y flexibilidad, siendo esenciales para la gestión de memoria en sistemas modernos.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/Multilevel-Page-Tables.png}
+    \caption{Esquema de tablas de páginas multinivel mostrando cómo una dirección virtual se traduce a una dirección física.}
+    \label{fig:multilevel-page-tables}
+\end{figure}
+
+
+
+\subsection{Memory Management Unit (MMU)}
+
+Sin mecanismos adicionales, la CPU tendría que acceder a la RAM dos veces por cada operación de lectura o escritura: primero para consultar la tabla de páginas y después para acceder a la dirección física resultante. Para evitar este coste, la \textit{Memory Management Unit} (MMU), un componente de hardware integrado en la CPU, se encarga de realizar la traducción de direcciones virtuales a físicas. La MMU mantiene una caché de entradas recientes de la tabla de páginas llamada \textit{Translation Lookaside Buffer} (TLB), que reduce drásticamente el número de accesos a memoria. Además, la MMU aplica los permisos definidos para cada página, garantizando que un proceso no pueda acceder a regiones de memoria que no le pertenecen.
 
 \subsection{Acceso a memoria}
 
-Cuando un proceso quiere acceder a una dirección de memoria, la CPU consulta la MMU,
-En la MMU la direccon se divide en dos partes, el numero de pagina y el offset dentro de la pagina,
+Cuando un proceso accede a una dirección virtual, la CPU delega en la MMU la traducción de esa dirección a su ubicación física. Para ello, la MMU divide la dirección virtual en dos partes: el \textit{page number}, formado por los bits más significativos, y el \textit{page offset}, compuesto por los bits menos significativos. El \textit{page number} identifica qué página virtual se está usando, mientras que el \textit{offset} indica la posición exacta dentro de esa página.
 
-Pege number - los bits mas significativos de la direccion virtual
-Page offset - los bits menos significativos de la direccion virtual
+Por ejemplo, en un sistema con páginas de 4\,KB (4096 bytes), el \textit{offset} ocupa los 12 bits menos significativos de la dirección virtual, ya que \(2^{12} = 4096\). Los bits restantes corresponden al \textit{page number}, que la MMU utilizará para localizar la página en la tabla y determinar el \textit{frame} físico asociado.
 
-Ejemplo:
-En una pagina de 4KB (4096 bytes), el offset ocupa los 12 bits menos significativos,
-El resto de bits son los mas significativos y representan el numero de pagina,
+\subsubsection{Paginación en x86\_64}
+
+La arquitectura x86\_64 utiliza una \textbf{tabla de páginas de 4 niveles} y un tamaño de página de 4\,KiB. Cada tabla de páginas, independientemente del nivel, tiene un tamaño fijo de 512 entradas, y cada entrada ocupa 8 bytes, por lo que cada tabla tiene un tamaño total de:
+
+\[
+512 \text{ entradas} \times 8 \text{ B} = 4\,\text{KiB}
+\]
+
+Esto permite que cada tabla encaje exactamente en una página de memoria.
+
+Cada índice de tabla utiliza 9 bits, ya que \(2^9 = 512\) entradas por tabla. Los 12 bits menos significativos de la dirección virtual corresponden al \textit{offset} dentro de la página (4\,KiB = \(2^{12}\) bytes).  
+
+Los bits del 48 al 63 de la dirección virtual se descartan, lo que implica que, aunque la arquitectura es de 64 bits, en la práctica solo se utilizan \textbf{48 bits de dirección}.  
+Sin embargo, estos bits no pueden tener valores arbitrarios: todos los bits en este rango deben ser copias del bit 47 (\textit{sign extension}) para garantizar que las direcciones sean únicas y permitir futuras extensiones, como la introducción de tablas de páginas de 5 niveles.
+
+En un esquema de 4 niveles, el índice de cada nivel se obtiene directamente de la dirección virtual, como se muestra en la Figura~\ref{fig:virtual-address-to-page-table-index}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/virtual-address-to-page-table-index.png}
+    \caption{Desglose de la dirección virtual en índices de las tablas de páginas de x86\_64.}
+    \label{fig:virtual-address-to-page-table-index}
+\end{figure}
+
+
+\subsubsection{Ejemplo de acceso a memoria: recuperación de instrucciones iniciales}
+
+Supongamos que un proceso recién lanzado va a ejecutar sus primeras instrucciones, situadas en la sección de código de su imagen PE.
+
+\begin{enumerate}
+    \item \textbf{Dirección virtual del primer instruction pointer (IP/EIP/RIP):}  
+    La CPU obtiene la dirección virtual inicial del registro de instrucción (\texttt{EIP/RIP} en x86/x64). Por ejemplo:
+    \[
+    \text{Dirección virtual inicial} = 0x00400000
+    \]
+
+    \item \textbf{División de la dirección virtual:}  
+    La MMU divide la dirección virtual en varios campos según el esquema de paginación:
+    \begin{itemize}
+        \item \textit{Page number}: los bits más significativos, utilizados como índices en la tabla de páginas multinivel (PML4, PDPT, PD, PT).  
+        \item \textit{Page offset}: los 12 bits menos significativos, que indican la posición exacta dentro de la página de 4\,KiB.  
+        \item Bits 48-63: copias del bit 47 (\textit{canonical addresses}) para garantizar unicidad y permitir futuras extensiones de la paginación.
+    \end{itemize}
+
+    Por ejemplo, en un sistema de 4\,KiB:
+    \[
+    \text{page offset} = 0x000, \quad \text{page number} = 0x00400
+    \]
+
+    \item \textbf{Consulta de la MMU y TLB:}  
+    La MMU primero consulta el \textit{Translation Lookaside Buffer (TLB)}, que almacena traducciones recientes de páginas virtuales a físicas.  
+    \begin{itemize}
+        \item En un \textit{TLB hit}, se obtiene el \textit{frame} físico directamente.
+        \item En un \textit{TLB miss}, la MMU recorre la tabla de páginas multinivel en memoria kernel (PML4 $\rightarrow$ PDPT $\rightarrow$ PD $\rightarrow$ PT) para localizar el \textit{frame} físico.
+    \end{itemize}
+
+    Supongamos que la tabla indica:
+    \[
+    \text{page number 0x00400} \rightarrow \text{frame físico 0x1A3F0}
+    \]
+
+    \item \textbf{Cálculo de la dirección física:}  
+    La dirección física se obtiene combinando el \textit{frame} físico con el \textit{offset}:
+    \[
+    \text{Dirección física} = \text{frame} \times 4096 + \text{offset} = 0x1A3F0 \times 4096 + 0x000
+    \]
+
+    \item \textbf{Acceso a memoria y caché:}  
+    La caché, parte del chip de la CPU, es una memoria intermedia rápida que mantiene copias de partes de la RAM (líneas de caché o palabras) que la CPU necesita.  
+
+    Cada acceso a memoria que no está en caché (\textit{cache miss}) trae una línea completa desde RAM hacia la caché, aunque la CPU solo necesite unos pocos bytes.  
+    La CPU solicita a la RAM la línea de caché que contiene la instrucción. Por ejemplo, si la línea son 64 bytes y la instrucción comienza en la dirección física \texttt{0x1A3F012}, se cargan los bytes de \texttt{0x1A3F000} a \texttt{0x1A3F03F}.  
+    Una vez cargada la línea de caché, la CPU selecciona los bytes exactos correspondientes a la instrucción o dato solicitado.
+
+    \item \textbf{Ejecución:}  
+    Las instrucciones recuperadas se cargan en el \textit{instruction decoder} de la CPU, que las decodifica y ejecuta secuencialmente.
+\end{enumerate}

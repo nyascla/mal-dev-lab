@@ -1,61 +1,42 @@
 \section{DLL (Dynamic-Link Library)}
-En Windows, un proceso puede depender de múltiples librerías dinámicas 
-(\texttt{DLLs}) para ejecutar ciertas funcionalidades. Estas DLLs se cargan en 
-el espacio de direcciones del proceso y su interacción se realiza a través de 
-estructuras específicas que Windows mantiene en memoria.
 
-\subsection{Carga de DLLs en un proceso}
-Cuando un proceso arranca, indica qué DLLs necesita y qué funciones de cada DLL 
-va a utilizar. Windows realiza los siguientes pasos:
+La mayoría de los ejecutables actuales dependen de librerías externas, algunas proporcionadas por el sistema operativo, como las funciones de entrada/salida de C (por ejemplo, \texttt{printf}, que se encuentra en \texttt{msvcrt.dll}), y otras que pueden ser librerías de terceros.  
 
-\begin{enumerate}
-    \item Verifica si la DLL ya está cargada en memoria; si no lo está, la carga 
-    en el espacio de direcciones del proceso.
-    \item Si ya existe en memoria, se reutiliza la misma copia en memoria física, 
-    pero cada proceso mantiene su propio mapeo en su espacio de direcciones virtuales.
-    \item Localiza dentro de la DLL la función solicitada por el proceso.
-    \item Proporciona al proceso la dirección en memoria de la función, de 
-    manera que cada llamada a esa función realmente salta a la dirección 
-    correspondiente dentro de la DLL cargada.
-\end{enumerate}
-
-Cada DLL se carga como un módulo completo, incluyendo sus secciones 
-\texttt{.text}, \texttt{.rdata}, \texttt{.data}, etc., mapeadas en memoria 
-contigua a partir de la \emph{base address} del módulo.
-
-\subsection{Import Address Table (IAT)}
-Para que un proceso llame a funciones de una DLL, Windows utiliza la 
-\textbf{Import Address Table (IAT)}. La IAT contiene punteros a las funciones 
-importadas por el proceso. Durante la carga:
-
-\begin{enumerate}
-    \item Windows localiza cada función solicitada dentro de la DLL 
-    correspondiente.
-    \item Escribe en la IAT la dirección en memoria de la función.
-\end{enumerate}
-
-Cuando el proceso ejecuta una llamada a una función importada, en realidad está 
-saltando a la dirección contenida en la IAT, que apunta a la DLL cargada en 
-memoria.
-
-\subsection{Resumen}
-En conjunto, el PEB y la IAT permiten a un proceso interactuar de manera 
-eficiente con sus DLLs:
+Estas dependencias pueden manejarse de dos formas:
 
 \begin{itemize}
-    \item El PEB mantiene un registro de todos los módulos cargados y sus 
-    direcciones.
-    \item La IAT traduce las llamadas a funciones de la DLL a direcciones 
-    concretas en memoria.
+    \item \textbf{Dependencias externas:} cargadas como DLL (\textit{Dynamic-Link Library}) en tiempo de ejecución.
+    \item \textbf{Dependencias estáticas:} incluidas directamente en el binario final durante la compilación.
 \end{itemize}
 
-Esto garantiza que el proceso pueda utilizar código externo (DLLs) sin necesidad 
-de incorporarlo estáticamente en su binario, manteniendo modularidad y eficiencia 
-en el uso de memoria.
+Las DLL son archivos con formato PE, muy similares a los ejecutables. Cada módulo contiene sus propias cabeceras y secciones, tal como se explicó en el apartado de PE files, y se mapean en memoria de manera similar a un ejecutable.
+
+\subsection{Carga de DLLs}
+
+Las DLL se cargan en el espacio de direcciones del proceso de dos formas:
+
+\begin{itemize}
+    \item \textbf{Carga estática:} Si el ejecutable indica durante la compilación que depende de una DLL, el \textit{loader} de Windows la cargará al iniciar el programa y resolverá la \textit{Import Address Table (IAT)}.
+    \item \textbf{Carga dinámica:} Si la DLL se carga en tiempo de ejecución mediante funciones como \texttt{LoadLibraryA}, el \textit{loader} mapea la librería en el espacio de direcciones y resuelve la IAT para el módulo que la cargó.
+\end{itemize}
+
+Una vez cargada, la DLL queda registrada en el \textit{Process Environment Block (PEB)} del proceso. Si, en algún momento posterior, otro módulo intenta cargar la misma DLL, el sistema verifica el PEB y, en lugar de cargarla de nuevo, reutiliza la instancia ya existente en memoria.
+
+\subsubsection{Orden de búsqueda de DLLs en Windows}
+
+El sistema operativo busca las DLL en el siguiente orden:
+
+\begin{enumerate}
+    \item Directorio desde el cual se cargó la aplicación
+    \item \texttt{C:\textbackslash Windows\textbackslash System32}
+    \item \texttt{C:\textbackslash Windows\textbackslash System}
+    \item \texttt{C:\textbackslash Windows}
+    \item Directorio actual de trabajo (Current Working Directory)
+    \item Directorios listados en la variable de entorno \texttt{PATH} del sistema
+    \item Directorios listados en la variable de entorno \texttt{PATH} del usuario
+\end{enumerate}
 
 
+Este mecanismo permite que un proceso utilice código externo sin incorporarlo de forma estática en su binario, favoreciendo la modularidad y la eficiencia en el uso de memoria.
 
-
-
-
-
+Para el desarrollo del trabajo se realizó una implementación en C de una versión simplificada del loader de Windows. En la referencia \cite{walkingloader} se describen de forma detallada todos los pasos que ejecuta un programa en C para convertir el archivo PE de una DLL en un módulo cargado en memoria y listo para ser utilizado.
