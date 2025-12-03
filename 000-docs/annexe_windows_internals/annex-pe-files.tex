@@ -7,7 +7,7 @@ Gracias a esta organización, el sistema puede ubicar código y datos en memoria
 Los PE file es un fichero con valores hexadecimales dispuestos en un layout especifico para poder ser recorrido
 
 Un archivo PE (\textit{Portable Executable}) es un fichero binario cuyos valores están organizados en un diseño específico que permite recorrerlo y analizarlo de manera estructurada.  
-La disposición de los encabezados, secciones y demás campos, incluyendo los offsets estándar de cada componente, se ilustra detalladamente en la infografía disponible en \cite{pe_format_layout_2025}.
+La disposición de los encabezados, secciones y demás campos, incluyendo los offsets estándar de cada componente, se ilustra detalladamente en la infografía disponible en \cite{peinfografia}.
 
 \subsection{Headers}
 
@@ -20,7 +20,7 @@ En el offset \texttt{0x00} se encuentran los encabezados del PE, que contienen i
     \item \textbf{DataDirectory:} tabla de referencias a otras estructuras del PE, como la tabla de importaciones, exportaciones, recursos y la tabla de relocaciones.
 \end{itemize}
 
-Estos campos permiten al sistema operativo localizar las distintas secciones del PE y gestionar correctamente la memoria virtual del proceso al cargar el ejecutable. La estructura completa y los offsets de cada campo se pueden consultar en la infografía de referencia~\cite{pe_format_layout_2025}.
+Estos campos permiten al sistema operativo localizar las distintas secciones del PE y gestionar correctamente la memoria virtual del proceso al cargar el ejecutable. La estructura completa y los offsets de cada campo se pueden consultar en la infografía de referencia~\cite{peinfografia}.
 
 Implementación en C para iterar y recuperar los campos de los encabezados de un archivo PE~\cite{walking_PE_headers}.
 
@@ -47,8 +47,8 @@ identificando las funciones exportadas y sus direcciones virtuales, pueden encon
 
 Además, se incluye una implementación propia de \texttt{GetProcAddress} en ensamblador x64, 
 donde se recorre manualmente la tabla de exportaciones del módulo cargado en memoria para localizar 
-la dirección real de una función exportada~\cite{custom_getprocaddress_x64_2025}, así como su versión 
-equivalente para arquitecturas x86~\cite{custom_getprocaddress_x86_2025}.
+la dirección real de una función exportada~\cite{x64_get_proc}, así como su versión 
+equivalente para arquitecturas x86~\cite{x86_get_proc}.
 
 \subsubsection{Imports}
 
