@@ -1,19 +1,21 @@
 # To Does
 
-- [ ] **BUG**: arreglar el .bib con la refactorizacion
 
 ## `DFIR`
+
+- [ ] **DEV**: recopilar artefactos de Kerberoasting 
+
 
 ## `MAL-DEV`
 
 - [ ] **DEV**: Walking TEB, hijacking hilos
+- [ ] **DEV**: Programar un hello word de BOF 
 - [ ] **DEV**: Terminar el loader para que tambien haga parches de las relocaciones
 - [ ] **DEV**: Terminar el payload de .NET
     - Mas sigiloso con BOF
 - [ ] **DEV**: Probar SysWhispers2
 - [ ] **DEV**: shellcode injection basica en un otro proceso
 - [ ] **DEV**: payloads shellcode con xor 
-- [ ] **DEV**: pasar los malwares del trabajo por una sandbox 
 
 ---
 
@@ -26,3 +28,8 @@
 
 ## `RED-TEAM`
 
+
+
+## DONE
+
+- [x] **BUG**: arreglar el .bib con la refactorizacion
