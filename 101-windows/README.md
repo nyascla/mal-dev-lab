@@ -1,4 +1,23 @@
-# Windows Internals
+# Windows
 
-[Debugging Windows Internals with x64dbg!](https://www.youtube.com/watch?v=AKcADaAaOT8)
-[Windows Internals Crash Course](https://www.youtube.com/watch?v=I_nJltUokE0&t=2850s)
+## Sysinternals
+
+### Process Explorer
+
+Visión en tiempo real de procesos y sus recursos
+- Handles abiertos
+- DLLs cargadas
+- Procesos activos y su jerarquía
+
+### Process Monitor (Procmon)
+
+Sniffer de actividad de sistema, no solo procesos.
+- Archivo I/O
+- Registro de Windows
+- Procesos y threads (creación, terminación).
+
+### Event Viewer
+
+### Autoruns
+
+Lista todas las ubicaciones del registro, carpetas y componentes del sistema que pueden ejecutar código automáticamente.S

@@ -1,5 +1,35 @@
-## To Does
+# To Does
+
+
+## `DFIR`
+
+- [ ] **DEV**: recopilar artefactos de Kerberoasting 
+
+
+## `MAL-DEV`
 
 - [ ] **DEV**: Walking TEB, hijacking hilos
-- [ ] **BUG**: El stage2 carga varias veces el implante
+- [ ] **DEV**: Programar un hello word de BOF 
 - [ ] **DEV**: Terminar el loader para que tambien haga parches de las relocaciones
+- [ ] **DEV**: Terminar el payload de .NET
+    - Mas sigiloso con BOF
+- [ ] **DEV**: Probar SysWhispers2
+- [ ] **DEV**: shellcode injection basica en un otro proceso
+- [ ] **DEV**: payloads shellcode con xor 
+
+---
+
+- [ ] **BUG**: El stage2 carga varias veces el implante
+- [ ] **BUG**: ensamblado shellcode
+    - rutas relativas
+    - cross compilation
+    - Makefile
+- [ ] **BUG**: dejar en reflective injection una demo y mover el ataque a red team 
+
+## `RED-TEAM`
+
+
+
+## DONE
+
+- [x] **BUG**: arreglar el .bib con la refactorizacion
