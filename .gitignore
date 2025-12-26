@@ -20,3 +20,5 @@ venv
 
 # VS Code
 .vscode/settings.json
+
+102-utils/threat-intelligence/reports
