@@ -1,17 +1,40 @@
-FILE_NAME = peb_list_modules
+ifeq ($(OS),Windows_NT)
+    RM         = del /Q
+    NULLDEV    = NUL
+    TARGET     = -target x86_64-pc-windows-msvc
+    RUN_CMD    = $(EXE)
+else
+    RM         = rm -rf
+    NULLDEV    = /dev/null
+    TARGET     = -target x86_64-w64-mingw32
+    RUN_CMD    = wine $(EXE)
+endif
 
-all: main
+# Salida
+BIN_DIR = bin
+EXE     = $(BIN_DIR)/main.exe
 
-dirs:
-	if not exist build mkdir build
-	if not exist bin mkdir bin
 
-main: dirs
-	cl /nologo /W3 /MD /I include /c $(FILE_NAME).c /Fo:build\$(FILE_NAME).obj
-	link /DEBUG /OUT:bin\$(FILE_NAME).exe build\$(FILE_NAME).obj
+# Compilador y flags
+CC      = clang
+CFLAGS  = -Wall -Wextra -O2
 
-	bin\$(FILE_NAME).exe
+# Fuentes
+SRC_MAIN = main.c
+
+all: $(EXE)
+
+$(EXE): $(SRC_MAIN)
+	@echo "Compilando main.exe para Windows..."
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(CFLAGS) $(TARGET) $(SRC_MAIN) -o $(EXE) 
 
 clean:
-	if exist build rmdir /s /q build
-	if exist bin rmdir /s /q bin
+	@echo "Limpiando..."
+	-$(RM) $(BIN_DIR) 2>$(NULLDEV)
+
+run: $(EXE)
+	@echo "Ejecutando $(EXE)..."
+	$(RUN_CMD)
+
+.PHONY: all clean run

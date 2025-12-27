@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <winternl.h>   // UNICODE_STRING
 #include <stdio.h>
 #include <wchar.h>
 #include <stdint.h>
@@ -35,7 +36,9 @@ static inline BYTE ReadByte(uintptr_t address) {
 // ------------------------------------------------------------
 // Muestra información básica del PEB
 static uintptr_t ShowPebInfo(void) {
+
     uintptr_t peb = GetCurrentPeb();
+    
     if (!peb) {
         fprintf(stderr, "[ERROR] No se pudo obtener el PEB\n");
         return 0;
@@ -56,31 +59,42 @@ static uintptr_t ShowPebInfo(void) {
     return ldr;
 }
 
+void PrintUnicodeString(const UNICODE_STRING* us)
+{
+    if (!us || !us->Buffer || us->Length == 0)
+        return;
+
+    wprintf(L"%.*s", us->Length / sizeof(wchar_t), us->Buffer);
+}
+
 // ------------------------------------------------------------
 // Lista los módulos cargados en memoria
 static void ListLoadedModules(uintptr_t ldr) {
+    
     if (!ldr) {
         fprintf(stderr, "[ERROR] LDR es NULL\n");
         return;
     }
 
-    printf("\n=== MODULOS CARGADOS ===\n");
-
     uintptr_t listHead = ReadPointer(ldr + OFFSET_LDR_INLOADORDER);
     uintptr_t currentEntry = listHead;
-
+    
     if (!currentEntry) {
         fprintf(stderr, "[ERROR] Lista de módulos vacía\n");
         return;
     }
-
+    
+    printf("\n=== MODULOS CARGADOS ===\n");
+    
     do {
         uintptr_t dllBase = ReadPointer(currentEntry + OFFSET_LDR_ENTRY_DLLBASE);
-        uintptr_t baseDllNamePtr = ReadPointer(currentEntry + OFFSET_LDR_ENTRY_BASENAME + OFFSET_UNICODE_STRING_BUFFER);
+        UNICODE_STRING* us = (UNICODE_STRING*)(currentEntry + OFFSET_LDR_ENTRY_BASENAME);
 
-        if (baseDllNamePtr) {
-            wprintf(L"0x%p - %s\n", (void*)dllBase, (wchar_t*)baseDllNamePtr);
-        }
+        wprintf(L"0x%p - %.*ls \n",
+            (void*)dllBase,
+            us->Length / sizeof(wchar_t),
+            us->Buffer
+        );
 
         currentEntry = ReadPointer(currentEntry);
 
