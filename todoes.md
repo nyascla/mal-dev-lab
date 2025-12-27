@@ -9,6 +9,9 @@
 ## `MAL-DEV`
 
 - [ ] **DEV**: Walking TEB, hijacking hilos
+
+---
+
 - [ ] **DEV**: Programar un hello word de BOF 
 - [ ] **DEV**: Terminar el loader para que tambien haga parches de las relocaciones
 - [ ] **DEV**: Terminar el payload de .NET
@@ -16,8 +19,6 @@
 - [ ] **DEV**: Probar SysWhispers2
 - [ ] **DEV**: shellcode injection basica en un otro proceso
 - [ ] **DEV**: payloads shellcode con xor 
-
----
 
 - [ ] **BUG**: El stage2 carga varias veces el implante
 - [ ] **BUG**: ensamblado shellcode
@@ -28,7 +29,7 @@
 
 ## `RED-TEAM`
 
-
+- [ ] **DEV**: empezar carpeta post-explotacion, exfiltracion y movimiento lateral
 
 ## DONE
 
