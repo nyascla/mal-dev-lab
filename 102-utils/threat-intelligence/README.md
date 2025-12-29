@@ -1,3 +1,6 @@
+
+[Cyber Kill Chain 2025](https://www.youtube.com/watch?v=1ICbHpGiOG0)
+
 ## Big Vendors
 - [Mandiant](https://cloud.google.com/blog/topics/threat-intelligence)
     - M-Trends

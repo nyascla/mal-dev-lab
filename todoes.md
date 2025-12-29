@@ -5,13 +5,11 @@
 
 - [ ] **DEV**: recopilar artefactos de Kerberoasting 
 
-
 ## `MAL-DEV`
 
+- [ ] **DEV**: PoC activation-context-hijack
+- [ ] **DEV**: PoC call stack spoofing
 - [ ] **DEV**: Walking TEB, hijacking hilos
-
----
-
 - [ ] **DEV**: Programar un hello word de BOF 
 - [ ] **DEV**: Terminar el loader para que tambien haga parches de las relocaciones
 - [ ] **DEV**: Terminar el payload de .NET

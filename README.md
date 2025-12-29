@@ -1,6 +1,13 @@
 # All Things Cybersecurity
 
-> *Colección de notas y PoC sobre Malware, Red Teaming, Adversary Simulation, Reverse Engineering y Exploit Development*
+> *Colección de notas y PoC sobre Malware, Red Teaming, Adversary Simulation, Security Analysis y Reverse Engineering*
+
+3 secciones
+
+RED-TEAM: Se similan las operaciones del adversario
+MAL-DEV: Se crean los payload utiliadas
+DFIR: Se analizan los IoC apra detecciones y investigan los artefactos
+
 
 # 🚧 Under Construction 🚧
 
