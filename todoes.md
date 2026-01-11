@@ -1,9 +1,12 @@
 # To Does
 
+## `OT` 
+
 
 ## `DFIR`
 
 - [ ] **DEV**: recopilar artefactos de Kerberoasting 
+script para recopilar artefactas de goad automaticamente
 
 ## `MAL-DEV`
 
