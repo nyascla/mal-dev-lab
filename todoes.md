@@ -7,9 +7,11 @@
 
 - [ ] **DEV**: recopilar artefactos de Kerberoasting 
 script para recopilar artefactas de goad automaticamente
+- gpg 39c3 charla
 
 ## `MAL-DEV`
 
+- react2shell
 - [ ] **DEV**: PoC activation-context-hijack
 - [ ] **DEV**: PoC call stack spoofing
 - [ ] **DEV**: Walking TEB, hijacking hilos
@@ -21,6 +23,8 @@ script para recopilar artefactas de goad automaticamente
 - [ ] **DEV**: shellcode injection basica en un otro proceso
 - [ ] **DEV**: payloads shellcode con xor 
 
+---
+
 - [ ] **BUG**: El stage2 carga varias veces el implante
 - [ ] **BUG**: ensamblado shellcode
     - rutas relativas
@@ -31,6 +35,7 @@ script para recopilar artefactas de goad automaticamente
 ## `RED-TEAM`
 
 - [ ] **DEV**: empezar carpeta post-explotacion, exfiltracion y movimiento lateral
+- kerberos ops
 
 ## DONE
 
