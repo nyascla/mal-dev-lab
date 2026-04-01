@@ -31,8 +31,8 @@ You can build your own agents instead of using Sandcat
 
 ---
 
-
 ## Frameworks post-explotación
+
 - Cobalt Strike (alternativa open source: Sliver)
 - Metasploit
 - PowerShell Empire: centrado en PowerShell
