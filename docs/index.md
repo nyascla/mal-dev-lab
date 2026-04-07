@@ -1,5 +1,4 @@
 ---
-layout: home
 title: Inicio
 nav_order: 0
 ---

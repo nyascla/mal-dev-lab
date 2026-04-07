@@ -1,5 +1,4 @@
 ---
-layout: page
 title: "Prueba de Técnicas"
 nav_order: 1
 ---

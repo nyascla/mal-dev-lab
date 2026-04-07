@@ -1,5 +1,4 @@
 ---
-layout: page
 title: "Prueba de Operaciones"
 nav_order: 1
 ---

@@ -1,5 +1,4 @@
 ---
-layout: page
 title: "Prueba de Windows Internals"
 nav_order: 1
 ---
