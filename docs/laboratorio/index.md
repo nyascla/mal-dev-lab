@@ -1,5 +1,5 @@
 ---
-title: laboratorio
+title: Laboratorio
 nav_order: 1
 ---
 

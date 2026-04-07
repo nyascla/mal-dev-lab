@@ -1,6 +1,6 @@
 ---
-title: Herramientas
+title: Tecnicas
 nav_order: 3 
 ---
 
-# Herramientas
+# Tecnicas
