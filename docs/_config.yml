@@ -1,7 +1,7 @@
 title: Cybersecurity Notes
 description: Técnicas, PoCs y aprendizaje en ciberseguridad
 
-theme: minima 
+remote_theme: just-the-docs/just-the-docs
 
 url: https://nyascla.github.io/
 baseurl: /All-Things-Cybersecurity
