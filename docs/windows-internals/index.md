@@ -1,5 +1,6 @@
 ---
-title: Windows-Internals
+layout: page
+title: Windows Internals
 nav_order: 4
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Tecnicas
+layout: page
+title: Técnicas
 nav_order: 3 
 ---
 
