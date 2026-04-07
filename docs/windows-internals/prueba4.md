@@ -1,5 +1,6 @@
 ---
 title: "Prueba de Windows Internals"
+parent: Windows Internals
 nav_order: 1
 ---
 
