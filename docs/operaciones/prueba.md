@@ -1,8 +1,7 @@
 ---
 layout: page
 title: "Prueba de Operaciones"
-date: 2026-04-07
-categories: operaciones
+nav_order: 1
 ---
 
 # Prueba de Operaciones

@@ -1,8 +1,7 @@
 ---
 layout: page
 title: "Prueba de Windows Internals"
-date: 2026-04-07
-categories: windows-internals
+nav_order: 1
 ---
 
 # Prueba de Windows Internals
