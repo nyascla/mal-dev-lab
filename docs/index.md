@@ -11,6 +11,32 @@ Este blog está diseñado con un propósito principalmente **didáctico**, donde
 
 ---
 
+## 🧩 CTF Educacional
+
+Como punto de partida de este proyecto, se diseñó y desarrolló un **CTF educacional** como Trabajo de Fin de Máster. Este reto fue concebido no solo como una prueba técnica, sino como un escenario didáctico completo orientado a la **simulación realista de un ciberataque**, documentando de forma exhaustiva cada una de sus fases.
+
+El objetivo del trabajo es proporcionar un entorno que permita a analistas de ciberseguridad mejorar sus capacidades de **detección, análisis e investigación**, mediante la comprensión integral del ciclo de vida de un ataque. A través de este enfoque, el proyecto busca aproximar al analista a la mentalidad del atacante, facilitando la interpretación de evidencias desde una perspectiva ofensiva y defensiva.
+
+El resultado final consiste en un conjunto de **artefactos forenses** generados en sistemas comprometidos, que sirven como base para ejercicios prácticos de análisis forense (enfoque **blue team**). Estos artefactos permiten estudiar la huella dejada por el ataque y reconstruir los eventos ocurridos en el sistema.
+
+Para generar este material, el núcleo del trabajo se centra en:
+
+- La concepción, diseño y desarrollo de un ciberataque realista  
+- La ejecución controlada del ataque en un entorno de laboratorio  
+- La documentación completa del proceso ofensivo  
+- La recopilación de evidencias y artefactos generados durante la intrusión  
+- El análisis posterior de dichos artefactos desde una perspectiva forense  
+
+De este modo, el usuario que analice el material no solo podrá estudiar la infección desde el punto de vista defensivo, sino también comprender el **cómo** y el **porqué** detrás de cada artefacto encontrado, mejorando así su capacidad de correlación, detección y respuesta ante amenazas reales.
+
+Todo el contenido asociado al CTF, incluyendo enunciado, resolución detallada, explicación técnica del ataque, desarrollo de payloads, ubicación de artefactos y evidencias, se encuentra disponible en el repositorio del proyecto:
+
+👉 https://github.com/nyascla/All-Things-Cybersecurity/blob/main/latex/release/main.pdf
+
+Este contenido está publicado bajo una **licencia MIT**, lo que permite su uso, modificación y distribución de forma libre, siempre que se mantenga la atribución correspondiente al autor original.
+
+---
+
 ## 🎯 Objetivo
 
 El objetivo principal es:
