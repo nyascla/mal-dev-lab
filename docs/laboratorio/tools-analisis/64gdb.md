@@ -1,6 +1,6 @@
 ---
 title: "64gdb"
-parent: Tools 
+parent: Tools-Analisis 
 nav_order: 1
 ---
 

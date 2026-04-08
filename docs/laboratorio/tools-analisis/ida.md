@@ -1,6 +1,6 @@
 ---
 title: "ida"
-parent: Tools 
+parent: Tools-Analisis 
 nav_order: 1
 ---
 
