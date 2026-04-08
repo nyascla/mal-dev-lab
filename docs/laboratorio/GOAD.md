@@ -1,7 +1,7 @@
 ---
-title: "Prueba de Laboratorio"
+title: "GOAD"
 parent: Laboratorio 
-nav_order: 1
+nav_order: 2
 ---
 
-# Prueba de Laboratorio
+# GOAD 
