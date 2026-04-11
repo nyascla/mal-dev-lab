@@ -5,58 +5,55 @@ nav_order: 0
 
 # 🛡️ All Things Cybersecurity
 
-Bienvenido a **All Things Cybersecurity**, un espacio dedicado al estudio práctico de la ciberseguridad desde el enfoque de la **simulación de adversarios (Adversary Simulation)**.
+Bienvenido a All Things Cybersecurity, un blog que nace como un recurso didáctico, orientado a la formación de equipos de ciberseguridad y basado en una idea fundamental: la mejor forma de aprender es haciendo.
 
-Este blog está diseñado con un propósito principalmente **didáctico**, donde se documentan técnicas, procedimientos y laboratorios orientados a comprender el comportamiento real de un atacante y mejorar la capacidad de análisis y defensa.
+La metodología utilizada se apoya en la simulación de adversarios (Adversary Simulation), un enfoque que permite comprender en profundidad cómo se diseñan, construyen, ejecutan y analizan los ataques reales. Cada contenido recorre el ciclo completo: desde el diseño inicial del ataque y la creación desde cero de los payloads, junto con la base teórica necesaria para entender su funcionamiento, hasta el despliegue de la infraestructura y la ejecución.
+
+A partir de ahí, el enfoque evoluciona hacia la perspectiva Blue Team, abordando la detección del ataque, la identificación y recolección de artefactos relevantes, y su posterior análisis. El blog pone especial énfasis en las técnicas más relevantes del marco MITRE ATT&CK, centrando el aprendizaje en entenderlas de forma integral: desde su creación hasta su detección e investigación.
+
+El objetivo es proporcionar una visión completa y práctica que permita no solo reproducir técnicas, sino comprenderlas en profundidad y aplicarlas en entornos reales de defensa.
 
 ---
 
-## 🧩 CTF Educacional
+## CTFs
 
-Como punto de partida de este proyecto, se diseñó y desarrolló un **CTF educacional** como Trabajo de Fin de Máster. Este reto fue concebido no solo como una prueba técnica, sino como un escenario didáctico completo orientado a la **simulación realista de un ciberataque**, documentando de forma exhaustiva cada una de sus fases.
+Como parte de los recursos disponibles en este blog, se ofrece un CTF educacional desarrollado como Trabajo de Fin de Máster, titulado “Simulación realista de adversarios como herramienta formativa para DFIR y Blue Team”. Este reto se plantea como una opción formativa práctica para aquellos que deseen entrenar sus habilidades de análisis a partir de artefactos reales generados durante un ciberataque.
 
-El objetivo del trabajo es proporcionar un entorno que permita a analistas de ciberseguridad mejorar sus capacidades de **detección, análisis e investigación**, mediante la comprensión integral del ciclo de vida de un ataque. A través de este enfoque, el proyecto busca aproximar al analista a la mentalidad del atacante, facilitando la interpretación de evidencias desde una perspectiva ofensiva y defensiva.
+El CTF se basa en la recreación de una kill chain completa, en la que se diseña, implementa y ejecuta un ataque en un entorno controlado. Todo el proceso ha sido documentado en detalle, incluyendo el diseño del ataque, la creación de payloads, la preparación de la infraestructura y la ejecución de cada fase.
 
-El resultado final consiste en un conjunto de **artefactos forenses** generados en sistemas comprometidos, que sirven como base para ejercicios prácticos de análisis forense (enfoque **blue team**). Estos artefactos permiten estudiar la huella dejada por el ataque y reconstruir los eventos ocurridos en el sistema.
+Como resultado, se ponen a disposición del usuario los artefactos generados durante la ejecución del ataque, junto con una explicación detallada de las técnicas utilizadas y la justificación de las decisiones tomadas. Esto permite a los analistas no solo practicar sus capacidades de análisis y detección, sino también entender el contexto completo en el que se generan dichas evidencias.
 
-Para generar este material, el núcleo del trabajo se centra en:
+De este modo, el CTF se convierte en un recurso especialmente útil para la formación de equipos de ciberseguridad, permitiendo trabajar sobre escenarios realistas y mejorar las habilidades de DFIR y Blue Team desde una perspectiva práctica.
 
-- La concepción, diseño y desarrollo de un ciberataque realista  
-- La ejecución controlada del ataque en un entorno de laboratorio  
-- La documentación completa del proceso ofensivo  
-- La recopilación de evidencias y artefactos generados durante la intrusión  
-- El análisis posterior de dichos artefactos desde una perspectiva forense  
-
-De este modo, el usuario que analice el material no solo podrá estudiar la infección desde el punto de vista defensivo, sino también comprender el **cómo** y el **porqué** detrás de cada artefacto encontrado, mejorando así su capacidad de correlación, detección y respuesta ante amenazas reales.
-
-Todo el contenido asociado al CTF, incluyendo enunciado, resolución detallada, explicación técnica del ataque, desarrollo de payloads, ubicación de artefactos y evidencias, se encuentra disponible en el repositorio del proyecto:
+Todo el contenido —incluyendo artefactos, documentación técnica y resolución detallada— está disponible para su descarga:
 
 👉 https://github.com/nyascla/All-Things-Cybersecurity/blob/main/latex/release/main.pdf
 
-Este contenido está publicado bajo una **licencia MIT**, lo que permite su uso, modificación y distribución de forma libre, siempre que se mantenga la atribución correspondiente al autor original.
+Este material se distribuye bajo licencia MIT, facilitando su uso, adaptación y reutilización con fines formativos.
 
 ---
 
-## 🎯 Objetivo
-
-El objetivo principal es:
-
-- Aprender ciberseguridad de forma práctica  
-- Simular escenarios reales de ataque en entornos controlados  
-- Analizar cada etapa de un incidente de seguridad  
-- Documentar técnicas, herramientas y artefactos generados  
-
-Este trabajo se sitúa dentro del ámbito de la simulación de adversarios, una metodología que permite evaluar tanto la eficacia de los sistemas de defensa como las capacidades del personal ante incidentes de seguridad.
-
-En este contexto, el enfoque principal no es ofensivo en sí mismo, sino **formativo**: recrear escenarios realistas para practicar la detección, el análisis y la interpretación de actividades maliciosas.
-
----
-
-## 🧭 Estructura del contenido
+## Estructura del contenido
 
 El contenido del blog se organiza en varias secciones:
 
-### 🔴 Operaciones
+### Blog
+
+---
+
+### Laboratorio
+En esta sección se documentan:
+
+- Entornos de prueba
+- Herramientas utilizadas
+- Configuraciones
+- Procedimientos experimentales
+
+Sirve como base para reproducir los escenarios descritos en otras secciones.
+
+---
+
+### Operaciones
 En esta sección se desarrollan **kill chains completas**, simulando escenarios de ataque de extremo a extremo.
 
 - Reconocimiento
@@ -71,7 +68,7 @@ El objetivo es entender cómo se encadenan las técnicas en un ataque real.
 
 ---
 
-### 🛠️ Técnicas
+### Técnicas
 Aquí se estudian **técnicas específicas en profundidad**, incluyendo:
 
 - Descripción teórica
@@ -84,19 +81,9 @@ Esta sección está orientada a entender el *cómo* y el *por qué* detrás de c
 
 ---
 
-### 🧪 Laboratorio
-En esta sección se documentan:
 
-- Entornos de prueba
-- Herramientas utilizadas
-- Configuraciones
-- Procedimientos experimentales
 
-Sirve como base para reproducir los escenarios descritos en otras secciones.
-
----
-
-### 🧠 Windows Internals
+### Windows Internals
 Sección teórica centrada en conceptos internos del sistema operativo Windows, fundamentales para comprender técnicas avanzadas.
 
 Algunos temas incluyen:
@@ -109,29 +96,3 @@ Algunos temas incluyen:
 - Mecanismos internos del sistema
 
 ---
-
-## 🧩 Enfoque
-
-Todo el contenido está orientado a:
-
-- Simulación realista de ataques en entornos controlados  
-- Documentación reproducible  
-- Análisis técnico profundo  
-- Relación entre teoría y práctica  
-
----
-
-## 📌 Navegación
-
-Utiliza el menú lateral para explorar las distintas secciones del blog:
-
-- **Operaciones** → escenarios completos  
-- **Técnicas** → técnicas individuales y PoCs  
-- **Laboratorio** → herramientas y entornos  
-- **Windows Internals** → fundamentos teóricos  
-
----
-
-## 🚀 Nota final
-
-Este blog no busca únicamente listar información, sino construir una base de conocimiento práctica que permita entender cómo opera un adversario y cómo se puede detectar y analizar su actividad de manera efectiva.
