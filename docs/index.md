@@ -38,6 +38,11 @@ Este material se distribuye bajo licencia MIT, facilitando su uso, adaptación y
 El contenido del blog se organiza en varias secciones:
 
 ### Blog
+Esta sección actúa como puerta de entrada a los conceptos del blog, ofreciendo contenidos más accesibles que introducen al lector en distintas áreas de la ciberseguridad.
+
+A través de escenarios, ejemplos prácticos y preguntas guiadas, los artículos plantean el contexto necesario para entender cómo funcionan determinadas técnicas o conceptos. Desde aquí, se referencia de forma estructurada a las entradas más técnicas del blog, donde se desarrolla en profundidad cada uno de los temas tratados.
+
+El objetivo de esta sección es proporcionar una visión clara e intuitiva, permitiendo al lector construir una base sólida antes de profundizar en los aspectos más avanzados. De este modo, se conecta la teoría con la práctica, facilitando una comprensión progresiva y estructurada del contenido.
 
 ---
 
