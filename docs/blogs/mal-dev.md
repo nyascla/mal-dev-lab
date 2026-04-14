@@ -49,9 +49,10 @@ https://github.com/nyascla/All-Things-Cybersecurity/tree/main/main/windows-inter
 
 ## Reflective loader
 
-El primer paso es entender cómo Windows carga una DLL en memoria. Para ello, es recomendable revisar el siguiente documento de referencia:
+El primer paso es entender cómo Windows crea procesos y carga DLLs en memoria. Para ello, es recomendable revisar los siguientes documentos de referencia:
 
 🔗 Documentación:  
+https://github.com/nyascla/All-Things-Cybersecurity/blob/main/main/windows-internals/windows-loader/process-loader.md
 https://github.com/nyascla/All-Things-Cybersecurity/blob/main/main/windows-internals/windows-loader/dll-loader.md
 
 A continuación, se desarrolla un proyecto donde se implementa una versión propia de `LoadLibrary`, lo que permite cargar DLLs en memoria sin utilizar la función proporcionada por Windows.
