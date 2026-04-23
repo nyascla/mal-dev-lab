@@ -1,4 +1,3 @@
-Tomando la sigueinte cabecera de un fichero asm como referencias:
 """
 ; =============================================================================
 ;  get_proc_address
