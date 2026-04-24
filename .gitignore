@@ -15,8 +15,9 @@ obj/
 venv
 
 # Latex
-000-docs/main*
-!000-docs/main.tex 
+latex/main*
+latex/main*
+!latex/main.tex 
 
 # VS Code
 .vscode/settings.json
