@@ -2,7 +2,7 @@
 setlocal
 
 :: Nombre del programa (sin extensión)
-set "PROGRAM_NAME=messagebox"
+set "PROGRAM_NAME=reverse_shell"
 
 :: Rutas de los ejecutables
 set "NASM_EXECUTABLE=C:\Users\test\AppData\Local\bin\NASM\nasm.exe"

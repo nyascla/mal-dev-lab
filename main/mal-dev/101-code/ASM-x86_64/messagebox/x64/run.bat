@@ -25,7 +25,7 @@ if %errorlevel% neq 0 (
 )
 
 :: Ejecutar sclauncher
-"%SCLAUNCHER_EXECUTABLE%" -f=".\build\%PROGRAM_NAME%.bin" -pe -o=".\bin\%PROGRAM_NAME%.exe"
+"%SCLAUNCHER_EXECUTABLE%" -f=".\build\%PROGRAM_NAME%.bin" -pe -64 -o=".\bin\%PROGRAM_NAME%.exe"
 
 if %errorlevel% neq 0 (
     echo [ERROR] Fallo al crear el ejecutable %PROGRAM_NAME%.exe

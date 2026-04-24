@@ -99,9 +99,12 @@ mov     esp, ebp
 pop     ebp         
 ret
            
-; -----------------------------------
-%include "..\..\runtime_linking\x86\exports.asm"
-; -----------------------------------
+; ---------------------------------------
+%include "../../hashing/x86/rol_xor.asm"
+%include "../../runtime_linking/x86/get_proc_address.asm"
+%include "../../runtime_linking/x86/get_module_handle.asm" 
+%include "../../runtime_linking/x86/runtime_linking.asm" 
+; ---------------------------------------
 
 KERNEL32:       dd 0x4b1ffe8e
 USER32:         db 'user32.dll',0
