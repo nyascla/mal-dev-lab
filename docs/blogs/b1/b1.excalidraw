@@ -1,0 +1,146 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "dqPrTahjgZWvO2V3v-gWB",
+      "type": "freedraw",
+      "x": 514,
+      "y": 341,
+      "width": 243,
+      "height": 74,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 1761317973,
+      "version": 25,
+      "versionNonce": 561465083,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1777107094491,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          13
+        ],
+        [
+          -8,
+          29
+        ],
+        [
+          -54,
+          38
+        ],
+        [
+          -97,
+          20
+        ],
+        [
+          -91,
+          -7
+        ],
+        [
+          4,
+          -36
+        ],
+        [
+          38,
+          -36
+        ],
+        [
+          140,
+          -24
+        ],
+        [
+          146,
+          -4
+        ],
+        [
+          135,
+          4
+        ],
+        [
+          -10,
+          32
+        ],
+        [
+          -94,
+          13
+        ],
+        [
+          -86,
+          -7
+        ],
+        [
+          -6,
+          -33
+        ],
+        [
+          51,
+          -33
+        ],
+        [
+          70,
+          -31
+        ],
+        [
+          61,
+          -22
+        ],
+        [
+          32,
+          -13
+        ],
+        [
+          -10,
+          -2
+        ],
+        [
+          -13,
+          -1
+        ],
+        [
+          -13,
+          -1
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        -13,
+        -1
+      ]
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

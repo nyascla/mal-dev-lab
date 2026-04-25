@@ -4,6 +4,8 @@ parent: Blogs
 nav_order: 1
 ---
 
+![alt text](b1.png)
+
 # ¿Qué ocurre cuando se hace doble clic sobre un programa en Windows?  
 ## Introducción a los fundamentos del desarrollo de malware
 
