@@ -149,6 +149,7 @@ def compile_target(architecture, project_name, execute=False):
 
     logging.info(f"--- Compilación para [{architecture}] finalizada con éxito ---")
 
+
 def main():
     """Función principal para parsear argumentos y lanzar la compilación."""
     

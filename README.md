@@ -2,6 +2,8 @@ https://nyascla.github.io/All-Things-Cybersecurity/
 
 # All Things Cybersecurity
 
+de la carpeta main cuelgan diferentes path profedionales donde voy jugando un poco con ellos
+
 > *Colección de notas y PoC sobre Malware, Red Teaming, Adversary Simulation, Security Analysis y Reverse Engineering*
 
 3 secciones
@@ -9,6 +11,8 @@ https://nyascla.github.io/All-Things-Cybersecurity/
 RED-TEAM: Se similan las operaciones del adversario
 MAL-DEV: Se crean los payload utiliadas
 DFIR: Se analizan los IoC apra detecciones y investigan los artefactos
+
+
 
 
 # 🚧 Under Construction 🚧
