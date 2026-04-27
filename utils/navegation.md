@@ -2,6 +2,7 @@
 
 ## Colapsar
 - `Ctrl + K`, `Ctrl + 1`
+- `Ctrl + K`, `Ctrl + j`
 
 ## Saltar
 - `Ctrl + P` → fichero
@@ -29,3 +30,6 @@
 	- `ysiw"`
 ---
 - `ctr + d`, `ctr + u` media pagina abajo/arriba
+
+ctr 1 panel
+ctr 0 sidebar 
